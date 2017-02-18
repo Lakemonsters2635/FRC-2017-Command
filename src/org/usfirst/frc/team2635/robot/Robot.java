@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team2635.robot.commands.DriveRoutine;
 import org.usfirst.frc.team2635.robot.commands.ExampleCommand;
 import org.usfirst.frc.team2635.robot.commands.TeleopCommand;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
@@ -72,7 +73,8 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		autonomousCommand = chooser.getSelected();
+		//autonomousCommand = chooser.getSelected();
+		autonomousCommand = new DriveRoutine();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
