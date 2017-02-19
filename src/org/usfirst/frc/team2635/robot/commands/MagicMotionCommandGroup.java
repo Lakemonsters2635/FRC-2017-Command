@@ -3,13 +3,11 @@ package org.usfirst.frc.team2635.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * Test drive routine
+ *
  */
-public class DriveRoutine extends CommandGroup {
+public class MagicMotionCommandGroup extends CommandGroup {
 
-    public DriveRoutine() {
-    	addSequential(new DriveForward(0.5, 0.60));
-    	addSequential(new DriveForward(1.0, -0.60));
+    public MagicMotionCommandGroup() {
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

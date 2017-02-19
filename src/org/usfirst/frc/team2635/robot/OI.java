@@ -2,6 +2,7 @@ package org.usfirst.frc.team2635.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 import org.usfirst.frc.team2635.robot.commands.ExampleCommand;
 
@@ -21,6 +22,17 @@ public class OI {
 	{
 		return rightJoystick.getRawAxis(RobotMap.RIGHT_DRIVE_Y);
 	}
+	
+	public final Button revUpButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_REV_UP);
+	public final Button fireButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_FIRE);
+	public final Button feedInButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_FEED_IN);
+	public final Button feedOutButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_FEED_OUT);
+	public final Button climbUpButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_CLIMB_UP);
+	public final Button climbDownButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_CLIMB_DOWN);
+	public final Button deliverButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_DELIVER);
+	public final Button aimCameraButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_AIM_CAMERA);
+	public final Button motionMagicButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_MOTION_MAGIC);
+//	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a
 	//// joystick.

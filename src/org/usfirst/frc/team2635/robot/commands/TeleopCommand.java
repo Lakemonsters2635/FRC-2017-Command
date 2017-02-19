@@ -3,12 +3,12 @@ package org.usfirst.frc.team2635.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- *
+ * Things to do in teleop
  */
 public class TeleopCommand extends CommandGroup {
 
     public TeleopCommand() {
-    	addParallel(new DriveTeleop());
+    	addParallel(new SetDriveAimPIDSmartDashboard());
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

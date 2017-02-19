@@ -9,11 +9,27 @@ import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import org.usfirst.frc.team2635.robot.commands.ClimberClimb;
+import org.usfirst.frc.team2635.robot.commands.DeliverGearBackwards;
+import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
+import org.usfirst.frc.team2635.robot.commands.DriveCameraAnglePID;
+import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.DriveRoutine;
+import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
 import org.usfirst.frc.team2635.robot.commands.ExampleCommand;
+import org.usfirst.frc.team2635.robot.commands.LogNavxValues;
+import org.usfirst.frc.team2635.robot.commands.PickupBall;
+import org.usfirst.frc.team2635.robot.commands.ShooterFire;
+import org.usfirst.frc.team2635.robot.commands.ShooterRevUp;
+import org.usfirst.frc.team2635.robot.commands.ShooterReverseFire;
 import org.usfirst.frc.team2635.robot.commands.TeleopCommand;
+import org.usfirst.frc.team2635.robot.subsystems.Climber;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
 import org.usfirst.frc.team2635.robot.subsystems.ExampleSubsystem;
+import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
+import org.usfirst.frc.team2635.robot.subsystems.Pickup;
+import org.usfirst.frc.team2635.robot.subsystems.Shooter;
+import org.usfirst.frc.team2635.robot.subsystems.Vision;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -24,14 +40,24 @@ import org.usfirst.frc.team2635.robot.subsystems.ExampleSubsystem;
  */
 public class Robot extends IterativeRobot {
 	
-	public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
-	public static final Drive drive = new Drive();
+	//public static final ExampleSubsystem exampleSubsystem = new ExampleSubsystem();
+	public static Drive drive;
+	public static Shooter shooter;
+	public static Pickup pickup;
+	public static Climber climber; 
+	public static GearDeliver deliverer; 
+	public static Vision vision;
 	public static OI oi;
 
 	Command autonomousCommand;
+	Command driveCommand;
+	Command logNavxCommand;
 	CommandGroup teleopCommands;
+	CommandGroup logAndDrive = new CommandGroup();
+	CommandGroup motionCommandGroup;
+	
 	SendableChooser<Command> chooser = new SendableChooser<>();
-
+	
 	/**
 	 * This function is run when the robot is first started up and should be
 	 * used for any initialization code.
@@ -39,10 +65,23 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		oi = new OI();
+		drive = new Drive();
+		shooter = new Shooter();
+		pickup = new Pickup();
+		climber = new Climber();
+		deliverer = new GearDeliver();
+		vision = new Vision();
 		teleopCommands = new TeleopCommand();
+	    motionCommandGroup = new CommandGroup();
+		logAndDrive.addParallel(new LogNavxValues());
+		logAndDrive.addParallel(new DriveTeleop());
 		chooser.addDefault("Default Auto", new ExampleCommand());
-		// chooser.addObject("My Auto", new MyAutoCommand());
+		//chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
+		
+		
+		motionCommandGroup.addSequential(new DriveRotateMotionMagic(200, 90, 36, true, false));
+		//motionCommandGroup.addSequential(new DriveRotateMotionMagic(200, 90, 36, true, false));
 	}
 
 	/**
@@ -52,7 +91,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void disabledInit() {
-
+			
 	}
 
 	@Override
@@ -74,7 +113,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		//autonomousCommand = chooser.getSelected();
-		autonomousCommand = new DriveRoutine();
+//		autonomousCommand = new DriveRoutine();
 
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -84,8 +123,8 @@ public class Robot extends IterativeRobot {
 		 */
 
 		// schedule the autonomous command (example)
-		if (autonomousCommand != null)
-			autonomousCommand.start();
+//		if (autonomousCommand != null)
+//			autonomousCommand.start();
 	}
 
 	/**
@@ -102,11 +141,30 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-		if (autonomousCommand != null)
-			autonomousCommand.cancel();
+//		if (autonomousCommand != null)
+//			autonomousCommand.cancel();
+//		if (teleopCommands != null)
+//			teleopCommands.start();
+		//logAndDrive.start();
+		//Drive will run joystick automatically
+		oi.revUpButton.whileHeld(new ShooterRevUp());
+		oi.fireButton.whenPressed(new ShooterFire());
+		oi.fireButton.whenReleased(new ShooterReverseFire());
 		
-		if (teleopCommands != null)
-			teleopCommands.start();
+		oi.feedInButton.whileHeld(new PickupBall(-1.0));
+		oi.feedOutButton.whileHeld(new PickupBall(1.0));
+		
+		oi.climbUpButton.whileHeld(new ClimberClimb(1.0));
+		oi.climbDownButton.whileHeld(new ClimberClimb(-1.0));
+		
+		oi.deliverButton.whenPressed(new DeliverGearForward());
+		oi.deliverButton.whenReleased(new DeliverGearBackwards());
+		
+		//oi.aimCameraButton.whileHeld(new DriveCameraAnglePID());//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
+		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
+		oi.motionMagicButton.whenPressed(motionCommandGroup);
+		//		if (teleopCommands != null)
+//			teleopCommands.start();
 		
 	}
 
@@ -115,6 +173,7 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
+		
 		Scheduler.getInstance().run();
 	}
 

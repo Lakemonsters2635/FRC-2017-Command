@@ -3,13 +3,15 @@ package org.usfirst.frc.team2635.robot.commands;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
- * Test drive routine
+ * Spin up the flywheel and agitate.
  */
-public class DriveRoutine extends CommandGroup {
+public class ShooterRevUp extends CommandGroup {
 
-    public DriveRoutine() {
-    	addSequential(new DriveForward(0.5, 0.60));
-    	addSequential(new DriveForward(1.0, -0.60));
+    public ShooterRevUp() {
+    	//Change this to sequential when a method to figure out if it's finished is implemented
+    	addParallel(new ShooterSpinFlywheel(1.0));
+    	addParallel(new ShooterAgitate(1.0));
+    	
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());
