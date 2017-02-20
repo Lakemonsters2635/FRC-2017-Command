@@ -16,11 +16,11 @@ public class OI {
 	
 	public final double getLeftY()
 	{
-		return leftJoystick.getRawAxis(RobotMap.LEFT_DRIVE_Y);
+		return -leftJoystick.getRawAxis(RobotMap.LEFT_DRIVE_Y);
 	}
 	public final double getRightY()
 	{
-		return rightJoystick.getRawAxis(RobotMap.RIGHT_DRIVE_Y);
+		return -rightJoystick.getRawAxis(RobotMap.RIGHT_DRIVE_Y);
 	}
 	
 	public final Button revUpButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_REV_UP);

@@ -22,7 +22,11 @@ public class Shooter extends Subsystem {
 	public Shooter()
 	{
 		flywheel = new CANTalon(RobotMap.SHOOTER_BALL_FLYWHEEL);
+		flywheel.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		
 		agitator = new CANTalon(RobotMap.SHOOTER_AGITATOR);
+		agitator.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		
 		fireControl = new DoubleSolenoid(RobotMap.SHOOTER_FIRE_CONTROL_FORWARD, RobotMap.SHOOTER_FIRE_CONTROL_BACKWARDS);
 		
 	}

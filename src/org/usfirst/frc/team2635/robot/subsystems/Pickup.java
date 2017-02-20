@@ -17,6 +17,8 @@ public class Pickup extends Subsystem {
 	public Pickup()
 	{
 		pickupMotor = new CANTalon(RobotMap.PICKUP_BALL);
+		pickupMotor.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+	
 	}
     public void initDefaultCommand() {
         // Set the default command for a subsystem here.

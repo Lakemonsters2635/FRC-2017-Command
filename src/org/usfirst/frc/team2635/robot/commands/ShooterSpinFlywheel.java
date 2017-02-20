@@ -2,6 +2,8 @@ package org.usfirst.frc.team2635.robot.commands;
 
 import org.usfirst.frc.team2635.robot.Robot;
 
+import com.ctre.CANTalon;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -13,17 +15,20 @@ public class ShooterSpinFlywheel extends Command {
     public ShooterSpinFlywheel(double magnitude) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooter);
+    	//requires(Robot.shooter);
     	this.magnitude = magnitude;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+		
 
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
+    	System.out.println("-----ShooterSpinup Execute-------------");
     	Robot.shooter.setFlywheel(magnitude);
     }
 

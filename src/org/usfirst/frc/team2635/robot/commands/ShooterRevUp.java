@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import org.usfirst.frc.team2635.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -9,8 +11,11 @@ public class ShooterRevUp extends CommandGroup {
 
     public ShooterRevUp() {
     	//Change this to sequential when a method to figure out if it's finished is implemented
-    	addParallel(new ShooterSpinFlywheel(1.0));
+    	requires(Robot.shooter);
+    	addParallel(new ShooterSpinFlywheel(-1.0));
     	addParallel(new ShooterAgitate(1.0));
+    	
+    	//addSequential(new ShooterSpinFlywheel(-1.0));
     	
         // Add Commands here:
         // e.g. addSequential(new Command1());

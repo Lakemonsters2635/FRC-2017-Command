@@ -12,7 +12,7 @@ public class ShooterAgitate extends Command {
     public ShooterAgitate(double magnitude) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.shooter);
+    	//requires(Robot.shooter);
     	this.magnitude = magnitude;
     }
 

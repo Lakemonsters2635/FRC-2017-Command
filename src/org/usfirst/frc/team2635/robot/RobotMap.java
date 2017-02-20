@@ -11,20 +11,20 @@ public class RobotMap {
 	// following variables to use with your drivetrain subsystem.
 	// public static int leftMotor = 1;
 	// public static int rightMotor = 2;
-	public static int DRIVE_RIGHT_FRONT = 9;
-	public static int DRIVE_RIGHT_BACK = 6;
-	public static int DRIVE_LEFT_FRONT = 4;
-	public static int DRIVE_LEFT_BACK = 12;
+	public static int DRIVE_RIGHT_FRONT = 1;
+	public static int DRIVE_RIGHT_BACK = 2;
+	public static int DRIVE_LEFT_FRONT = 3;
+	public static int DRIVE_LEFT_BACK = 4;
 	
-	public static int SHOOTER_BALL_FLYWHEEL = 1;
-	public static int SHOOTER_AGITATOR = 2;
+	public static int SHOOTER_BALL_FLYWHEEL = 5;
+	public static int SHOOTER_AGITATOR = 6;
 	public static int SHOOTER_FIRE_CONTROL_FORWARD = 2;
 	public static int SHOOTER_FIRE_CONTROL_BACKWARDS = 3;
 	
-	public static int PICKUP_BALL = 1;
+	public static int PICKUP_BALL = 7;
 	
-	public static int ROPE_CLIMBER_1 = 1;
-	public static int ROPE_CLIMBER_2 = 2;
+	public static int ROPE_CLIMBER_1 = 8;
+	public static int ROPE_CLIMBER_2 = 9;
 	
 	public static int DELIVER_GEAR_FORWARD = 0;
 	public static int DELIVER_GEAR_BACKWARDS = 1;
