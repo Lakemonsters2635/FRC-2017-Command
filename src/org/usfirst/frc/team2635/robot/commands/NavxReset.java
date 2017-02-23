@@ -3,16 +3,13 @@ package org.usfirst.frc.team2635.robot.commands;
 import org.usfirst.frc.team2635.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  *
  */
-public class LogNavxValues extends Command {
+public class NavxReset extends Command {
 
-	public boolean wasPressed;
-	
-    public LogNavxValues() {
+    public NavxReset() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     }
@@ -23,25 +20,12 @@ public class LogNavxValues extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-//    	SmartDashboard.putNumber("Navx angle" ,Robot.drive.getNavx().getAngle());
-//    	SmartDashboard.putNumber("Navx unwrapped angle", Robot.drive.getNavx().getUnwrappedAngle());
-    	
-    	if (!wasPressed)
-    	{
-	    	System.out.println("Navx angle" + Robot.drive.getNavx().getAngle());
-	    	System.out.println("Navx heading" + Robot.drive.getNavx().getHeading());
-	    	float[] displacement = Robot.drive.getNavx().getDisplacement();
-	    	System.out.println("Displacement [x,y,z]:" + displacement[0] + "," + displacement[1] + "," + displacement[2]);
-	    	wasPressed = true;
-    	}
-    	
-    	
+    	Robot.drive.getNavx().reset();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        wasPressed = false;
-        return true;
+        return false;
     }
 
     // Called once after isFinished returns true

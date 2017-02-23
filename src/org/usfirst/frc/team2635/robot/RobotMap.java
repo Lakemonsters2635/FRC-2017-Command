@@ -31,6 +31,7 @@ public class RobotMap {
 	
 	public static int ULTRASONIC_LEFT = 1;
 	public static int ULTRASONIC_RIGHT = 2;
+
 	
 	public static int JOYSTICK_LEFT = 0;
 	public static int JOYSTICK_RIGHT = 1;
@@ -42,14 +43,17 @@ public class RobotMap {
 	public static int BUTTON_FIRE = 1;
 	public static int BUTTON_FEED_IN = 2;
 	public static int BUTTON_FEED_OUT = 3;
-	public static int BUTTON_CLIMB_UP = 3;
-	public static int BUTTON_CLIMB_DOWN = 2;
+	public static int BUTTON_CLIMB_UP = 2;
+	public static int BUTTON_CLIMB_DOWN = 3;
 	public static int BUTTON_DELIVER = 5;
 	public static int BUTTON_AIM_CAMERA = 9;
 	public static int BUTTON_MOTION_MAGIC = 8;
+	public static int BUTTON_AIM = 7;
+	public static int BUTTON_NAVX_GET_ANGLE = 10;
+	public static int BUTTON_NAVX_RESET = 11;
 	
-	public static double WHEEL_RADIUS_INCHES = 1.45; 
-	public static double WHEEL_SEPARATION_INCHES = 19.0; 
+	public static double WHEEL_RADIUS_INCHES = 3.0; 
+	public static double WHEEL_SEPARATION_INCHES = 23.5; 
 	public static double AIM_P = 0.0;
 	public static double AIM_I = 0.0;
 	public static double AIM_D = 0.0;

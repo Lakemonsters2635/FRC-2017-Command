@@ -28,10 +28,13 @@ public class OI {
 	public final Button feedInButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_FEED_IN);
 	public final Button feedOutButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_FEED_OUT);
 	public final Button climbUpButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_CLIMB_UP);
-	public final Button climbDownButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_CLIMB_DOWN);
+	//public final Button climbDownButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_CLIMB_DOWN);
 	public final Button deliverButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_DELIVER);
 	public final Button aimCameraButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_AIM_CAMERA);
-	public final Button motionMagicButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_MOTION_MAGIC);
+	//public final Button motionMagicButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_MOTION_MAGIC);
+	public final Button navxGetAngleButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_GET_ANGLE);
+	public final Button navxResetButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_RESET);
+	
 //	
 	//// CREATING BUTTONS
 	// One type of button is a joystick button which is any button on a

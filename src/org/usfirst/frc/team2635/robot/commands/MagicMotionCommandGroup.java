@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import org.usfirst.frc.team2635.robot.Robot;
+
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -8,6 +10,8 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class MagicMotionCommandGroup extends CommandGroup {
 
     public MagicMotionCommandGroup() {
+    	
+    	requires(Robot.drive);
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

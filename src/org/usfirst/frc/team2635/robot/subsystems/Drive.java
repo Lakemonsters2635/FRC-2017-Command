@@ -224,10 +224,10 @@ public class Drive extends Subsystem {
 	 * @param f
 	 */
 	public void setMotionMagicPIDF(double p, double i, double d, double f) {
-		if (rightFront.getControlMode() != TalonControlMode.MotionMagic
-				&& leftFront.getControlMode() != TalonControlMode.MotionMagic) {
-			initMotionMagic();
-		}
+//		if (rightFront.getControlMode() != TalonControlMode.MotionMagic
+//				&& leftFront.getControlMode() != TalonControlMode.MotionMagic) {
+//			initMotionMagic();
+//		}
 		rightFront.setP(p);
 		rightFront.setI(i);
 		rightFront.setD(d);
@@ -288,15 +288,16 @@ public class Drive extends Subsystem {
 	 *            Rotate about center?
 	 * @return true if done false if not.
 	 */
-	public boolean motionMagicRoutineDone(double targetAngle, double turnRadiusInches, double rpm, boolean clockwise,
-			boolean rotateCenter) {
-		RotationParameters rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
-				RobotMap.WHEEL_RADIUS_INCHES, turnRadiusInches, RobotMap.WHEEL_SEPARATION_INCHES, rpm, clockwise,
-				rotateCenter);
+	public boolean motionMagicRoutineDone(RotationParameters rotationParams) {
+
 		double rightFrontPosition = rightFront.getPosition();
 		double leftFrontPosition = leftFront.getPosition();
 		double rightFrontError = Math.abs(rotationParams.innerWheelRotations - rightFrontPosition);
 		double leftFrontError = Math.abs(rotationParams.outerWheelRotations - leftFrontPosition);
+		
+		
+		System.out.print("rightFrontError:" + rightFrontError + "\tleftFrontError:" + leftFrontError + "\t rightFrontPosition:" + rightFrontPosition + "\t leftFrontPosition" + leftFrontPosition);
+		
 		return (rightFrontError < MOTION_MAGIC_ERROR_TOLERANCE && leftFrontError < MOTION_MAGIC_ERROR_TOLERANCE);
 		
 		//talon1Error = Math.abs(rotationParams.innerWheelRotations - _talon.getPosition());

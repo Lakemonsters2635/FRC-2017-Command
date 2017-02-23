@@ -34,9 +34,14 @@ public class DriveCameraAnglePID extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	
+      	Robot.vision.aim();
     	Double angle = Robot.vision.getAngleToBoiler();
+    	
+    	System.out.println("angle:" + angle);
     	if(angle != null)
     	{
+    		System.out.println("angle NOT NULL:" + angle);
     		Robot.drive.driveAnglePID(angle);
     	}
     }

@@ -28,7 +28,7 @@ public class DriveRotateMotionMagic extends Command {
     public DriveRotateMotionMagic(double rpm, double targetAngle, double turnRadiusInches, boolean clockwise, boolean rotateCenter) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.drive);
+
     	this.rpm = rpm;
     	this.targetAngle = targetAngle;
     	this.turnRadiusInches = turnRadiusInches;
@@ -38,6 +38,8 @@ public class DriveRotateMotionMagic extends Command {
     	rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
 				RobotMap.WHEEL_RADIUS_INCHES, turnRadiusInches, RobotMap.WHEEL_SEPARATION_INCHES, rpm, clockwise,
 				rotateCenter);
+    	
+
     }
 
     // Called just before this Command runs the first time
@@ -59,7 +61,7 @@ public class DriveRotateMotionMagic extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	boolean done = Robot.drive.motionMagicRoutineDone(targetAngle, turnRadiusInches, rpm, clockwise, rotateCenter);
+    	boolean done = Robot.drive.motionMagicRoutineDone(rotationParams);
     	System.out.print("DriveRotateMotionMagic is " + (done?"done":"not done"));
     	return done;
     }

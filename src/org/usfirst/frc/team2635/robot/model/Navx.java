@@ -28,6 +28,26 @@ public class Navx  {
     {
     	return navx.getAngle();
     }
+    
+    public double getHeading()
+    {
+    	return navx.getFusedHeading();
+    }
+    
+    public float[] getDisplacement()
+    {
+    	float[] displacement = new float[3];
+    	displacement[0] = navx.getDisplacementX();
+    	displacement[1] = navx.getDisplacementY();
+    	displacement[2] = navx.getDisplacementZ();
+    	
+    	return displacement;
+    }
+    
+    public void reset()
+    {
+        navx.reset();
+    }
     /**
      * Get the angle accounting for angle jumps
      * @return The angle from -inf - inf
