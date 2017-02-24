@@ -24,11 +24,13 @@ public class Vision extends Subsystem{
 		shooterVision.confirmBox();
 		shooterVision.viewShooter();
     }
-    public double getAngleToBoiler()
+    public Double getAngleToBoiler()
     {
-    	return shooterVision.getAngle();
+    	Double angle = shooterVision.getAngle();
+    	shooterVision.viewShooter();
+    	return angle;
     }
-    public double getDistanceToBoiler()
+    public Double getDistanceToBoiler()
     {
     	return shooterVision.getDistance();
     }

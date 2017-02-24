@@ -17,6 +17,8 @@ public class ShooterVision extends Vision {
 	public void confirmBox(){
 		for( int b = 0; b < boundRect.size(); b++ ){
 			for (int j = 1; j< boundRect.size(); j++){
+				confRectTop=null;
+				confRectBot=null;
 			//int j = b;
 			if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b){
 			
@@ -63,6 +65,8 @@ public class ShooterVision extends Vision {
 //				SmartDashboard.putDouble("comp1", comp1);
 //				SmartDashboard.putDouble("comp2", comp2);
 //				SmartDashboard.putDouble("comp3", comp3);
+				Imgproc.line(source, new Point(320,0), new Point(320, 480), new Scalar(255,255,255));
+				Imgproc.line(source, new Point(0,240), new Point(640, 240), new Scalar(255,255,255));
 				if (0.85<comp1&&comp1<1.15&&0.85<comp2&&comp2<1.15&&0.85<comp3&&comp3<1.15&&rect1.width>30){
 					System.out.println("Target Found");
 					//Break out of for loop
@@ -113,30 +117,54 @@ public class ShooterVision extends Vision {
 		cvSource.putFrame(source);
 	}
 	
-	public double getDistance(){
-		//get x of middle of rect
-		Point right = confRectTop.br();
-		Point left = confRectTop.tl();
-		double parthalf = right.x-left.x;
-		parthalf = parthalf/2;
-		double half = left.x + parthalf;
-		//compare to point
-		return half;
-	}
-	
-	public double getAngle(){
+	public Double getDistance(){
 		if(confRectTop == null)
 		{
-			return (Double) null;
+			return  null;
 		}
-		//get y of middle of rect 
+		double fullYFOV = 41.8;
+		double pixelHeight = 480;
+		double halfFOV = fullYFOV / 2;
+		double distanceFromZero = 51;
+		
+		//get y of middle of rect
+		Point right = confRectTop.br();
+		Point left = confRectTop.tl();
+		double parthalf = right.y-left.y;
+		parthalf = parthalf/2;
+		double half = left.y + parthalf;
+		half = Math.abs(half);
+		//compare to point
+		double centerhalf =  half-240;
+		double pixelRatio = centerhalf / (pixelHeight/2);
+		double angle = halfFOV * pixelRatio;
+		
+		double distance = distanceFromZero/Math.tan(angle);
+		
+		return new Double(distance);
+	}
+	
+	public Double getAngle(){
+		if(confRectTop == null)
+		{
+			return  null;
+		}
+		double fullXFOV = 53.14;
+		double pixelWidth = 640;
+		double halfFOV = fullXFOV / 2;
+		//get x of middle of rect 
+		
 		Point bot = confRectTop.br();
 		Point top = confRectTop.tl();
-		double parthalf = bot.y-top.y;
+		
+		
+		double parthalf = bot.x-top.x;
 		parthalf = parthalf/2;
-		double half = top.y + parthalf;
-		//compare to point
-		return half;
+		double half = top.x + parthalf;
+		double centerhalf =  half-(pixelWidth/2);
+		double pixelRatio = centerhalf / (pixelWidth/2);
+		double angle = halfFOV * pixelRatio;
+		return  new Double(angle);
 	}
 	
 } 

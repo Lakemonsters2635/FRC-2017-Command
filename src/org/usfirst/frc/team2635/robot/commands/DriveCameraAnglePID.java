@@ -37,8 +37,10 @@ public class DriveCameraAnglePID extends Command {
     	
       	Robot.vision.aim();
     	Double angle = Robot.vision.getAngleToBoiler();
+    	Double distance = Robot.vision.getDistanceToBoiler();
     	
     	System.out.println("angle:" + angle);
+    	System.out.println("distance:" + distance);
     	if(angle != null)
     	{
     		System.out.println("angle NOT NULL:" + angle);

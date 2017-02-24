@@ -47,6 +47,7 @@ public class Navx  {
     public void reset()
     {
         navx.reset();
+        navx.resetDisplacement();
     }
     /**
      * Get the angle accounting for angle jumps

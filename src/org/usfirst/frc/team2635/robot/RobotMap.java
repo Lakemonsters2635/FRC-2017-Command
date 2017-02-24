@@ -18,16 +18,16 @@ public class RobotMap {
 	
 	public static int SHOOTER_BALL_FLYWHEEL = 5;
 	public static int SHOOTER_AGITATOR = 6;
-	public static int SHOOTER_FIRE_CONTROL_FORWARD = 2;
-	public static int SHOOTER_FIRE_CONTROL_BACKWARDS = 3;
+	public static int SHOOTER_FIRE_CONTROL_FORWARD = 3;
+	public static int SHOOTER_FIRE_CONTROL_BACKWARDS = 2;
 	
 	public static int PICKUP_BALL = 7;
 	
 	public static int ROPE_CLIMBER_1 = 8;
 	public static int ROPE_CLIMBER_2 = 9;
 	
-	public static int DELIVER_GEAR_FORWARD = 0;
-	public static int DELIVER_GEAR_BACKWARDS = 1;
+	public static int DELIVER_GEAR_FORWARD = 1;
+	public static int DELIVER_GEAR_BACKWARDS = 0;
 	
 	public static int ULTRASONIC_LEFT = 1;
 	public static int ULTRASONIC_RIGHT = 2;

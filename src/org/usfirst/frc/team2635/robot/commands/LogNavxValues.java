@@ -28,10 +28,11 @@ public class LogNavxValues extends Command {
     	
     	if (!wasPressed)
     	{
-	    	System.out.println("Navx angle" + Robot.drive.getNavx().getAngle());
-	    	System.out.println("Navx heading" + Robot.drive.getNavx().getHeading());
+	    	System.out.println("Navx angle: " + Robot.drive.getNavx().getAngle());
+	    	System.out.println("Navx heading: " + Robot.drive.getNavx().getHeading());
 	    	float[] displacement = Robot.drive.getNavx().getDisplacement();
-	    	System.out.println("Displacement [x,y,z]:" + displacement[0] + "," + displacement[1] + "," + displacement[2]);
+	    	System.out.println("Displacement [x,y,z]: " + displacement[0] + "," + displacement[1] + "," + displacement[2]);
+	    	System.out.println("-----------");
 	    	wasPressed = true;
     	}
     	
