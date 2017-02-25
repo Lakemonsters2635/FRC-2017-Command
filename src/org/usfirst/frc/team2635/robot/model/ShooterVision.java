@@ -134,10 +134,11 @@ public class ShooterVision extends Vision {
 		parthalf = parthalf/2;
 		double half = left.y + parthalf;
 		half = Math.abs(half);
+		
 		//compare to point
 		double centerhalf =  half-240;
-		double pixelRatio = centerhalf / (pixelHeight/2);
-		double angle = halfFOV * pixelRatio;
+		double pixelRatioVerticle = centerhalf / (pixelHeight/2);
+		double angle = halfFOV * pixelRatioVerticle;
 		
 		double distance = distanceFromZero/Math.tan(angle);
 		
@@ -152,20 +153,21 @@ public class ShooterVision extends Vision {
 		double fullXFOV = 53.14;
 		double pixelWidth = 640;
 		double halfFOV = fullXFOV / 2;
-		//get x of middle of rect 
 		
 		Point bot = confRectTop.br();
 		Point top = confRectTop.tl();
 		
-		
+		//get x of middle of rect 
 		double parthalf = bot.x-top.x;
 		parthalf = parthalf/2;
 		double half = top.x + parthalf;
+		
 		double centerhalf =  half-(pixelWidth/2);
-		double pixelRatio = centerhalf / (pixelWidth/2);
-		double angle = halfFOV * pixelRatio;
+		double pixelRatioHorizontal = centerhalf / (pixelWidth/2);
+		double angle = halfFOV * pixelRatioHorizontal;
+		
 		return  new Double(angle);
 	}
 	
 } 
-//You've Seen Nothing 
+//You've Seen Nothing. 42 
