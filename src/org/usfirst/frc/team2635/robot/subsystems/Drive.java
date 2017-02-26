@@ -27,6 +27,7 @@ public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 5;
 	static final double MOTION_MAGIC_ERROR_TOLERANCE = 0.01;
 
+	public double currentHeadingOffset = 0;
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
 	CANTalon rightFront;
@@ -272,6 +273,21 @@ public class Drive extends Subsystem {
 				);
 
 	}
+	
+	
+	public void updateMotionNavx(double heading)
+	{
+		//this.navx.getHeading()
+		//rightFront.set(rotationParams.innerWheelRotations);
+		//leftFront.set(rotationParams.outerWheelRotations);
+		angleController.setSetpoint(heading);
+		angleController.enable();
+		
+		//driveAnglePID(heading)
+		
+	}
+	
+
 
 	/**
 	 * Checks if motion magic routine is finished based on given parameters.
@@ -302,8 +318,13 @@ public class Drive extends Subsystem {
 		
 		//talon1Error = Math.abs(rotationParams.innerWheelRotations - _talon.getPosition());
 		//talon2Error = Math.abs(rotationParams.outerWheelRotations - _talon2.getPosition());
-
+		
 	}
+	
+//	public boolean motionNavxRoutineDone(RotationParameters rotationParams){
+//		
+//	}
+	
 	public Navx getNavx()
 	{
 		return navx;

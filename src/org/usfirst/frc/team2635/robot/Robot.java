@@ -14,6 +14,7 @@ import org.usfirst.frc.team2635.robot.commands.DeliverGearBackwards;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
 import org.usfirst.frc.team2635.robot.commands.DriveCameraAnglePID;
 import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
+import org.usfirst.frc.team2635.robot.commands.DriveRotateNavx;
 import org.usfirst.frc.team2635.robot.commands.DriveRoutine;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
 import org.usfirst.frc.team2635.robot.commands.ExampleCommand;
@@ -82,15 +83,20 @@ public class Robot extends IterativeRobot {
 		//chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 		
+		double rpm = 200;
+		double targetAngle = 90;
+		double turnRadiusInche = 0;
+		boolean clockwise = true;
+		boolean rotateCenter = true;
 		
-		
-		motionCommandGroup.addSequential(new DriveRotateMotionMagic(200, 90, 36, true, false));
+		motionCommandGroup.addSequential(new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter));
 		//motionCommandGroup.addSequential(new DriveRotateMotionMagic(200, 90, 36, true, false));
 		
 		
-		oi.revUpButton.whileHeld(new ShooterRevUp());
-		oi.fireButton.whenPressed(new ShooterFire());
+		oi.fireButton.whileHeld(new ShooterRevUp());
 		oi.fireButton.whenReleased(new ShooterReverseFire());
+		//oi.fireButton.whenPressed(new ShooterRevUp());
+		//oi.fireButton.whenReleased(new ShooterReverseFire());
 		
 		oi.feedInButton.whileHeld(new PickupBall(-1.0));
 		oi.feedOutButton.whileHeld(new PickupBall(1.0));
@@ -109,7 +115,8 @@ public class Robot extends IterativeRobot {
 		
 		
 		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
-		//oi.motionMagicButton.whenPressed(motionCommandGroup);
+		oi.motionMagicButton.whenPressed(motionCommandGroup);
+		oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
 	}
 
 	/**

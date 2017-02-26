@@ -31,7 +31,11 @@ public class OI {
 	//public final Button climbDownButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_CLIMB_DOWN);
 	public final Button deliverButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_DELIVER);
 	public final Button aimCameraButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_AIM_CAMERA);
-	//public final Button motionMagicButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_MOTION_MAGIC);
+	public final Button motionMagicButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_MOTION_MAGIC);
+	public final Button navxRotateButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_NAVX_ROTATE);
+	
+	
+	
 	public final Button navxGetAngleButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_GET_ANGLE);
 	public final Button navxResetButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_RESET);
 	

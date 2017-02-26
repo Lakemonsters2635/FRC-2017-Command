@@ -9,20 +9,44 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class ShooterAgitate extends Command {
 	double magnitude;
-    public ShooterAgitate(double magnitude) {
+	double currentMagnitude;
+	boolean isPaused;
+	int countMax;
+	int count;
+    public ShooterAgitate(double magnitude, int countMax) {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	//requires(Robot.shooter);
     	this.magnitude = magnitude;
+    	this.currentMagnitude = magnitude;
+    	this.countMax = countMax;
+    	count = countMax;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	count = countMax;
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.shooter.setAgitator(magnitude);
+    	count++;
+    	if(count > countMax) {
+    	count = 0;
+    	currentMagnitude = -currentMagnitude;
+	    
+    	if(!isPaused){
+	    		currentMagnitude = 0;
+	    		isPaused = true;
+	    		magnitude = -magnitude;
+	    		System.out.println("isPaused");
+	    	}
+	    	
+	    	else{
+	    		currentMagnitude = magnitude;
+	    		isPaused = false;
+	    	}
+    	}
+    	Robot.shooter.setAgitator(currentMagnitude);
     }
 
     // Make this return true when this Command no longer needs to run execute()

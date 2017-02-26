@@ -48,15 +48,18 @@ public class RobotMap {
 	public static int BUTTON_DELIVER = 5;
 	public static int BUTTON_AIM_CAMERA = 9;
 	public static int BUTTON_MOTION_MAGIC = 8;
+	public static int BUTTON_NAVX_ROTATE = 8;
 	public static int BUTTON_AIM = 7;
 	public static int BUTTON_NAVX_GET_ANGLE = 10;
 	public static int BUTTON_NAVX_RESET = 11;
 	
 	public static double WHEEL_RADIUS_INCHES = 3.0; 
 	public static double WHEEL_SEPARATION_INCHES = 23.5; 
-	public static double AIM_P = 0.0;
+	public static double AIM_P = 0.5;
 	public static double AIM_I = 0.0;
 	public static double AIM_D = 0.0;
+	
+	public static int TELEOP_AGITATOR_LOOP_COUNT = 2;
 	
 
 	

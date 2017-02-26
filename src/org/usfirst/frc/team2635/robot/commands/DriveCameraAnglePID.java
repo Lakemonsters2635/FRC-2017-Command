@@ -2,6 +2,7 @@ package org.usfirst.frc.team2635.robot.commands;
 
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.model.Navx;
+import org.usfirst.frc.team2635.robot.model.VisionLight;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
 
 import com.kauailabs.navx.frc.AHRS;
@@ -17,24 +18,26 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveCameraAnglePID extends Command {
 	//degrees
-	
+	VisionLight light;
 	
     public DriveCameraAnglePID() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
     	requires(Robot.vision);
+    	light = new VisionLight(7);
+    	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.drive.enableAnglePID();
-    	
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	light.lightOn();
       	Robot.vision.aim();
     	Double angle = Robot.vision.getAngleToBoiler();
     	Double distance = Robot.vision.getDistanceToBoiler();
@@ -50,6 +53,7 @@ public class DriveCameraAnglePID extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
+    	light.lightOff();
     	return Robot.drive.angleOnTarget();
     	
     }

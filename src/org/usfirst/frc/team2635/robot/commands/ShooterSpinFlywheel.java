@@ -28,7 +28,7 @@ public class ShooterSpinFlywheel extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
-    	System.out.println("-----ShooterSpinup Execute-------------");
+    	//System.out.println("-----ShooterSpinup Execute-------------");
     	Robot.shooter.setFlywheel(magnitude);
     }
 

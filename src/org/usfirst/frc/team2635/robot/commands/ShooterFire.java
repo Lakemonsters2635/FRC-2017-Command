@@ -17,22 +17,26 @@ public class ShooterFire extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.shooter.fireControlForward();
+    	
 
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+    	Robot.shooter.fireControlForward();
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
         //Set and done baby
+    	System.out.println("Shooter Fire isFinished");
     	return true;
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	System.out.println("Shooter Fire end");
+    	//Robot.shooter.fireControlForward();
     }
 
     // Called when another command which requires one or more of the same

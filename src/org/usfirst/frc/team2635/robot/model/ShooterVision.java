@@ -33,11 +33,15 @@ public class ShooterVision extends Vision {
 //			SmartDashboard.putInt("rect1y",rect1.y);
 //			SmartDashboard.putInt("rect2y", rect2.y);
 			//Decide which rectangle is top
+			Point tl1;
+			Point tl2;
 				if(rect1.y<rect2.y){
 					topH = rect1.height;
 					topW = rect1.width;
 					botH = rect2.height;
 					botW = rect2.width;
+					tl1 = rect1.tl();
+					tl2 = rect2.tl();
 					temp = Imgproc.boundingRect(new MatOfPoint(rect2.br(),rect1.tl()));
 					//Uncomment to see what box is being tested
 					//Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
@@ -47,6 +51,8 @@ public class ShooterVision extends Vision {
 					topW = rect2.width;
 					botH = rect1.height;
 					botW = rect1.width;
+					tl1 = rect2.tl();
+					tl2 = rect2.tl();
 					temp = Imgproc.boundingRect(new MatOfPoint(rect1.br(),rect2.tl()));
 					//Uncomment to see what box is being tested
 					//Imgproc.rectangle( source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0 );
@@ -54,10 +60,12 @@ public class ShooterVision extends Vision {
 				//Create variables to be used for confirmation
 				double topHalfHeight = topH/2;
 				double totalHeight = temp.height*0.4;
+				
 				//Do checks on rectangle pair
 				double comp1 = topHalfHeight/botH;
 				double comp2 = totalHeight/topH;
 				double comp3 = botW/topW;
+				boolean comp4 = (tl1.y-tl2.y)<rect1.width;
 				//Post used variables
 //				SmartDashboard.putDouble("topHalfHeight", topHalfHeight);
 //				SmartDashboard.putDouble("botH", botH);
@@ -67,7 +75,7 @@ public class ShooterVision extends Vision {
 //				SmartDashboard.putDouble("comp3", comp3);
 				Imgproc.line(source, new Point(320,0), new Point(320, 480), new Scalar(255,255,255));
 				Imgproc.line(source, new Point(0,240), new Point(640, 240), new Scalar(255,255,255));
-				if (0.85<comp1&&comp1<1.15&&0.85<comp2&&comp2<1.15&&0.85<comp3&&comp3<1.15&&rect1.width>30){
+				if (0.85<comp1&&comp1<1.15&&0.85<comp2&&comp2<1.15&&0.85<comp3&&comp3<1.15&&rect1.width>20&&comp4==true){
 					System.out.println("Target Found");
 					//Break out of for loop
 					b=boundRect.size()+100000;
@@ -127,20 +135,33 @@ public class ShooterVision extends Vision {
 		double halfFOV = fullYFOV / 2;
 		double distanceFromZero = 51;
 		
+		
 		//get y of middle of rect
-		Point right = confRectTop.br();
+		/*Point right = confRectTop.br();
 		Point left = confRectTop.tl();
 		double parthalf = right.y-left.y;
 		parthalf = parthalf/2;
 		double half = left.y + parthalf;
-		half = Math.abs(half);
 		
-		//compare to point
 		double centerhalf =  half-240;
+		half = Math.abs(half);
 		double pixelRatioVerticle = centerhalf / (pixelHeight/2);
-		double angle = halfFOV * pixelRatioVerticle;
+		double angle = halfFOV * pixelRatioVerticle;*/
+		Point bot = confRectTop.br();
+		Point top = confRectTop.tl();
 		
-		double distance = distanceFromZero/Math.tan(angle);
+		//get y of middle of rect 
+		double parthalf = bot.y-top.y;
+		parthalf = parthalf/2;
+		double half = top.y + parthalf;
+		
+		double centerhalf =  half-(pixelHeight/2);
+		double pixelRatioHorizontal = centerhalf / (pixelHeight/2);
+		double angle = halfFOV * pixelRatioHorizontal;
+		double angle_Abs = Math.abs(angle);
+		double angle_Radians = angle_Abs*Math.PI*2/360;
+		
+		double distance = distanceFromZero/Math.tan(angle_Radians);
 		
 		return new Double(distance);
 	}
@@ -170,4 +191,4 @@ public class ShooterVision extends Vision {
 	}
 	
 } 
-//You've Seen Nothing. 42 
+//You've Seen Nothing. 
