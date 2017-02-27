@@ -37,7 +37,9 @@ public class RobotMap {
 	public static int JOYSTICK_RIGHT = 1;
 	
 	public static int LEFT_DRIVE_Y = 1;
+	public static int LEFT_DRIVE_Z = 2;
 	public static int RIGHT_DRIVE_Y = 1;
+	public static int RIGHT_DRIVE_Z = 2;
 	
 	public static int BUTTON_REV_UP = 1;
 	public static int BUTTON_FIRE = 1;

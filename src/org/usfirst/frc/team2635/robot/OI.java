@@ -22,6 +22,14 @@ public class OI {
 	{
 		return -rightJoystick.getRawAxis(RobotMap.RIGHT_DRIVE_Y);
 	}
+	public final double getRightZ()
+	{
+		return rightJoystick.getRawAxis(RobotMap.RIGHT_DRIVE_Z);
+	}
+	public final double getLeftZ()
+	{
+		return leftJoystick.getRawAxis(RobotMap.LEFT_DRIVE_Z);
+	}
 	
 	public final Button revUpButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_REV_UP);
 	public final Button fireButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_FIRE);

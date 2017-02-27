@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import org.usfirst.frc.team2635.robot.OI;
 import org.usfirst.frc.team2635.robot.Robot;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -22,7 +23,9 @@ public class ClimberClimb extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.climber.climb(magnitude);
+        // Map range (+1:-1) to (0:-1) so that full range of axis is 0 to -1
+    	double climbspeed = (Robot.oi.getLeftZ()-1.0)/2.0;
+    	Robot.climber.climb(climbspeed);
     	
     }
 
