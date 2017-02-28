@@ -111,7 +111,7 @@ public class ShooterVision extends Vision {
 				}
 				
 				
-				if (0.85<comp1&&comp1<1.15&&0.85<comp2&&comp2<1.15&&0.85<comp3&&comp3<1.15&&rect1.width>20&&comp4==true){
+				/*if (0.85<comp1&&comp1<1.15&&0.85<comp2&&comp2<1.15&&0.85<comp3&&comp3<1.15&&rect1.width>20&&comp4==true){
 					System.out.println("Target Found");
 					//Break out of for loop
 					b=boundRect.size()+100000;
@@ -134,7 +134,7 @@ public class ShooterVision extends Vision {
 //					System.out.println("No Target");
 					//NOTE: Use something better than print to alert operator that no target was found
 					//and do something to continue, like try the cycle again OR change to find the best target
-				}
+				}*/
 			
 				
 			}
