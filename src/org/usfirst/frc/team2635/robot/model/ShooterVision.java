@@ -1,5 +1,10 @@
 package org.usfirst.frc.team2635.robot.model;
 
+
+
+
+import java.util.ArrayList;
+
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
@@ -12,23 +17,33 @@ public class ShooterVision extends Vision {
 	Rect confRectTop;
 	Rect confRectBot;
 	Rect confRectFull;
-	
+	ArrayList<Rect> reck1;
+	ArrayList<Rect> reck2;
+	ArrayList<Rect> reck3;
+	Integer confirmed;
+	Integer welike;
+			
 	@SuppressWarnings("deprecation")
 	public void confirmBox(){
-		for( int b = 0; b < boundRect.size(); b++ ){
-			for (int j = 1; j< boundRect.size(); j++){
+		Integer[] poss = new Integer[999];
+		reck1 = new ArrayList<Rect>();
+		reck2 = new ArrayList<Rect>();
+		reck3 = new ArrayList<Rect>();
+		for( Integer b = 0; b < boundRect.size(); b++ ){
+			for (Integer j = 1; j< boundRect.size(); j++){
 				confRectTop=null;
 				confRectBot=null;
-			//int j = b;
+			//Integer j = b;
 			if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b){
 			
 			Rect rect1 = boundRect.get(b);
 			Rect rect2 = boundRect.get(j);
 			Rect temp;
-			int topH;
-			int topW;
-			int botH;
-			int botW;
+			Integer topH;
+			Integer topW;
+			Integer botH;
+			Integer botW;
+			
 			//Post height of rectangles for debug
 //			SmartDashboard.putInt("rect1y",rect1.y);
 //			SmartDashboard.putInt("rect2y", rect2.y);
@@ -58,13 +73,13 @@ public class ShooterVision extends Vision {
 					//Imgproc.rectangle( source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0 );
 				}
 				//Create variables to be used for confirmation
-				double topHalfHeight = topH/2;
-				double totalHeight = temp.height*0.4;
+				Integer topHalfHeight = topH/2;
+				Integer totalHeight = (int) (temp.height*0.4);
 				
 				//Do checks on rectangle pair
-				double comp1 = topHalfHeight/botH;
-				double comp2 = totalHeight/topH;
-				double comp3 = botW/topW;
+				Integer comp1 = topHalfHeight/botH;
+				Integer comp2 = totalHeight/topH;
+				Integer comp3 = botW/topW;
 				boolean comp4 = (tl1.y-tl2.y)<rect1.width;
 				//Post used variables
 //				SmartDashboard.putDouble("topHalfHeight", topHalfHeight);
@@ -75,6 +90,27 @@ public class ShooterVision extends Vision {
 //				SmartDashboard.putDouble("comp3", comp3);
 				Imgproc.line(source, new Point(320,0), new Point(320, 480), new Scalar(255,255,255));
 				Imgproc.line(source, new Point(0,240), new Point(640, 240), new Scalar(255,255,255));
+				Integer part1 = 1 - (1 * Math.abs(1 - comp1));
+				Integer part2 = 1 - (1 * Math.abs(1 - comp2));
+				Integer part3 = 1 - (1 * Math.abs(1 - comp3));
+				Integer done = 1 - (1 * Math.abs(3 - (part1+part2+part3)));
+				for(Integer i=0;i>999;i++){
+					if(poss[i]==null){
+						poss[i]=done;
+						if(rect1.y<rect2.y){
+							reck1.add(rect1);
+							reck2.add(rect2);
+						} else{
+							reck1.add(rect2);
+							reck2.add(rect1);
+						}
+						
+						reck3.add(temp);
+						i = 1005;
+					}
+				}
+				
+				
 				if (0.85<comp1&&comp1<1.15&&0.85<comp2&&comp2<1.15&&0.85<comp3&&comp3<1.15&&rect1.width>20&&comp4==true){
 					System.out.println("Target Found");
 					//Break out of for loop
@@ -115,6 +151,37 @@ public class ShooterVision extends Vision {
 			}
 			//System.out.println("this is confirmation");
 		}
+		for (Integer i=0;i>poss.length;i++){
+			
+			if(i==0&&poss[i]!=null){
+				confirmed = poss[i];
+				welike = i;
+			} else if(i==0&&poss[i]==null){
+				confirmed = 0;
+				welike = i;
+			} else if(poss[i]!=null){
+				if(100-Math.abs(poss[i])>100-Math.abs(confirmed)){
+					confirmed = poss[i];
+					welike = i;
+				}
+				
+			} else{
+				break;
+			}
+		}
+		System.out.println("Target Found");
+		Rect rect1 = reck1.get(welike);
+		Rect rect2 = reck2.get(welike);
+		Rect temp = reck3.get(welike);
+		//Draw confirmed rectangles
+		Imgproc.rectangle( source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0 );
+		Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
+		Imgproc.rectangle( source, temp.tl(),  temp.br(),  new Scalar(0,255,0), 2, 8, 0);
+		//Create new variables for correct boxes
+		confRectFull=temp; 
+		confRectTop=rect1;
+		confRectBot=rect2;
+		
 		//Post size of boundRect arraylist
 //		SmartDashboard.putInt("boundrect array size", boundRect.size());
 		
