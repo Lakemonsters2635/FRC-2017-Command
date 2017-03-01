@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * The drive chassis
  */
 public class Drive extends Subsystem {
-	public static final double ANGLE_ERROR_TOLERANCE = 5;
+	public static final double ANGLE_ERROR_TOLERANCE = 1;
 	static final double MOTION_MAGIC_ERROR_TOLERANCE = 0.01;
 
 	public double currentHeadingOffset = 0;
@@ -35,6 +35,9 @@ public class Drive extends Subsystem {
 	CANTalon leftFront;
 	CANTalon leftBack;
 	RobotDrive drive;
+	
+	public double errNavxDrive;
+	
 	Navx navx = new Navx();
 
 	class NavxUnwrappedAnglePIDSource implements PIDSource {
@@ -185,7 +188,9 @@ public class Drive extends Subsystem {
 	 * @return true if within the setpoint false if not
 	 */
 	public boolean angleOnTarget() {
+		System.out.println("Average Error " + Math.abs(angleController.getAvgError()));
 		return Math.abs(angleController.getAvgError()) < ANGLE_ERROR_TOLERANCE;
+		
 	}
 
 	/**
@@ -274,19 +279,55 @@ public class Drive extends Subsystem {
 
 	}
 	
+	public void navxSetPoint(double heading)
+	{
+		
+	}
+	
+	public boolean motionNavxFinished(double targetHeading)
+	{
+		double currentHeading = navx.getAngle();
+		errNavxDrive = targetHeading - currentHeading;
+		
+		System.out.println("motionNavxFinished:targetHeading:" + targetHeading   + "\tcurrentHeading: " + currentHeading + "\terrNavxDrive: " + errNavxDrive);
+
+		
+		
+		return (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE);
+		
+
+	}
 	
 	public void updateMotionNavx(double heading)
 	{
 		//this.navx.getHeading()
 		//rightFront.set(rotationParams.innerWheelRotations);
 		//leftFront.set(rotationParams.outerWheelRotations);
-		angleController.setSetpoint(heading);
-		angleController.enable();
+		double currentHeading = this.navx.getAngle();
 		
+		errNavxDrive = heading - currentHeading;
+		
+		//if (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE)
+		//{
+			double p = 0.01;
+			double output = -errNavxDrive * p;
+			System.out.println("updateMotionNavx:output:" + output );
+
+			drive.arcadeDrive(0.0, output);
+		//}
+		
+
+		
+		
+		
+		//angleController.setSetpoint(heading);
+		//angleController.enable();
+		 
 		//driveAnglePID(heading)
 		
 	}
 	
+
 
 
 	/**

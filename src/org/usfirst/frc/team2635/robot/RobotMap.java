@@ -57,7 +57,7 @@ public class RobotMap {
 	
 	public static double WHEEL_RADIUS_INCHES = 3.0; 
 	public static double WHEEL_SEPARATION_INCHES = 23.5; 
-	public static double AIM_P = 0.5;
+	public static double AIM_P = 10.0;
 	public static double AIM_I = 0.0;
 	public static double AIM_D = 0.0;
 	

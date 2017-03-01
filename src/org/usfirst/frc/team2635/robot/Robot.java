@@ -101,7 +101,7 @@ public class Robot extends IterativeRobot {
 		oi.feedInButton.whileHeld(new PickupBall(-1.0));
 		oi.feedOutButton.whileHeld(new PickupBall(1.0));
 		
-		oi.climbUpButton.whileHeld(new ClimberClimb(-1.0));
+		oi.climbUpButton.whileHeld(new ClimberClimb());
 		//oi.climbDownButton.whileHeld(new ClimberClimb(1.0));
 		
 		oi.deliverButton.whenPressed(new DeliverGearForward());
@@ -115,7 +115,7 @@ public class Robot extends IterativeRobot {
 		
 		
 		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
-		oi.motionMagicButton.whenPressed(motionCommandGroup);
+		//oi.motionMagicButton.whenPressed(motionCommandGroup);
 		oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
 	}
 
