@@ -28,7 +28,7 @@ public class Vision {
 		cvSink = new CvSink("cvSink");
 		cvSink.setSource(camera);
 		source = new Mat();
-		cvSource = CameraServer.getInstance().putVideo("new", 640, 480);
+		
 		
 	}
 	
