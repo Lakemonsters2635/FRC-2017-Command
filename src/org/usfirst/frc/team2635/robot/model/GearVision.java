@@ -118,7 +118,7 @@ public class GearVision extends Vision {
 				for(Integer i=0;i>999;i++){
 					if(poss[i]==null){
 						poss[i]=done;
-						if(rect1.y<rect2.y){
+						if(rect1.x<rect2.x){
 							reck1.add(rect1);
 							reck2.add(rect2);
 						} else{
@@ -164,7 +164,7 @@ public class GearVision extends Vision {
 		Imgproc.rectangle( source, temp.tl(),  temp.br(),  new Scalar(0,255,0), 2, 8, 0);
 		//Create new variables for correct boxes
 		confRectFull=temp; 
-		if(rect1.x>rect2.x){
+		if(rect1.x<rect2.x){
 			confRectLeft=rect1;
 			confRectRight=rect2;
 		} else{
@@ -174,7 +174,7 @@ public class GearVision extends Vision {
 	}
 	
 	public void viewShooter(){
-		//put the processed image with rectangles on smartdashboard
+ 		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
 	
