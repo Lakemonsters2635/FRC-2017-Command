@@ -6,7 +6,7 @@ import java.util.function.Function;
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
-import org.usfirst.frc.team2635.robot.model.RotationParameters;
+import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
@@ -23,7 +23,7 @@ public class DriveRotateMotionMagic extends Command {
 	boolean clockwise;
 	boolean rotateCenter;
 	
-	RotationParameters rotationParams; 
+	MotionParameters rotationParams; 
 	
     public DriveRotateMotionMagic(double rpm, double targetAngle, double turnRadiusInches, boolean clockwise, boolean rotateCenter) {
         // Use requires() here to declare subsystem dependencies
@@ -56,12 +56,12 @@ public class DriveRotateMotionMagic extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	System.out.println("DriveRotateMotionMagic execute");
-    	Robot.drive.updateMotionMagic(rotationParams);
+    	Robot.drive.rotateMotionMagic(rotationParams);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	boolean done = Robot.drive.motionMagicRoutineDone(rotationParams);
+    	boolean done = Robot.drive.motionMagicDone(rotationParams);
     	System.out.print("DriveRotateMotionMagic is " + (done?"done":"not done"));
     	return done;
     }

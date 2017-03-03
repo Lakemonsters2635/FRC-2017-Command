@@ -6,9 +6,10 @@ import java.util.function.Function;
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
+import org.usfirst.frc.team2635.robot.model.DriveParameters;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.model.Navx;
-import org.usfirst.frc.team2635.robot.model.RotationParameters;
+import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
@@ -259,25 +260,53 @@ public class Drive extends Subsystem {
 	 * @param rotateCenter
 	 *            Rotate about center?
 	 */
-	public void updateMotionMagic(RotationParameters rotationParams) {
+	public void rotateMotionMagic(MotionParameters rotationParams) {
 
-		rightFront.setMotionMagicCruiseVelocity(rotationParams.innerVelocity);
-		leftFront.setMotionMagicCruiseVelocity(rotationParams.outerVelocity);
+		rightFront.setMotionMagicCruiseVelocity(rotationParams.rightVelocity);
+		leftFront.setMotionMagicCruiseVelocity(rotationParams.leftVelocity);
 
-		rightFront.setMotionMagicAcceleration(rotationParams.innerAcceleration);
-		leftFront.setMotionMagicAcceleration(rotationParams.outerAcceleration);
+		rightFront.setMotionMagicAcceleration(rotationParams.rightAcceleration);
+		leftFront.setMotionMagicAcceleration(rotationParams.leftAcceleration);
 
-		rightFront.set(rotationParams.innerWheelRotations);
-		leftFront.set(rotationParams.outerWheelRotations);
-		System.out.println("Inner wheel rotations: " + rotationParams.innerWheelRotations +
-				"\tOuter wheel rotations: " + rotationParams.outerWheelRotations +
-				"\tInner acceleration: " + rotationParams.innerAcceleration +
-				"\tOuter acceleration: " + rotationParams.outerAcceleration +
-				"\tInner velocity: " + rotationParams.innerVelocity +
-				"\tOuter velocity: " + rotationParams.outerVelocity
+		rightFront.set(rotationParams.rightWheelRotations);
+		leftFront.set(rotationParams.leftWheelRotations);
+		System.out.println("Right wheel rotations: " + rotationParams.rightWheelRotations +
+				"\tLeft wheel rotations: " + rotationParams.leftWheelRotations +
+				"\tRight acceleration: " + rotationParams.rightAcceleration +
+				"\tLeft acceleration: " + rotationParams.leftAcceleration +
+				"\tRight velocity: " + rotationParams.rightVelocity +
+				"\tOuter velocity: " + rotationParams.leftVelocity 
 				);
 
 	}
+	
+	public void driveStraightMotionMagic(MotionParameters  driveParams) {
+
+
+
+		
+		rightFront.setMotionMagicCruiseVelocity(driveParams.rightVelocity);
+		leftFront.setMotionMagicCruiseVelocity(driveParams.leftVelocity);
+		
+		rightFront.setMotionMagicAcceleration(driveParams.rightAcceleration);
+		leftFront.setMotionMagicAcceleration(driveParams.leftAcceleration);
+		
+		rightFront.set(driveParams.rightWheelRotations);
+		leftFront.set(driveParams.leftWheelRotations);
+		
+		//double talon1Error = Math.abs(driveParams.leftWheelRotations - rightFront.getPosition());
+		//double talon2Error = Math.abs(driveParams.rightWheelRotations - leftFront.getPosition());
+		
+//		System.out.println("Right wheel rotations: " + driveParams.rightWheelRotations +
+//				"\tLeft wheel rotations: " + driveParams.leftWheelRotations +
+//				"\tRight acceleration: " + driveParams.rightAcceleration +
+//				"\tLeft acceleration: " + driveParams.leftAcceleration +
+//				"\tRight velocity: " + driveParams.rightVelocity +
+//				"\tOuter velocity: " + driveParams.leftVelocity 
+//				);
+
+	}
+	
 	
 	public void navxSetPoint(double heading)
 	{
@@ -345,18 +374,18 @@ public class Drive extends Subsystem {
 	 *            Rotate about center?
 	 * @return true if done false if not.
 	 */
-	public boolean motionMagicRoutineDone(RotationParameters rotationParams) {
+	public boolean motionMagicDone(MotionParameters rotationParams) {
 
 		double rightFrontPosition = rightFront.getPosition();
 		double leftFrontPosition = leftFront.getPosition();
-		double rightFrontError = Math.abs(rotationParams.innerWheelRotations - rightFrontPosition);
-		double leftFrontError = Math.abs(rotationParams.outerWheelRotations - leftFrontPosition);
+		double rightFrontError = Math.abs(rotationParams.rightWheelRotations - rightFrontPosition);
+		double leftFrontError = Math.abs(rotationParams.leftWheelRotations - leftFrontPosition);
 		
 		
-		System.out.print("rightFrontError:" + rightFrontError + "\tleftFrontError:" + leftFrontError + "\t rightFrontPosition:" + rightFrontPosition + "\t leftFrontPosition" + leftFrontPosition);
+		System.out.println("rightFrontError:" + rightFrontError + "\t leftFrontError:" + leftFrontError + "\t rightFrontPosition:" + rightFrontPosition + "\t leftFrontPosition" + leftFrontPosition);
 		
-		return (rightFrontError < MOTION_MAGIC_ERROR_TOLERANCE && leftFrontError < MOTION_MAGIC_ERROR_TOLERANCE);
-		
+		//return (rightFrontError < MOTION_MAGIC_ERROR_TOLERANCE && leftFrontError < MOTION_MAGIC_ERROR_TOLERANCE);
+		return (leftFrontError < MOTION_MAGIC_ERROR_TOLERANCE);
 		//talon1Error = Math.abs(rotationParams.innerWheelRotations - _talon.getPosition());
 		//talon2Error = Math.abs(rotationParams.outerWheelRotations - _talon2.getPosition());
 		

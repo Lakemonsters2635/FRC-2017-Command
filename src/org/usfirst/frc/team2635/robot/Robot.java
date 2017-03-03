@@ -25,6 +25,7 @@ import org.usfirst.frc.team2635.robot.commands.ShooterFire;
 import org.usfirst.frc.team2635.robot.commands.ShooterRevUp;
 import org.usfirst.frc.team2635.robot.commands.ShooterReverseFire;
 import org.usfirst.frc.team2635.robot.commands.TeleopCommand;
+import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.subsystems.Climber;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
 import org.usfirst.frc.team2635.robot.subsystems.ExampleSubsystem;
@@ -89,7 +90,10 @@ public class Robot extends IterativeRobot {
 		boolean clockwise = true;
 		boolean rotateCenter = true;
 		
-		motionCommandGroup.addSequential(new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter));
+		motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
+		//CommandGroup group2 = new CommandGroup();
+		//motionCommandGroup.addSequential(group2);
+		//motionCommandGroup.addSequential(new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter));
 		//motionCommandGroup.addSequential(new DriveRotateMotionMagic(200, 90, 36, true, false));
 		
 		
@@ -150,6 +154,10 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = chooser.getSelected();
 //		autonomousCommand = new DriveRoutine();
 
+		if (motionCommandGroup != null){
+			motionCommandGroup.start();
+		}
+	
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand

@@ -3,7 +3,7 @@ package org.usfirst.frc.team2635.robot.commands;
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
-import org.usfirst.frc.team2635.robot.model.RotationParameters;
+import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
 import edu.wpi.first.wpilibj.command.Command;
 
@@ -14,12 +14,12 @@ public class DriveRotateNavx extends Command {
 
 	public boolean wasPressed;
 	public double heading;
+//	public boolean isDoneWithNavx;
     public DriveRotateNavx(double heading) {
         // Use requires() here to declare subsystem dependencies
        
        this.heading = heading;
        Robot.drive.setAnglePID(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D);
-      
     	
     }
 
@@ -40,8 +40,9 @@ public class DriveRotateNavx extends Command {
 //	    	wasPressed = true;
 //    	}
     	
-    	System.out.println("DriveRotateNavX execute");
+    	System.out.println("DriveRotateNavx execute");
     	Robot.drive.updateMotionNavx(heading);
+    	
     	
     }
 
@@ -52,7 +53,7 @@ public class DriveRotateNavx extends Command {
 //    	if (done){    		
 //    		Robot.drive.disableAnglePID();
 //    	}
-//    	System.out.print("DriveRotateNavx is " + (done?"done":"not done"));
+//    	System.out.print("DriveRotateNavx is " + (isDoneWithNavx?"done":"not done"));
 //    	return done;
     	return Robot.drive.motionNavxFinished(heading);
     }

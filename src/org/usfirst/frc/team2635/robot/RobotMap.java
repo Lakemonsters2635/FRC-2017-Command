@@ -66,8 +66,8 @@ public class RobotMap {
 
 	
 	public static double MOTION_MAGIC_F = 1.5345;
-    public static double MOTION_MAGIC_P = 10;
-    public static double MOTION_MAGIC_I = 0.1; 
+    public static double MOTION_MAGIC_P = 1;
+    public static double MOTION_MAGIC_I = 0; 
     public static double MOTION_MAGIC_D = 0;
 	// If you are using multiple modules, make sure to define both the port
 	// number and the module. For example you with a rangefinder:

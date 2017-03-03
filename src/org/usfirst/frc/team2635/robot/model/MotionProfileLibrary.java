@@ -2,13 +2,19 @@ package org.usfirst.frc.team2635.robot.model;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
+import org.usfirst.frc.team2635.robot.commands.DriveStraightMotionMagic;
+
+import edu.wpi.first.wpilibj.command.CommandGroup;
+
 import java.util.ArrayList;
 
 public class MotionProfileLibrary
 {
 
 
-	public static RotationParameters getRotationParameters(double targetAngle, 
+	public static MotionParameters getRotationParameters(double targetAngle, 
 														   double wheelRadiusInches,
 														   double turnRadiusInches, 
 														   double wheelSeparationInches,  
@@ -75,13 +81,13 @@ public class MotionProfileLibrary
 		}
 		
 		
-		RotationParameters rotationParams = new RotationParameters();
-		rotationParams.innerAcceleration = innerAcceleration;
-		rotationParams.outerAcceleration = outerAcceleration;
-		rotationParams.innerVelocity     = innerVelocity;
-		rotationParams.outerVelocity     = outerVelocity;
-		rotationParams.innerWheelRotations = innerWheelRotations;
-		rotationParams.outerWheelRotations = outerWheelRotations;
+		MotionParameters rotationParams = new MotionParameters();
+		rotationParams.rightAcceleration = innerAcceleration;
+		rotationParams.leftAcceleration = outerAcceleration;
+		rotationParams.rightVelocity     = innerVelocity;
+		rotationParams.leftVelocity     = outerVelocity;
+		rotationParams.rightWheelRotations = innerWheelRotations;
+		rotationParams.leftWheelRotations = outerWheelRotations;
 
 		return rotationParams;
 
@@ -97,7 +103,7 @@ public class MotionProfileLibrary
 
 	}
 	
-	public static DriveParameters getDriveParameters(double wheelRadiusInches, double distanceInches, double rpm, boolean reverse)
+	public static MotionParameters getDriveParameters(double wheelRadiusInches, double distanceInches, double rpm, boolean reverse)
 	{
 		double inchesPerRotation = wheelRadiusInches * 2 * Math.PI;
 		
@@ -114,16 +120,60 @@ public class MotionProfileLibrary
 			rightWheelRotations = -rightWheelRotations;
 		}
 		
-		DriveParameters driveParams = new DriveParameters();
-		driveParams.maxAcceleration = acceleration;
+		MotionParameters driveParams = new MotionParameters();
+		driveParams.leftAcceleration = acceleration;
+		driveParams.rightAcceleration = acceleration;
 		driveParams.leftWheelRotations = leftWheelRotations;
 		driveParams.rightWheelRotations = rightWheelRotations;
-		driveParams.maxVelocity     = velocity;
-		
+		driveParams.leftVelocity     = velocity;
+		driveParams.rightVelocity     = velocity;
 		return driveParams;
 
 	}	
+	
+	public static CommandGroup getCenterGearPlacementSequence()
+	{
+		//1. Drive n Inches forward
+		//2. Vision. Get Angle
+		//   Rotate Angle
+		//3. Vision. Get Distance
+		//3. Drive N Inches
+		//4. Activate Pneumatics 
+		//DriveForward
 		
+		
+		CommandGroup resultGroup = new CommandGroup();
+		
+		//DriveStraightMotionMagic cmd1 = new DriveStraightMotionMagic(100, 78.5, false);
+		DriveStraightMotionMagic cmd1 = new DriveStraightMotionMagic(100, 24, false);
+		resultGroup.addSequential(cmd1);
+				
+		
+		double rpm = 200;
+		double targetAngle = 90;
+		double turnRadiusInche = 0;
+		boolean clockwise = true;
+		boolean rotateCenter = true;
+		//new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter));	
+
+		return resultGroup;
+		
+	}
+    	
+	public CommandGroup getLeftGearPlacementSequence()
+	{
+		CommandGroup resultGroup = null;
+		return resultGroup;
+		
+	}
+	
+	
+	public CommandGroup getRightGearPlacementSequence()
+	{
+		CommandGroup resultGroup = null;
+		return resultGroup;
+		
+	}
 }
 	
 	
