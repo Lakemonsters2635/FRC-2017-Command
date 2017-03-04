@@ -174,7 +174,7 @@ public class GearVision extends Vision {
 	}
 	
 	public void viewShooter(){
- 		//put the processed image with rectangles on smartdashboard
+   		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
 	
