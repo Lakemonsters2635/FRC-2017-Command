@@ -175,7 +175,7 @@ public class MotionProfileLibrary
 		WaitCommand waitCmd3 = new WaitCommand(1);
 		WaitCommand waitCmd4 = new WaitCommand(1);
 		
-		String targetName = "Gear";
+		String targetName = "Boiler";
 		VisionParameters visionParams = new VisionParameters(null,null);
 		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName);
 		
@@ -185,16 +185,16 @@ public class MotionProfileLibrary
 		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(velocity, distance, true);
 		
 		resultGroup.addSequential(visionCmd1);
-		resultGroup.addSequential(cmd1);
-		resultGroup.addSequential(gearForward);
-		resultGroup.addSequential(waitCmd);
-		resultGroup.addSequential(gearBackward);
-		resultGroup.addSequential(waitCmd2);
-		resultGroup.addSequential(gearForward2);
-		resultGroup.addSequential(waitCmd3);
-		resultGroup.addSequential(gearBackward2);
-		resultGroup.addSequential(waitCmd4);
-		resultGroup.addSequential(driveBackwards);
+//		resultGroup.addSequential(cmd1);
+//		resultGroup.addSequential(gearForward);
+//		resultGroup.addSequential(waitCmd);
+//		resultGroup.addSequential(gearBackward);
+//		resultGroup.addSequential(waitCmd2);
+//		resultGroup.addSequential(gearForward2);
+//		resultGroup.addSequential(waitCmd3);
+//		resultGroup.addSequential(gearBackward2);
+//		resultGroup.addSequential(waitCmd4);
+//		resultGroup.addSequential(driveBackwards);
 		//new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter));	
 
 		return resultGroup;

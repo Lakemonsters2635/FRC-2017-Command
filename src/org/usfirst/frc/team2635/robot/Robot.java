@@ -33,7 +33,7 @@ import org.usfirst.frc.team2635.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
 import org.usfirst.frc.team2635.robot.subsystems.Pickup;
 import org.usfirst.frc.team2635.robot.subsystems.Shooter;
-import org.usfirst.frc.team2635.robot.subsystems.Vision;
+import org.usfirst.frc.team2635.robot.subsystems.VisionSubsystem;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -50,7 +50,7 @@ public class Robot extends IterativeRobot {
 	public static Pickup pickup;
 	public static Climber climber; 
 	public static GearDeliver deliverer; 
-	public static Vision vision;
+	public static VisionSubsystem vision;
 	public static OI oi;
 
 	
@@ -78,7 +78,7 @@ public class Robot extends IterativeRobot {
 		deliverer = new GearDeliver();
 		
 		
-		vision = new Vision();
+		vision = new VisionSubsystem();
 		
 		teleopCommands = new TeleopCommand();
 	    //motionCommandGroup = new MotionCommandGroup();
@@ -123,8 +123,8 @@ public class Robot extends IterativeRobot {
 		
 		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
 		//oi.motionMagicButton.whenPressed(motionCommandGroup);
-		double targetAngle = 90;
-		oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
+		//double targetAngle = 90;
+		//oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
 	}
 
 	/**

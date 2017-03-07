@@ -28,20 +28,18 @@ public class Vision {
 		cvSink = new CvSink("cvSink");
 		cvSink.setSource(camera);
 		source = new Mat();
-		
+		cvSource = CameraServer.getInstance().putVideo("new", 640, 480);
 		
 	}
 	
 	public void createBox(){
 		boundRect = new ArrayList<Rect>();
 		//Get frame from camera
-		if (cvSink == null)
-		{
-			 System.out.println("cvSink is NULL");
-			 camInit();
-			 //return;
-		}
+		
+		
+		
 		cvSink.grabFrame(source);
+		
 		//Use Grip Code
 		GripPipeline.process(source);
 		grip = GripPipeline.findContoursOutput();

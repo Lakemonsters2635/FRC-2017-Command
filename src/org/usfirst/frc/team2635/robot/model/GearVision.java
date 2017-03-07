@@ -21,9 +21,6 @@ public class GearVision extends Vision {
 	Integer confirmed;
 	Integer welike;
 	
-	public GearVision(){
-		cvSource = CameraServer.getInstance().putVideo("gear", 640, 480);
-	}
 	
 	public void confirmBox(){
 		Integer[] poss = new Integer[999];

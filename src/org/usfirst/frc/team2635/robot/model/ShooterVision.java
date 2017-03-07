@@ -21,9 +21,6 @@ public class ShooterVision extends Vision {
 	Integer confirmed;
 	Integer welike;
 			
-	public ShooterVision(){
-		cvSource = CameraServer.getInstance().putVideo("shoot", 640, 480);
-	}
 	
 	@SuppressWarnings("deprecation")
 	public void confirmBox(){

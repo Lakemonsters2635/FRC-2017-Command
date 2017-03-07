@@ -19,7 +19,7 @@ public class Climber extends Subsystem {
 	CANTalon climb1;
 	CANTalon climb2;
 	
-	public static double totalPowerLimit = 298;
+	public static double totalPowerLimit = 400;
 	
     public Climber()
     {
@@ -43,17 +43,21 @@ public class Climber extends Subsystem {
     	double climb1Amps = climb1.getOutputCurrent();
     	double climb2Amps = climb2.getOutputCurrent();
     	System.out.println("---------------------------------------");
-    	System.out.println("Your amperage is: " + climb1Amps);
+    	System.out.println("climb1Amps is: " + climb1Amps);
+    	System.out.println("climb2Amps is: " + climb2Amps);
     	
     	double climb1Voltage = climb1.getOutputVoltage();
     	double climb2Voltage = climb2.getOutputVoltage();
-    	System.out.println("Your voltage is: " + climb1Voltage);
+    	System.out.println("climb1Voltage is: " + climb1Voltage);
+    	System.out.println("climb2Voltage is: " + climb2Voltage);
     	
     	double climb1Watts = Math.abs(climb1Amps * climb1Voltage);
     	double climb2Watts = Math.abs(climb2Amps * climb2Voltage);
-    	System.out.println("Your wattage is: " + climb1Watts);
-    	double totalWatts = climb1Watts + climb2Watts;
+    	System.out.println("climb1Watts is: " + climb1Watts);
+    	System.out.println("climb2Watts is: " + climb2Watts);
     	
+    	double totalWatts = climb1Watts + climb2Watts;
+    	System.out.println("totalWatts is: " + totalWatts);
     	double limitVoltage = Math.signum(magnitude)*totalPowerLimit/(climb1Amps + climb2Amps);
     	
     	if(totalWatts > totalPowerLimit){

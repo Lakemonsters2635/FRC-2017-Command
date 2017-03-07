@@ -2,28 +2,34 @@ package org.usfirst.frc.team2635.robot.subsystems;
 
 import org.usfirst.frc.team2635.robot.model.GearVision;
 import org.usfirst.frc.team2635.robot.model.ShooterVision;
+import org.usfirst.frc.team2635.robot.model.Vision;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * The camera vision
  */
-public class Vision extends Subsystem{
+public class VisionSubsystem extends Subsystem{
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+	Vision vision;
 	ShooterVision shooterVision;
 	GearVision gearVision;
-	public Vision()
+	public VisionSubsystem()
 	{
+		vision = new Vision();
 		shooterVision = new ShooterVision();
-		gearVision = new GearVision();
 		shooterVision.camInit();
+		gearVision = new GearVision();
+		gearVision.camInit();
 		
 	}
     public void aim()
     {
     
+    	
+    	
     	shooterVision.createBox();
 		shooterVision.confirmBox();
 		shooterVision.viewShooter();

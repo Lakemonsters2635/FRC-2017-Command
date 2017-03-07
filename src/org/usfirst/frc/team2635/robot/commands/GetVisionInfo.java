@@ -18,7 +18,7 @@ public class GetVisionInfo extends Command {
 	
     public GetVisionInfo(VisionParameters visionParams, String targetName) {
         // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    	//requires(Robot.vision);
     	this.visionParameters = visionParams;
     	this.targetName = targetName;
     	light = new VisionLight(7);
