@@ -11,6 +11,7 @@ import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.DriveStraightMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.GetVisionInfo;
 import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
+import org.usfirst.frc.team2635.robot.commands.UltrasonicCommand;
 
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -178,6 +179,9 @@ public class MotionProfileLibrary
 		String targetName = "Gear";
 		VisionParameters visionParams = new VisionParameters(null,null);
 		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName);
+		
+		UltrasonicParameters ultrasonicParams = new UltrasonicParameters(null, null);
+		UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams);
 		
 		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();

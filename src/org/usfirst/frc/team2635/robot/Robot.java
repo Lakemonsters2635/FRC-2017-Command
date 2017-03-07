@@ -33,6 +33,7 @@ import org.usfirst.frc.team2635.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
 import org.usfirst.frc.team2635.robot.subsystems.Pickup;
 import org.usfirst.frc.team2635.robot.subsystems.Shooter;
+import org.usfirst.frc.team2635.robot.subsystems.UltrasonicSensors;
 import org.usfirst.frc.team2635.robot.subsystems.Vision;
 
 /**
@@ -52,6 +53,7 @@ public class Robot extends IterativeRobot {
 	public static GearDeliver deliverer; 
 	public static Vision vision;
 	public static OI oi;
+	public static UltrasonicSensors ultrasonic;
 
 	
 	Command autonomousCommand;
