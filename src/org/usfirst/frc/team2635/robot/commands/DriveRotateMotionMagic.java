@@ -6,6 +6,7 @@ import java.util.function.Function;
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
+import org.usfirst.frc.team2635.robot.model.VisionLight;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
 import com.ctre.CANTalon;
@@ -22,6 +23,9 @@ public class DriveRotateMotionMagic extends Command {
 	double turnRadiusInches;
 	boolean clockwise;
 	boolean rotateCenter;
+	public boolean hasExecuted;
+	
+
 	
 	MotionParameters rotationParams; 
 	
@@ -45,24 +49,30 @@ public class DriveRotateMotionMagic extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	System.out.println("DriveRotateMotionMagic initialize");
+    	Robot.drive.DriveInit();
     	Robot.drive.initMotionMagic();
     	Robot.drive.setMotionMagicPIDF(
     			RobotMap.MOTION_MAGIC_P,
     			RobotMap.MOTION_MAGIC_I,
     			RobotMap.MOTION_MAGIC_D,
     			RobotMap.MOTION_MAGIC_F);
+    	Robot.drive.rotateMotionMagic(rotationParams);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println("DriveRotateMotionMagic execute");
+    	//System.out.println("DriveRotateMotionMagic execute");
     	Robot.drive.rotateMotionMagic(rotationParams);
+    	
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	boolean done = Robot.drive.motionMagicDone(rotationParams);
-    	System.out.print("DriveRotateMotionMagic is " + (done?"done":"not done"));
+    	boolean done = Robot.drive.motionMagicDone(rotationParams, Robot.drive.ROTATE_ERROR_TOLERANCE);
+    	if (done){
+    		System.out.println("DriveRotateMotionMagic is done");
+    	}
     	return done;
     }
 

@@ -55,7 +55,7 @@ public class RobotMap {
 	public static int BUTTON_NAVX_GET_ANGLE = 10;
 	public static int BUTTON_NAVX_RESET = 11;
 	
-	public static double WHEEL_RADIUS_INCHES = 3.0; 
+	public static double WHEEL_RADIUS_INCHES = 3.0  * 1.0; 
 	public static double WHEEL_SEPARATION_INCHES = 23.5; 
 	public static double AIM_P = 10.0;
 	public static double AIM_I = 0.0;
@@ -66,9 +66,16 @@ public class RobotMap {
 
 	
 	public static double MOTION_MAGIC_F = 1.5345;
-    public static double MOTION_MAGIC_P = 1;
-    public static double MOTION_MAGIC_I = 0; 
+    public static double MOTION_MAGIC_P = 10;
+    public static double MOTION_MAGIC_I = 0.0004; 
     public static double MOTION_MAGIC_D = 0;
+    
+    
+	public static double DRIVE_STRAIGHT_MOTION_MAGIC_F = 1.5;
+    //public static double DRIVE_STRAIGHT_MOTION_MAGIC_P = .5;
+	public static double DRIVE_STRAIGHT_MOTION_MAGIC_P = 10;
+    public static double DRIVE_STRAIGHT_MOTION_MAGIC_I =  0.0004; 
+    public static double DRIVE_STRAIGHT_MOTION_MAGIC_D = 0;
 	// If you are using multiple modules, make sure to define both the port
 	// number and the module. For example you with a rangefinder:
 	// public static int rangefinderPort = 1;

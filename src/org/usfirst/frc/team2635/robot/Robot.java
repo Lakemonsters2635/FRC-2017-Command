@@ -17,8 +17,9 @@ import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.DriveRotateNavx;
 import org.usfirst.frc.team2635.robot.commands.DriveRoutine;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
-import org.usfirst.frc.team2635.robot.commands.ExampleCommand;
+//import org.usfirst.frc.team2635.robot.commands.ExampleCommand;
 import org.usfirst.frc.team2635.robot.commands.LogNavxValues;
+import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
 import org.usfirst.frc.team2635.robot.commands.NavxReset;
 import org.usfirst.frc.team2635.robot.commands.PickupBall;
 import org.usfirst.frc.team2635.robot.commands.ShooterFire;
@@ -58,7 +59,7 @@ public class Robot extends IterativeRobot {
 	Command logNavxCommand;
 	CommandGroup teleopCommands;
 	CommandGroup logAndDrive = new CommandGroup();
-	CommandGroup motionCommandGroup;
+	MotionCommandGroup motionCommandGroup;
 	
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
@@ -75,26 +76,27 @@ public class Robot extends IterativeRobot {
 		pickup = new Pickup();
 		climber = new Climber();
 		deliverer = new GearDeliver();
+		
+		
 		vision = new Vision();
+		
 		teleopCommands = new TeleopCommand();
-	    motionCommandGroup = new CommandGroup();
-		logAndDrive.addParallel(new LogNavxValues());
-		logAndDrive.addParallel(new DriveTeleop());
-		chooser.addDefault("Default Auto", new ExampleCommand());
+	    //motionCommandGroup = new MotionCommandGroup();
+		//logAndDrive.addParallel(new LogNavxValues());
+		//logAndDrive.addParallel(new DriveTeleop());
+		//chooser.addDefault("Default Auto", new ExampleCommand());
 		//chooser.addObject("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", chooser);
 		
-		double rpm = 200;
-		double targetAngle = 90;
-		double turnRadiusInche = 0;
-		boolean clockwise = true;
-		boolean rotateCenter = true;
+		
+
+
 		
 		motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
-		//CommandGroup group2 = new CommandGroup();
-		//motionCommandGroup.addSequential(group2);
-		//motionCommandGroup.addSequential(new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter));
-		//motionCommandGroup.addSequential(new DriveRotateMotionMagic(200, 90, 36, true, false));
+		//motionCommandGroup = MotionProfileLibrary.getLeftGearPlacementSequence();
+		//motionCommandGroup = MotionProfileLibrary.RotateSequence();
+		
+
 		
 		
 		oi.fireButton.whileHeld(new ShooterRevUp());
@@ -111,7 +113,8 @@ public class Robot extends IterativeRobot {
 		oi.deliverButton.whenPressed(new DeliverGearForward());
 		oi.deliverButton.whenReleased(new DeliverGearBackwards());
 		
-		oi.aimCameraButton.whileHeld(new DriveCameraAnglePID());//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
+	
+		//oi.aimCameraButton.whileHeld(new DriveCameraAnglePID());//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
 		
 		oi.navxGetAngleButton.whenReleased(new LogNavxValues());
 		oi.navxResetButton.whenReleased(new NavxReset());
@@ -120,6 +123,7 @@ public class Robot extends IterativeRobot {
 		
 		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
 		//oi.motionMagicButton.whenPressed(motionCommandGroup);
+		double targetAngle = 90;
 		oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
 	}
 
@@ -154,7 +158,15 @@ public class Robot extends IterativeRobot {
 		//autonomousCommand = chooser.getSelected();
 //		autonomousCommand = new DriveRoutine();
 
+//		 try {
+//			Thread.sleep(1000);
+//		} catch (InterruptedException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+		
 		if (motionCommandGroup != null){
+			
 			motionCommandGroup.start();
 		}
 	
@@ -175,6 +187,12 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousPeriodic() {
+		
+//		while (isInitialized)
+//		{
+//			isInitialized = Initialize();
+//		}
+		
 		Scheduler.getInstance().run();
 	}
 

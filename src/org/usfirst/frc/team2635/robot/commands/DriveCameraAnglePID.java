@@ -23,7 +23,9 @@ public class DriveCameraAnglePID extends Command {
     public DriveCameraAnglePID() {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-    	requires(Robot.drive);
+    	
+    	//FHE TODO. UNCOMMENT THE FOLLOWING LINE
+    	//requires(Robot.drive);
     	requires(Robot.vision);
     	light = new VisionLight(7);
     	

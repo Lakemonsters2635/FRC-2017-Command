@@ -20,7 +20,7 @@ public class DriveStraightMotionMagic extends Command {
 	public double driveDistance;
 	public boolean reverse;
 	double rpm;
-
+	public int cycleCtr;
 	
 	MotionParameters driveParams; 
 	
@@ -29,10 +29,10 @@ public class DriveStraightMotionMagic extends Command {
 	
     public DriveStraightMotionMagic(double rpm, double driveDistance, boolean reverse) {
     	
+    	
     	this.rpm = rpm;
     	this.driveDistance = driveDistance;
     	this.reverse = reverse;
-    	
     	driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
 
     }
@@ -45,27 +45,49 @@ public class DriveStraightMotionMagic extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	System.out.println("DrivesStraightMotionMagic initialize");
+
+    	Robot.drive.DriveInit();
     	Robot.drive.initMotionMagic();
+
+    	cycleCtr = 1000;
+    	
     	Robot.drive.setMotionMagicPIDF(
-    			RobotMap.MOTION_MAGIC_P,
-    			RobotMap.MOTION_MAGIC_I,
-    			RobotMap.MOTION_MAGIC_D,
-    			RobotMap.MOTION_MAGIC_F);
+    			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_P,
+    			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_I,
+    			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_D,
+    			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_F);
+    	
+    	//Robot.drive.driveStraightMotionMagic(driveParams);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	System.out.println("DriveStraightMotionMagic execute");
-    	Robot.drive.driveStraightMotionMagic(driveParams);
-    
+    	//
+    	//cycleCtr++;
+    	//if (cycleCtr > 1000)
+    	//{
+    		//System.out.println("DriveStraightMotionMagic execute");
+    		Robot.drive.driveStraightMotionMagic(driveParams);
+    		//cycleCtr = 0;
+    	//}
+    	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	boolean done = Robot.drive.motionMagicDone(driveParams);
-    	System.out.print("DriveStraightMotionMagic is " + (done?"done":"not done"));
+    	boolean done = Robot.drive.motionMagicDone(driveParams, Robot.drive.DRIVE_ERROR_TOLERANCE);
+    	if (done)
+    	{
+    		System.out.println("DriveStraightMotionMagic is done");
 
+    	}
+    	else
+    	{
+    		//System.out.println("DriveStraightMotionMagic is NOT done");
+    	}
+    		
     	return done;
+    	//return false;
     }
 
     // Called once after isFinished returns true
@@ -79,7 +101,7 @@ public class DriveStraightMotionMagic extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	System.out.println("DriveStraightMotionMagic interrupted");
+    	//System.out.println("DriveStraightMotionMagic interrupted");
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
     }
 }

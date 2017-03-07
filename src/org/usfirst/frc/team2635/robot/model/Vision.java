@@ -35,6 +35,12 @@ public class Vision {
 	public void createBox(){
 		boundRect = new ArrayList<Rect>();
 		//Get frame from camera
+		if (cvSink == null)
+		{
+			 System.out.println("cvSink is NULL");
+			 camInit();
+			 //return;
+		}
 		cvSink.grabFrame(source);
 		//Use Grip Code
 		GripPipeline.process(source);

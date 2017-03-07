@@ -151,6 +151,7 @@ public class ShooterVision extends Vision {
 			}
 			//System.out.println("this is confirmation");
 		}
+		
 		for (Integer i=0;i>poss.length;i++){
 			
 			if(i==0&&poss[i]!=null){
@@ -168,6 +169,11 @@ public class ShooterVision extends Vision {
 			} else{
 				break;
 			}
+		}
+		
+		if (welike == null)
+		{
+			return;
 		}
 		System.out.println("Target Found");
 		Rect rect1 = reck1.get(welike);
@@ -258,4 +264,3 @@ public class ShooterVision extends Vision {
 	}
 	
 } 
-//You've Seen Nothing. 

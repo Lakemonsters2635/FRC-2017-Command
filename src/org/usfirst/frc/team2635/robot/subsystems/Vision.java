@@ -17,15 +17,25 @@ public class Vision extends Subsystem{
 	public Vision()
 	{
 		shooterVision = new ShooterVision();
+		gearVision = new GearVision();
 		shooterVision.camInit();
 		
 	}
     public void aim()
     {
+    
     	shooterVision.createBox();
 		shooterVision.confirmBox();
 		shooterVision.viewShooter();
     }
+    
+    public void gearAim()
+    {
+		gearVision.createBox();
+		gearVision.confirmBox();
+		gearVision.viewShooter();
+    }
+    
     public Double getAngleToBoiler()
     {
     	Double angle = shooterVision.getAngle();
@@ -53,4 +63,3 @@ public class Vision extends Subsystem{
 		
 	}
 }
-

@@ -162,6 +162,7 @@ public class GearVision extends Vision {
 		Imgproc.rectangle( source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0 );
 		Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
 		Imgproc.rectangle( source, temp.tl(),  temp.br(),  new Scalar(0,255,0), 2, 8, 0);
+		Imgproc.rectangle( source, rect1.tl(),  rect2.br(),  new Scalar(255,0,0), 2, 8, 0);
 		//Create new variables for correct boxes
 		confRectFull=temp; 
 		if(rect1.x<rect2.x){
