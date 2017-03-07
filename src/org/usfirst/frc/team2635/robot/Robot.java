@@ -34,6 +34,9 @@ import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
 import org.usfirst.frc.team2635.robot.subsystems.Pickup;
 import org.usfirst.frc.team2635.robot.subsystems.Shooter;
 import org.usfirst.frc.team2635.robot.subsystems.VisionSubsystem;
+import org.usfirst.frc.team2635.robot.subsystems.UltrasonicSensors;
+import org.usfirst.frc.team2635.robot.subsystems.Vision;
+
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -52,6 +55,7 @@ public class Robot extends IterativeRobot {
 	public static GearDeliver deliverer; 
 	public static VisionSubsystem vision;
 	public static OI oi;
+	public static UltrasonicSensors ultrasonic;
 
 	
 	Command autonomousCommand;
