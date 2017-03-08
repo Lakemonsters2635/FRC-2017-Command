@@ -4,6 +4,7 @@ import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.model.VisionLight;
 import org.usfirst.frc.team2635.robot.model.VisionParameters;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -11,22 +12,35 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class GetVisionInfo extends Command {
 
-	//FHE TODO: Implement timeout.
+
 	public VisionParameters visionParameters; 
 	public String targetName;
+	public double duration;
 	VisionLight light;
+	Timer timer;
+	Double averageAquiredAngle;
+	int sampleCount;
+	Double currentAngleSample;
 	
-    public GetVisionInfo(VisionParameters visionParams, String targetName) {
+    public GetVisionInfo(VisionParameters visionParams, String targetName, double duration) {
         // Use requires() here to declare subsystem dependencies
     	//requires(Robot.vision);
     	this.visionParameters = visionParams;
     	this.targetName = targetName;
+    	this.duration = duration;
+    	timer = new Timer();
     	light = new VisionLight(7);
     	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	timer.reset();
+    	timer.start();
+    	sampleCount = 0;
+    	averageAquiredAngle = null;
+    	
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -39,30 +53,64 @@ public class GetVisionInfo extends Command {
     	if (targetName == "Gear")
     	{    	
     		Robot.vision.gearAim();
-    		visionParameters.AngleToTarget = Robot.vision.getAngleToGear();
+    		
+    		// 
+    		
+    		currentAngleSample = Robot.vision.getAngleToGear();
     		visionParameters.DistanceToTarget = Robot.vision.getDistanceToGear();
     	}
     	else if (targetName == "Boiler")
     	{
     		Robot.vision.aim();
-    		visionParameters.AngleToTarget = Robot.vision.getAngleToBoiler();
+    		currentAngleSample = Robot.vision.getAngleToBoiler();
     		visionParameters.DistanceToTarget = Robot.vision.getDistanceToBoiler();
     	}
+    	
+    	
+    	 System.out.println("currentAngleSample: " + currentAngleSample);
+    	if (currentAngleSample != null)
+    	{
+    		sampleCount++;
+    		if (sampleCount == 1)
+    		{
+    			averageAquiredAngle = 0.0;
+    		}
+    		averageAquiredAngle =  (averageAquiredAngle * (sampleCount-1) +  currentAngleSample)/sampleCount;
+    	}
+    	
+    	//visionParameters.AngleToTarget averageAquiredAngle 
     	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	 boolean isDone = visionParameters.AngleToTarget != null;
-    	 if (isDone)
+    	
+    	
+    	 //boolean timeElapsed =  (timer.get() * 1000 > duration);
+    	 boolean timeElapsed = timer.hasPeriodPassed(duration);
+    	 boolean isDone = false;
+    	 if (timeElapsed)
     	 {
+    		 isDone = true;
+    		 if (averageAquiredAngle == null)
+    		 {
+    			 averageAquiredAngle = 0.0;
+    			 System.out.println("WARNING:averageAquiredAngle is NULL. Setting to 0.0");
+    		 }
+    		 visionParameters.AngleToTarget = averageAquiredAngle;
     		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget);
     	 }
-         return isDone;
+    	
+    	
+    	 return isDone;
+
+         
     }
 
     // Called once after isFinished returns true
     protected void end() {
+    	timer.stop();
+    	
     	light.lightOff();
     }
 
@@ -70,5 +118,7 @@ public class GetVisionInfo extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	light.lightOff();
+    	timer.stop();
+    	timer.reset();
     }
 }

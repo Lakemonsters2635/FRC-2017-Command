@@ -20,15 +20,27 @@ public class Vision {
 	CvSource cvSource;
 	ArrayList<Rect> boundRect;
 	ArrayList<MatOfPoint> grip;
+	UsbCamera camera;
+	
+	public Vision(UsbCamera camera)
+	{
+		this.camera = camera;
+	}
+	
+	public Vision()
+	{
+	}
+	
 	
 	public void camInit(){
 		GripPipeline = new GripPipeline();
-		UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+		
 		camera.setResolution(640, 480);
 		cvSink = new CvSink("cvSink");
 		cvSink.setSource(camera);
 		source = new Mat();
 		cvSource = CameraServer.getInstance().putVideo("new", 640, 480);
+		
 		
 	}
 	

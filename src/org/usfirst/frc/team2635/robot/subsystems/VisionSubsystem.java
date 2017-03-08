@@ -4,6 +4,8 @@ import org.usfirst.frc.team2635.robot.model.GearVision;
 import org.usfirst.frc.team2635.robot.model.ShooterVision;
 import org.usfirst.frc.team2635.robot.model.Vision;
 
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
@@ -16,13 +18,15 @@ public class VisionSubsystem extends Subsystem{
 	Vision vision;
 	ShooterVision shooterVision;
 	GearVision gearVision;
+	UsbCamera camera;
 	public VisionSubsystem()
 	{
-		vision = new Vision();
+		camera = CameraServer.getInstance().startAutomaticCapture();
+		//vision = new Vision(camera);
 		
-		shooterVision = new ShooterVision();
+		shooterVision = new ShooterVision(camera);
 		//shooterVision.camInit();
-		gearVision = new GearVision();
+		gearVision = new GearVision(camera);
 		gearVision.camInit();
 		
 	}

@@ -8,6 +8,7 @@ import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
+import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -22,6 +23,10 @@ public class GearVision extends Vision {
 	Double confirmed;
 	Integer welike;
 	
+	public GearVision(UsbCamera camera) 
+	{
+		super(camera);
+	}
 	
 	public void confirmBox(){
 		Double[] poss = new Double[999];
@@ -105,7 +110,9 @@ public class GearVision extends Vision {
 					//SmartDashboard.putDouble("rect1.x", rect1.x);
 				}
 				Double comp4;
-				comp4 = (double)(rect1.y)/(double)(rect2.y);
+				Point b1 = rect1.br();
+				Point b2 = rect2.br();
+				comp4 = b1.y/b2.y;
 				//Post used variables
 				
 				//Post results of checks
@@ -155,7 +162,8 @@ public class GearVision extends Vision {
 			}
 		}
 		if(welike!=null){
-		System.out.println("Target Found");
+		System.out.println("Target Found, welike:" +welike);
+		if (welike < reck1.size()  && welike < reck2.size() && welike < reck3.size()){
 		Rect rect1 = reck1.get(welike);
 		Rect rect2 = reck2.get(welike);
 		Rect temp = reck3.get(welike);
@@ -171,6 +179,7 @@ public class GearVision extends Vision {
 		} else{
 			confRectLeft=rect2;
 			confRectRight=rect1;
+		}
 		}
 	}
 	}
@@ -242,6 +251,6 @@ public class GearVision extends Vision {
 		double pixelRatioHorizontal = centerhalf / (pixelWidth/2);
 		double angle = halfFOV * pixelRatioHorizontal;
 		
-		return  new Double(angle);
+		return  new Double(-angle);
 	}
 }

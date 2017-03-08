@@ -7,6 +7,7 @@ import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.model.VisionLight;
+import org.usfirst.frc.team2635.robot.model.VisionParameters;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
 import com.ctre.CANTalon;
@@ -20,6 +21,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveRotateMotionMagic extends Command {
 	double rpm;
 	double targetAngle;
+	VisionParameters visionParams;
 	double turnRadiusInches;
 	boolean clockwise;
 	boolean rotateCenter;
@@ -29,19 +31,18 @@ public class DriveRotateMotionMagic extends Command {
 	
 	MotionParameters rotationParams; 
 	
-    public DriveRotateMotionMagic(double rpm, double targetAngle, double turnRadiusInches, boolean clockwise, boolean rotateCenter) {
+    public DriveRotateMotionMagic(double rpm, double targetAngle, double turnRadiusInches, boolean clockwise, boolean rotateCenter, VisionParameters visionParams) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
 
+    	this.visionParams = visionParams;
     	this.rpm = rpm;
     	this.targetAngle = targetAngle;
     	this.turnRadiusInches = turnRadiusInches;
     	this.clockwise = clockwise;
     	this.rotateCenter = rotateCenter; 
     	
-    	rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
-				RobotMap.WHEEL_RADIUS_INCHES, turnRadiusInches, RobotMap.WHEEL_SEPARATION_INCHES, rpm, clockwise,
-				rotateCenter);
+
     	
 
     }
@@ -49,6 +50,15 @@ public class DriveRotateMotionMagic extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
     	System.out.println("DriveRotateMotionMagic initialize");
+    	
+    	if (visionParams != null && visionParams.AngleToTarget != null)
+    	{
+    		targetAngle = visionParams.AngleToTarget;
+    	}
+    	rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
+				RobotMap.WHEEL_RADIUS_INCHES, turnRadiusInches, RobotMap.WHEEL_SEPARATION_INCHES, rpm, clockwise,
+				rotateCenter);
+    	
     	Robot.drive.DriveInit();
     	Robot.drive.initMotionMagic();
     	Robot.drive.setMotionMagicPIDF(
@@ -62,6 +72,8 @@ public class DriveRotateMotionMagic extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	//System.out.println("DriveRotateMotionMagic execute");
+    	
+    	
     	Robot.drive.rotateMotionMagic(rotationParams);
     	
     	

@@ -33,7 +33,7 @@ public class WaitCommand extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	
-    	return (timer.get() * 1000 > delaySec);
+    	return timer.hasPeriodPassed(delaySec);
         
     }
 
