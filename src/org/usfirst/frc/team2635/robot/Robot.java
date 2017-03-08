@@ -35,7 +35,7 @@ import org.usfirst.frc.team2635.robot.subsystems.Pickup;
 import org.usfirst.frc.team2635.robot.subsystems.Shooter;
 import org.usfirst.frc.team2635.robot.subsystems.VisionSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.UltrasonicSensors;
-import org.usfirst.frc.team2635.robot.subsystems.Vision;
+
 
 
 /**
@@ -64,6 +64,9 @@ public class Robot extends IterativeRobot {
 	CommandGroup teleopCommands;
 	CommandGroup logAndDrive = new CommandGroup();
 	MotionCommandGroup motionCommandGroup;
+	MotionCommandGroup centerGear;
+	MotionCommandGroup leftGear;
+	MotionCommandGroup rightGear;
 	
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
@@ -84,19 +87,28 @@ public class Robot extends IterativeRobot {
 		
 		vision = new VisionSubsystem();
 		
+		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
+		leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
+		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
+		
+		
 		teleopCommands = new TeleopCommand();
 	    //motionCommandGroup = new MotionCommandGroup();
 		//logAndDrive.addParallel(new LogNavxValues());
 		//logAndDrive.addParallel(new DriveTeleop());
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		//chooser.addObject("My Auto", new MyAutoCommand());
+		
+		
+		chooser.addDefault("Center Gear", centerGear);
+		chooser.addObject("Left Gear", leftGear);
+		chooser.addObject("Right Gear", rightGear);
+		
 		SmartDashboard.putData("Auto mode", chooser);
-		
-		
 
 
 		
-		motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
+		//motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
 		//motionCommandGroup = MotionProfileLibrary.getLeftGearPlacementSequence();
 		//motionCommandGroup = MotionProfileLibrary.RotateSequence();
 		
@@ -180,6 +192,9 @@ public class Robot extends IterativeRobot {
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
+		
+		autonomousCommand = (Command) chooser.getSelected();
+		autonomousCommand.start();
 
 		// schedule the autonomous command (example)
 //		if (autonomousCommand != null)
