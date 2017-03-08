@@ -19,8 +19,9 @@ public class VisionSubsystem extends Subsystem{
 	public VisionSubsystem()
 	{
 		vision = new Vision();
+		
 		shooterVision = new ShooterVision();
-		shooterVision.camInit();
+		//shooterVision.camInit();
 		gearVision = new GearVision();
 		gearVision.camInit();
 		

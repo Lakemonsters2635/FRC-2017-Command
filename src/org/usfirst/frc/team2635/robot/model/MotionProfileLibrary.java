@@ -176,7 +176,7 @@ public class MotionProfileLibrary
 		WaitCommand waitCmd3 = new WaitCommand(1);
 		WaitCommand waitCmd4 = new WaitCommand(1);
 		
-		String targetName = "Boiler";
+		String targetName = "Gear";
 		VisionParameters visionParams = new VisionParameters(null,null);
 		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName);
 		
@@ -187,6 +187,8 @@ public class MotionProfileLibrary
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
 		
 		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(velocity, distance, true);
+		
+		//resultGroup.addSequential(ultrasonicCmd1);
 		
 		resultGroup.addSequential(visionCmd1);
 //		resultGroup.addSequential(cmd1);

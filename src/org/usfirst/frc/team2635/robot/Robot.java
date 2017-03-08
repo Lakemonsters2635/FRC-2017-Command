@@ -84,7 +84,7 @@ public class Robot extends IterativeRobot {
 		climber = new Climber();
 		deliverer = new GearDeliver();
 		
-		
+		ultrasonic = new UltrasonicSensors();
 		vision = new VisionSubsystem();
 		
 		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();

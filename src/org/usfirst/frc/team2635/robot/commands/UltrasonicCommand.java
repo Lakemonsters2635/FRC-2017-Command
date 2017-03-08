@@ -23,7 +23,11 @@ public class UltrasonicCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	ultrasonicParameters = new UltrasonicParameters(Robot.ultrasonic.getLeftDistanceInches(), Robot.ultrasonic.getRightDistanceInches());
+    	ultrasonicParameters.leftInches =  Robot.ultrasonic.getLeftDistanceInches();
+    	ultrasonicParameters.rightInches = Robot.ultrasonic.getRightDistanceInches();
+    	
+    	System.out.println("leftInches:" + ultrasonicParameters.leftInches + "\trightInches:" + ultrasonicParameters.rightInches);
+    	
   
     }
 

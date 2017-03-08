@@ -25,6 +25,7 @@ public class ShooterVision extends Vision {
 	@SuppressWarnings("deprecation")
 	public void confirmBox(){
 		Integer[] poss = new Integer[999];
+		
 		reck1 = new ArrayList<Rect>();
 		reck2 = new ArrayList<Rect>();
 		reck3 = new ArrayList<Rect>();
@@ -168,10 +169,7 @@ public class ShooterVision extends Vision {
 			}
 		}
 		
-		if (welike == null)
-		{
-			return;
-		}
+		if(welike!=null){
 		System.out.println("Target Found");
 		Rect rect1 = reck1.get(welike);
 		Rect rect2 = reck2.get(welike);
@@ -187,7 +185,7 @@ public class ShooterVision extends Vision {
 		
 		//Post size of boundRect arraylist
 //		SmartDashboard.putInt("boundrect array size", boundRect.size());
-		
+		}
 	}
 	
 	public void viewShooter(){
