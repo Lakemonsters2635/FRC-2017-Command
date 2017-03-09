@@ -1,7 +1,7 @@
 package org.usfirst.frc.team2635.robot.commands;
 
 import org.usfirst.frc.team2635.robot.Robot;
-import org.usfirst.frc.team2635.robot.model.VisionLight;
+
 import org.usfirst.frc.team2635.robot.model.VisionParameters;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -16,7 +16,6 @@ public class GetVisionInfo extends Command {
 	public VisionParameters visionParameters; 
 	public String targetName;
 	public double duration;
-	VisionLight light;
 	Timer timer;
 	Double averageAquiredAngle;
 	int sampleCount;
@@ -29,7 +28,6 @@ public class GetVisionInfo extends Command {
     	this.targetName = targetName;
     	this.duration = duration;
     	timer = new Timer();
-    	light = new VisionLight(7);
     	
     }
 
@@ -48,7 +46,7 @@ public class GetVisionInfo extends Command {
     	
     	
     	
-     	light.lightOn();
+     	Robot.light.lightOn();
  
     	if (targetName == "Gear")
     	{    	
@@ -111,13 +109,13 @@ public class GetVisionInfo extends Command {
     protected void end() {
     	timer.stop();
     	
-    	light.lightOff();
+    	Robot.light.lightOff();
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	light.lightOff();
+    	Robot.light.lightOff();
     	timer.stop();
     	timer.reset();
     }
