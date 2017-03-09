@@ -99,6 +99,9 @@ public class Robot extends IterativeRobot {
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		//chooser.addObject("My Auto", new MyAutoCommand());
 		
+		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
+		leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
+		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
 		
 		chooser.addDefault("Center Gear", centerGear);
 		chooser.addObject("Left Gear", leftGear);
@@ -107,11 +110,9 @@ public class Robot extends IterativeRobot {
 		SmartDashboard.putData("Auto mode", chooser);
 
 
-		//centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
-		//leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
-		//rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
 		
-		motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
+		
+		//motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
 		//motionCommandGroup = MotionProfileLibrary.getLeftGearPlacementSequence();
 		//motionCommandGroup = MotionProfileLibrary.RotateSequence();
 		
@@ -184,10 +185,10 @@ public class Robot extends IterativeRobot {
 //			e.printStackTrace();
 //		}
 		
-		if (motionCommandGroup != null){
-			
-			motionCommandGroup.start();
-		}
+//		if (motionCommandGroup != null){
+//			
+//			motionCommandGroup.start();
+//		}
 	
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
@@ -196,8 +197,8 @@ public class Robot extends IterativeRobot {
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
 		
-		//autonomousCommand = (Command) chooser.getSelected();
-		//autonomousCommand.start();
+		motionCommandGroup = (MotionCommandGroup) chooser.getSelected();
+		motionCommandGroup.start();
 
 		// schedule the autonomous command (example)
 //		if (autonomousCommand != null)
