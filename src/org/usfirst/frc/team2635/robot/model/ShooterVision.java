@@ -163,7 +163,7 @@ public class ShooterVision extends Vision {
 				confirmed = 0;
 				welike = i;
 			} else if(poss[i]!=null){
-				if(100-Math.abs(poss[i])>100-Math.abs(confirmed)){
+				if(100*Math.abs(poss[i])>100*Math.abs(confirmed)){
 					confirmed = poss[i];
 					welike = i;
 				}
