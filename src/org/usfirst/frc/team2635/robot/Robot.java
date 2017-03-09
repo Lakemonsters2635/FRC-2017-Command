@@ -33,6 +33,7 @@ import org.usfirst.frc.team2635.robot.subsystems.Climber;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
 import org.usfirst.frc.team2635.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
+import org.usfirst.frc.team2635.robot.subsystems.LightSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.Pickup;
 import org.usfirst.frc.team2635.robot.subsystems.Shooter;
 import org.usfirst.frc.team2635.robot.subsystems.VisionSubsystem;
@@ -58,6 +59,7 @@ public class Robot extends IterativeRobot {
 	public static VisionSubsystem vision;
 	public static OI oi;
 	public static UltrasonicSensors ultrasonic;
+	public static LightSubsystem light;
 
 	
 	Command autonomousCommand;
@@ -88,6 +90,8 @@ public class Robot extends IterativeRobot {
 		
 		ultrasonic = new UltrasonicSensors();
 		vision = new VisionSubsystem();
+		
+		light = new LightSubsystem(RobotMap.VISION_LIGHT_CHANNEL);
 		
 
 		
@@ -133,8 +137,8 @@ public class Robot extends IterativeRobot {
 		oi.deliverButton.whenPressed(new DeliverGearForward());
 		oi.deliverButton.whenReleased(new DeliverGearBackwards());
 		
-		//VisionParameters vParams = new VisionParameters(null,null);
-		//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear"));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
+		VisionParameters vParams = new VisionParameters(null,null);
+		oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
 		
 		oi.navxGetAngleButton.whenReleased(new LogNavxValues());
 		oi.navxResetButton.whenReleased(new NavxReset());
