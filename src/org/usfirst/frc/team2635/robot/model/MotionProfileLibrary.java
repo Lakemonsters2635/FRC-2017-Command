@@ -159,8 +159,9 @@ public class MotionProfileLibrary
 		
 		//DriveForward
 		//double distance = 37.699111843077518861551720599354; //Two Rotations
-		double distance1 = 40;
-		double distance2 = 67.86 - distance1;
+		//double distance1 = 40;
+		
+		double distance1 =  67.86;
 		double velocity = 50;
 		double rpm = 100;
 
@@ -168,7 +169,7 @@ public class MotionProfileLibrary
 		
 		//DriveStraightMotionMagic cmd1 = new DriveStraightMotionMagic(100, 78.5, false);
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, distance1, false);
-		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(velocity, distance2, false);
+	
 				
 		DeliverGearForward gearForward = new DeliverGearForward();
 		DeliverGearForward gearForward2 = new DeliverGearForward();
@@ -189,7 +190,7 @@ public class MotionProfileLibrary
 		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
 		
-		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(velocity, distance1 + distance2, true);
+		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(velocity, distance1, true);
 		
 		//resultGroup.addSequential(ultrasonicCmd1);
 		double turnRadiusInches = 0;
@@ -198,10 +199,11 @@ public class MotionProfileLibrary
 
 		DriveRotateMotionMagic rotateToGearPegCmd = new DriveRotateMotionMagic(rpm, 0, turnRadiusInches, clockwise, rotateCenter, visionParams);	
 		
+		//resultGroup.addSequential(visionCmd1);
+		//resultGroup.addSequential(rotateToGearPegCmd);
 		resultGroup.addSequential(drive1);
-		resultGroup.addSequential(visionCmd1);
-		resultGroup.addSequential(rotateToGearPegCmd);
-		resultGroup.addSequential(drive2);
+
+		
 		resultGroup.addSequential(gearForward);
 		resultGroup.addSequential(waitCmd);
 		resultGroup.addSequential(gearBackward);
