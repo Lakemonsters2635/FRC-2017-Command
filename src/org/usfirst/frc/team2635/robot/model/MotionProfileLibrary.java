@@ -268,20 +268,28 @@ public class MotionProfileLibrary
 		WaitCommand waitCmd3 = new WaitCommand(1);
 		WaitCommand waitCmd4 = new WaitCommand(1);
 		
+		String targetName = "Gear";
+		//VisionParameters visionParams = new VisionParameters(null,null);
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3);
+		
 		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
 		
 		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 36, true);
 		
+		double turnRadiusInches = 0;
 		
 		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(straightVelocity,  114.5, true);
 		
+		DriveRotateMotionMagic rotateToGearPegCmd = new DriveRotateMotionMagic(rpm, 0, turnRadiusInches, clockwise, rotateCenter, visionParams);	
 
 		
 
 		
 		resultGroup.addSequential(drive1);
 		resultGroup.addSequential(rotateCmd);
+		resultGroup.addSequential(visionCmd1);
+		resultGroup.addSequential(rotateToGearPegCmd);
 		resultGroup.addSequential(drive2);
 		resultGroup.addSequential(gearForward);
 		resultGroup.addSequential(waitCmd);
@@ -331,6 +339,22 @@ public class MotionProfileLibrary
 
 		//DriveCameraAnglePID findPegCmd = new DriveCameraAnglePID();
 		//resultGroup.addSequential(findPegCmd);
+		
+		/*resultGroup.addSequential(drive1);
+		resultGroup.addSequential(rotateCmd);
+		resultGroup.addSequential(visionCmd1);
+		resultGroup.addSequential(rotateToGearPegCmd);
+		resultGroup.addSequential(drive2);
+		resultGroup.addSequential(gearForward);
+		resultGroup.addSequential(waitCmd);
+		resultGroup.addSequential(gearBackward);
+		resultGroup.addSequential(waitCmd2);
+		resultGroup.addSequential(gearForward2);
+		resultGroup.addSequential(waitCmd3);
+		resultGroup.addSequential(gearBackward2);
+		resultGroup.addSequential(waitCmd4);
+		resultGroup.addSequential(shortDriveBackwards);
+		resultGroup.addSequential(rotateCmdCCW);*/
 		
 		return resultGroup;
 		
