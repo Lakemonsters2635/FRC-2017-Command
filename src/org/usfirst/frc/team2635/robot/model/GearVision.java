@@ -23,8 +23,7 @@ public class GearVision extends Vision {
 	Double confirmed;
 	Integer welike;
 	
-	public GearVision(UsbCamera camera) 
-	{
+	public GearVision(UsbCamera camera){
 		super(camera);
 	}
 	
@@ -35,111 +34,110 @@ public class GearVision extends Vision {
 		reck3 = new ArrayList<Rect>();
 		for( Integer b = 0; b < boundRect.size(); b++ ){
 			for (Integer j = 1; j< boundRect.size(); j++){
-			//Integer j = b;
-			if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b){
-			
-			Rect rect1 = boundRect.get(b);
-			Rect rect2 = boundRect.get(j);
-			Rect temp;
-			Double leftH;
-			Double leftW;
-			Double rightH;
-			Double rightW;
-			Integer check;
-			//Post height of rectangles for debug
-			SmartDashboard.putInt("rect1y",rect1.y);
-			SmartDashboard.putInt("rect2y", rect2.y);
-			//Decide which rectangle is left or right
-				if(rect1.x<rect2.x){
-					leftH = (double) rect1.height;
-					leftW = (double) rect1.width;
-					rightH = (double) rect2.height;
-					rightW = (double) rect2.width;
-					temp = Imgproc.boundingRect(new MatOfPoint(rect2.br(),rect1.tl()));
-					//Uncomment to see what box is being tested
-					//Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
-					check = 0;
-				}
-				else {
-					leftH = (double) rect2.height;
-					leftW = (double) rect2.width;
-					rightH = (double) rect1.height;
-					rightW = (double) rect1.width;
-					temp = Imgproc.boundingRect(new MatOfPoint(rect1.br(),rect2.tl()));
-					//Uncomment to see what box is being tested
-					//Imgproc.rectangle( source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0 );
-					check = 1;
-				}
-				//Create variables to be used for confirmation
+				//Integer j = b;
+				if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b){
 				
-				//Do checks on rectangle pair
-				Double comp1;
-				if(leftH>=rightH){
-					comp1 = leftH/rightH;
-				} else {
-					comp1 = rightH/leftH;
-				}
-				Double comp2;
-				if(leftH>=rightH){
-				comp2 = leftW/rightW;
-				} else {
-					comp2 = rightW/leftW;
-				}
-				
-				Double comp3;
-				if(check==0){
-					Double comp31 =  (rect1.width*4.375);
-					Double comp32 = rect1.x+comp31;
-					comp3 = comp32/rect2.x;
-					//SmartDashboard.putDouble("comp31", comp31);
-					//SmartDashboard.putDouble("comp32", comp32);
-					//SmartDashboard.putDouble("left.width", rect1.width);
-					//SmartDashboard.putDouble("right.width", rect2.width);
-					//SmartDashboard.putDouble("rect1.x", rect1.x);
-					//SmartDashboard.putDouble("rect2.x", rect2.x);
+					Rect rect1 = boundRect.get(b);
+					Rect rect2 = boundRect.get(j);
+					Rect temp;
+					Double leftH;
+					Double leftW;
+					Double rightH;
+					Double rightW;
+					Integer check;
+					//Post height of rectangles for debug
+					SmartDashboard.putInt("rect1y",rect1.y);
+					SmartDashboard.putInt("rect2y", rect2.y);
+					//Decide which rectangle is left or right
+					if(rect1.x<rect2.x){
+						leftH = (double) rect1.height;
+						leftW = (double) rect1.width;
+						rightH = (double) rect2.height;
+						rightW = (double) rect2.width;
+						temp = Imgproc.boundingRect(new MatOfPoint(rect2.br(),rect1.tl()));
+						//Uncomment to see what box is being tested
+						//Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
+						check = 0;
+					}
+					else {
+						leftH = (double) rect2.height;
+						leftW = (double) rect2.width;
+						rightH = (double) rect1.height;
+						rightW = (double) rect1.width;
+						temp = Imgproc.boundingRect(new MatOfPoint(rect1.br(),rect2.tl()));
+						//Uncomment to see what box is being tested
+						//Imgproc.rectangle( source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0 );
+						check = 1;
+					}
+					//Create variables to be used for confirmation
 					
-				} else{
-					Double comp31 = (rect2.width*4.375);
-					Double comp32 = rect2.x+comp31;
-					comp3 = comp32/rect1.x;
-					//SmartDashboard.putDouble("comp31", comp31);
-					//SmartDashboard.putDouble("comp32", comp32);
-					//SmartDashboard.putDouble("right.width", rect1.width);
-					//SmartDashboard.putDouble("left.width", rect2.width);
-					//SmartDashboard.putDouble("rect2.x", rect2.x);
-					//SmartDashboard.putDouble("rect1.x", rect1.x);
-				}
-				Double comp4;
-				Point b1 = rect1.br();
-				Point b2 = rect2.br();
-				comp4 = b1.y/b2.y;
-				//Post used variables
-				
-				//Post results of checks
-				SmartDashboard.putDouble("comp1", comp1);
-				SmartDashboard.putDouble("comp2", comp2);
-				
-				SmartDashboard.putDouble("comp3", comp3);
-				SmartDashboard.putDouble("comp4", comp4);
-				
-				Double done = 1 - (1 * Math.abs(4 - (comp1+comp2+comp3+comp4)));
-				for(int i=0;i<999;i++){
-					if(poss[i]==null){
-						poss[i]=done;
-						if(rect1.x<rect2.x){
-							reck1.add(rect1);
-							reck2.add(rect2);
-						} else{
-							reck1.add(rect2);
-							reck2.add(rect1);
-						}
+					//Do checks on rectangle pair
+					Double comp1;
+					if(leftH>=rightH){
+						comp1 = leftH/rightH;
+					} else {
+						comp1 = rightH/leftH;
+					}
+					Double comp2;
+					if(leftH>=rightH){
+					comp2 = leftW/rightW;
+					} else {
+						comp2 = rightW/leftW;
+					}
+					
+					Double comp3;
+					if(check==0){
+						Double comp31 =  (rect1.width*4.375);
+						Double comp32 = rect1.x+comp31;
+						comp3 = comp32/rect2.x;
+						//SmartDashboard.putDouble("comp31", comp31);
+						//SmartDashboard.putDouble("comp32", comp32);
+						//SmartDashboard.putDouble("left.width", rect1.width);
+						//SmartDashboard.putDouble("right.width", rect2.width);
+						//SmartDashboard.putDouble("rect1.x", rect1.x);
+						//SmartDashboard.putDouble("rect2.x", rect2.x);
 						
-						reck3.add(temp);
-						i = 1005;
+					} else{
+						Double comp31 = (rect2.width*4.375);
+						Double comp32 = rect2.x+comp31;
+						comp3 = comp32/rect1.x;
+						//SmartDashboard.putDouble("comp31", comp31);
+						//SmartDashboard.putDouble("comp32", comp32);
+						//SmartDashboard.putDouble("right.width", rect1.width);
+						//SmartDashboard.putDouble("left.width", rect2.width);
+						//SmartDashboard.putDouble("rect2.x", rect2.x);
+						//SmartDashboard.putDouble("rect1.x", rect1.x);
+					}
+					Double comp4;
+					Point b1 = rect1.br();
+					Point b2 = rect2.br();
+					comp4 = b1.y/b2.y;
+					//Post used variables
+					
+					//Post results of checks
+					SmartDashboard.putDouble("comp1", comp1);
+					SmartDashboard.putDouble("comp2", comp2);
+					
+					SmartDashboard.putDouble("comp3", comp3);
+					SmartDashboard.putDouble("comp4", comp4);
+					if (rect1.height>8&&rect2.height>8){
+						Double done = 1 - (1 * Math.abs(4 - (comp1+comp2+comp3+comp4)));
+						for(int i=0;i<999;i++){
+							if(poss[i]==null){
+								poss[i]=done;
+								if(rect1.x<rect2.x){
+									reck1.add(rect1);
+									reck2.add(rect2);
+								} else{
+									reck1.add(rect2);
+									reck2.add(rect1);
+								}
+								reck3.add(temp);
+								i = 1005;
+							}
+						}
 					}
 				}
-	}
-	
 			}
 		}
 		
@@ -162,28 +160,28 @@ public class GearVision extends Vision {
 			}
 		}
 		if(welike!=null){
-		System.out.println("Target Found, welike:" +welike);
-		if (welike < reck1.size()  && welike < reck2.size() && welike < reck3.size()){
-		Rect rect1 = reck1.get(welike);
-		Rect rect2 = reck2.get(welike);
-		Rect temp = reck3.get(welike);
-		//Draw confirmed rectangles
-		Imgproc.rectangle( source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0 );
-		Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
-		Imgproc.rectangle( source, temp.tl(),  temp.br(),  new Scalar(0,255,0), 2, 8, 0);
-		//Create new variables for correct boxes
-		confRectFull=temp; 
-		if(rect1.x<rect2.x){
-			confRectLeft=rect1;
-			confRectRight=rect2;
-		} else{
-			confRectLeft=rect2;
-			confRectRight=rect1;
-		}
+			System.out.println("Target Found, welike:" +welike);
+			if (welike < reck1.size()  && welike < reck2.size() && welike < reck3.size()){
+				Rect rect1 = reck1.get(welike);
+				Rect rect2 = reck2.get(welike);
+				Rect temp = reck3.get(welike);
+				//Draw confirmed rectangles
+				Imgproc.rectangle( source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0 );
+				Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
+				Imgproc.rectangle( source, temp.tl(),  temp.br(),  new Scalar(0,255,0), 2, 8, 0);
+				//Create new variables for correct boxes
+				confRectFull=temp; 
+				if(rect1.x<rect2.x){
+					confRectLeft=rect1;
+					confRectRight=rect2;
+				} else{
+					confRectLeft=rect2;
+					confRectRight=rect1;
+				}
+			}
 		}
 	}
-	}
-	
+	 
 	public void viewShooter(){
    		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
