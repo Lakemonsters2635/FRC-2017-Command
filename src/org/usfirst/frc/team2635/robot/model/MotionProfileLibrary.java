@@ -181,8 +181,8 @@ public class MotionProfileLibrary
 		WaitCommand waitCmd4 = new WaitCommand(1);
 		
 		String targetName = "Gear";
-		VisionParameters visionParams = new VisionParameters(null,null);
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3);
+		//VisionParameters visionParams = new VisionParameters(null,null);
+		//GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3);
 		
 		//UltrasonicParameters ultrasonicParams = new UltrasonicParameters(null, null);
 		//UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams);
@@ -197,10 +197,10 @@ public class MotionProfileLibrary
 		boolean clockwise = true;
 		boolean rotateCenter = true;
 
-		DriveRotateMotionMagic rotateToGearPegCmd = new DriveRotateMotionMagic(rpm, 0, turnRadiusInches, clockwise, rotateCenter, visionParams);	
+		//DriveRotateMotionMagic rotateToGearPegCmd = new DriveRotateMotionMagic(rpm, 0, turnRadiusInches, clockwise, rotateCenter, visionParams);	
 		
-		resultGroup.addSequential(visionCmd1);
-		resultGroup.addSequential(rotateToGearPegCmd);
+		//resultGroup.addSequential(visionCmd1);
+		//resultGroup.addSequential(rotateToGearPegCmd);
 		resultGroup.addSequential(drive1);
 
 		
@@ -261,7 +261,8 @@ public class MotionProfileLibrary
 		
 		//drive after rotate.
 		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity, 31.177, false);
-				
+		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);
+		
 		DeliverGearForward gearForward = new DeliverGearForward();
 		DeliverGearForward gearForward2 = new DeliverGearForward();
 
@@ -272,13 +273,12 @@ public class MotionProfileLibrary
 		WaitCommand waitCmd4 = new WaitCommand(1);
 		
 		String targetName = "Gear";
-
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,2);
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,2); //FHE: Is two seconds for vision right?
 		
 		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
 		
-		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);
+
 		
 		double turnRadiusInches = 0;
 		
@@ -320,6 +320,19 @@ public class MotionProfileLibrary
 	
 	public static MotionCommandGroup getRightGearPlacementSequence()
 	{
+		
+		//1. Drive n Inches forward
+		//2. Vision. Get Angle (NOT DONE YET)
+		//   Rotate Angle (NOT DONE YET)
+		//3. Vision. Get Distance (NOT DONE YET)
+		//3. Drive N Inches (NOT DONE YET)
+		//4. Activate Pneumatics 
+		//Wait N seconds for Pneumatics
+		//Reverse Pneumatics
+		//Wait N seconds for reveres Pneumatics
+		
+		//DriveForward
+		//public ConfigurationInfo = new ConfigurationInfo();
 		double drive1Distance = 75.385;
 		
 		VisionParameters visionParams = new VisionParameters(null,null);
@@ -332,19 +345,20 @@ public class MotionProfileLibrary
 		
 		
 		double rpm = 100;
-		double targetAngle = -60;
+		double targetAngle = 60;
 		double turnRadiusInche = 0;
-		boolean clockwise = true;
+		boolean clockwise = false;
 		boolean rotateCenter = true;
 		
 		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter, visionParams);
-		DriveRotateMotionMagic rotateCmdCCW = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, false, rotateCenter, visionParams);
+	
 
 		
 		
-	
-		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity, 36, false);
-				
+		//drive after rotate.
+		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity, 31.177, false);
+		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);
+		
 		DeliverGearForward gearForward = new DeliverGearForward();
 		DeliverGearForward gearForward2 = new DeliverGearForward();
 
@@ -355,17 +369,16 @@ public class MotionProfileLibrary
 		WaitCommand waitCmd4 = new WaitCommand(1);
 		
 		String targetName = "Gear";
-		//VisionParameters visionParams = new VisionParameters(null,null);
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3);
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,2); //FHE: Is two seconds for vision right?
 		
 		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
 		
-		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 36, true);
+
 		
 		double turnRadiusInches = 0;
 		
-		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(straightVelocity,  114.5, true);
+		
 		
 		DriveRotateMotionMagic rotateToGearPegCmd = new DriveRotateMotionMagic(rpm, 0, turnRadiusInches, clockwise, rotateCenter, visionParams);	
 
@@ -386,15 +399,6 @@ public class MotionProfileLibrary
 		resultGroup.addSequential(gearBackward2);
 		resultGroup.addSequential(waitCmd4);
 		resultGroup.addSequential(shortDriveBackwards);
-		//resultGroup.addSequential(rotateCmdCCW);
-		//resultGroup.addSequential(driveBackwards);
-		//new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter));	
-		
-		//resultGroup.addSequential(cmd2);
-		
-		//FHE:TODO. This Camera Command Looks for the boiler. We need a Vision solution for Gear Placement.
-		//		DriveCameraAnglePID findPegCmd = new DriveCameraAnglePID();
-		//		resultGroup.addSequential(findPegCmd);		
 		
 		return resultGroup;
 		

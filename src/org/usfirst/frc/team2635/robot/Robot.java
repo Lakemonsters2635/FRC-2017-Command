@@ -15,7 +15,6 @@ import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
 import org.usfirst.frc.team2635.robot.commands.DriveCameraAnglePID;
 import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.DriveRotateNavx;
-import org.usfirst.frc.team2635.robot.commands.DriveRoutine;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
 import org.usfirst.frc.team2635.robot.commands.GetVisionInfo;
 //import org.usfirst.frc.team2635.robot.commands.ExampleCommand;
@@ -137,11 +136,11 @@ public class Robot extends IterativeRobot {
 		oi.deliverButton.whenPressed(new DeliverGearForward());
 		oi.deliverButton.whenReleased(new DeliverGearBackwards());
 		
-		VisionParameters vParams = new VisionParameters(null,null);
-		oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
+		//VisionParameters vParams = new VisionParameters(null,null);
+		//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
 		
-		oi.navxGetAngleButton.whenReleased(new LogNavxValues());
-		oi.navxResetButton.whenReleased(new NavxReset());
+		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
+		//oi.navxResetButton.whenReleased(new NavxReset());
 		
 		
 		
