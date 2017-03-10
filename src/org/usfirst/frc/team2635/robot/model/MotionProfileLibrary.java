@@ -199,8 +199,8 @@ public class MotionProfileLibrary
 
 		DriveRotateMotionMagic rotateToGearPegCmd = new DriveRotateMotionMagic(rpm, 0, turnRadiusInches, clockwise, rotateCenter, visionParams);	
 		
-		//resultGroup.addSequential(visionCmd1);
-		//resultGroup.addSequential(rotateToGearPegCmd);
+		resultGroup.addSequential(visionCmd1);
+		resultGroup.addSequential(rotateToGearPegCmd);
 		resultGroup.addSequential(drive1);
 
 		
@@ -255,12 +255,12 @@ public class MotionProfileLibrary
 		boolean rotateCenter = true;
 		
 		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter, visionParams);
-		DriveRotateMotionMagic rotateCmdCCW = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, false, rotateCenter, visionParams);
+	
 
 		
 		
-		//FHE TODO: 18 inches might not be right.
-		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity, 36, false);
+		//drive after rotate.
+		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity, 31.177, false);
 				
 		DeliverGearForward gearForward = new DeliverGearForward();
 		DeliverGearForward gearForward2 = new DeliverGearForward();
@@ -272,17 +272,17 @@ public class MotionProfileLibrary
 		WaitCommand waitCmd4 = new WaitCommand(1);
 		
 		String targetName = "Gear";
-		//VisionParameters visionParams = new VisionParameters(null,null);
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3);
+
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,2);
 		
 		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
 		
-		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 36, true);
+		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);
 		
 		double turnRadiusInches = 0;
 		
-		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(straightVelocity,  114.5, true);
+		
 		
 		DriveRotateMotionMagic rotateToGearPegCmd = new DriveRotateMotionMagic(rpm, 0, turnRadiusInches, clockwise, rotateCenter, visionParams);	
 
@@ -320,7 +320,7 @@ public class MotionProfileLibrary
 	
 	public static MotionCommandGroup getRightGearPlacementSequence()
 	{
-double drive1Distance = 75.385;
+		double drive1Distance = 75.385;
 		
 		VisionParameters visionParams = new VisionParameters(null,null);
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
@@ -342,7 +342,7 @@ double drive1Distance = 75.385;
 
 		
 		
-		//FHE TODO: 18 inches might not be right.
+	
 		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity, 36, false);
 				
 		DeliverGearForward gearForward = new DeliverGearForward();

@@ -249,6 +249,6 @@ public class GearVision extends Vision {
 		double pixelRatioHorizontal = centerhalf / (pixelWidth/2);
 		double angle = halfFOV * pixelRatioHorizontal;
 		
-		return  new Double(-angle);
+		return  new Double(angle);
 	}
 }

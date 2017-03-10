@@ -56,6 +56,7 @@ public class GetVisionInfo extends Command {
     		
     		currentAngleSample = Robot.vision.getAngleToGear();
     		visionParameters.DistanceToTarget = Robot.vision.getDistanceToGear();
+   		
     	}
     	else if (targetName == "Boiler")
     	{
@@ -65,7 +66,7 @@ public class GetVisionInfo extends Command {
     	}
     	
     	
-    	 System.out.println("currentAngleSample: " + currentAngleSample);
+    	 //System.out.println("currentAngleSample: " + currentAngleSample + "\t currentDistance:" + visionParameters.DistanceToTarget);
     	if (currentAngleSample != null)
     	{
     		sampleCount++;
@@ -96,7 +97,8 @@ public class GetVisionInfo extends Command {
     			 System.out.println("WARNING:averageAquiredAngle is NULL. Setting to 0.0");
     		 }
     		 visionParameters.AngleToTarget = averageAquiredAngle;
-    		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget);
+
+    		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
     	 }
     	
     	

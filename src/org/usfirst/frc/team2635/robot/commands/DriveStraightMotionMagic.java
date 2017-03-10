@@ -95,6 +95,7 @@ public class DriveStraightMotionMagic extends Command {
     	System.out.println("DriveStraightMotionMagic end");
     	Robot.drive.initMotionMagic();
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
+    	
 
     }
 
