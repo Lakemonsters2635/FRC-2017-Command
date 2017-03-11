@@ -162,7 +162,7 @@ public class MotionProfileLibrary
 		//double distance1 = 40;
 		
 		double distance1 =  67.86;
-		double velocity = 50;
+		double velocity = 100;
 		double rpm = 100;
 
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
@@ -243,7 +243,7 @@ public class MotionProfileLibrary
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		//resultGroup.doesRequire(Robot.drive);
 		
-		double straightVelocity = 50;
+		double straightVelocity = 100;
 		//DriveStraightMotionMagic cmd1 = new DriveStraightMotionMagic(100, 78.5, false);
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(straightVelocity, drive1Distance, false);
 		
@@ -317,6 +317,69 @@ public class MotionProfileLibrary
 		
 	}
 	
+	public static MotionCommandGroup ChooserTest1()
+	{
+		
+		VisionParameters visionParams = new VisionParameters(null,null);
+		MotionCommandGroup resultGroup = new MotionCommandGroup();
+		
+		WaitCommand waitCmd = new WaitCommand(1);
+		WaitCommand waitCmd2 = new WaitCommand(1);
+		WaitCommand waitCmd3 = new WaitCommand(1);
+		WaitCommand waitCmd4 = new WaitCommand(1);
+		
+		DeliverGearForward gearForward = new DeliverGearForward();
+		DeliverGearForward gearForward2 = new DeliverGearForward();
+		String targetName = "Gear";
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,2); //FHE: Is two seconds for vision right?
+		
+		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
+		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
+		
+		resultGroup.addSequential(gearForward);
+		resultGroup.addSequential(waitCmd);
+		resultGroup.addSequential(gearBackward);
+		resultGroup.addSequential(waitCmd2);
+		resultGroup.addSequential(gearForward2);
+		resultGroup.addSequential(waitCmd3);
+		resultGroup.addSequential(gearBackward2);
+		resultGroup.addSequential(waitCmd4);
+		return resultGroup;
+	
+	}
+	
+	
+	public static MotionCommandGroup ChooserTest2()
+	{
+		
+		VisionParameters visionParams = new VisionParameters(null,null);
+		MotionCommandGroup resultGroup = new MotionCommandGroup();
+		
+		WaitCommand waitCmd = new WaitCommand(1);
+		WaitCommand waitCmd2 = new WaitCommand(1);
+		WaitCommand waitCmd3 = new WaitCommand(1);
+		WaitCommand waitCmd4 = new WaitCommand(1);
+		
+		DeliverGearForward gearForward = new DeliverGearForward();
+		DeliverGearForward gearForward2 = new DeliverGearForward();
+		String targetName = "Gear";
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,2); //FHE: Is two seconds for vision right?
+		
+		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
+		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
+		
+		resultGroup.addSequential(visionCmd1);
+		resultGroup.addSequential(gearForward);
+		resultGroup.addSequential(waitCmd);
+		resultGroup.addSequential(gearBackward);
+		resultGroup.addSequential(waitCmd2);
+		resultGroup.addSequential(gearForward2);
+		resultGroup.addSequential(waitCmd3);
+		resultGroup.addSequential(gearBackward2);
+		resultGroup.addSequential(waitCmd4);
+		return resultGroup;
+	
+	}
 	
 	public static MotionCommandGroup getRightGearPlacementSequence()
 	{
@@ -339,7 +402,7 @@ public class MotionProfileLibrary
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		//resultGroup.doesRequire(Robot.drive);
 		
-		double straightVelocity = 50;
+		double straightVelocity = 100;
 		//DriveStraightMotionMagic cmd1 = new DriveStraightMotionMagic(100, 78.5, false);
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(straightVelocity, drive1Distance, false);
 		

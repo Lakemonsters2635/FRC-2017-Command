@@ -67,9 +67,14 @@ public class Robot extends IterativeRobot {
 	CommandGroup teleopCommands;
 	CommandGroup logAndDrive = new CommandGroup();
 	MotionCommandGroup motionCommandGroup;
+	
 	MotionCommandGroup centerGear;
 	MotionCommandGroup leftGear;
 	MotionCommandGroup rightGear;
+	
+	MotionCommandGroup chooserTest1;
+	MotionCommandGroup chooserTest2;
+
 	
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
@@ -102,15 +107,25 @@ public class Robot extends IterativeRobot {
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		//chooser.addObject("My Auto", new MyAutoCommand());
 		
+		//FHE TEST CODE
+//		chooserTest1 = MotionProfileLibrary.ChooserTest1();
+//		chooserTest2 = MotionProfileLibrary.ChooserTest2();
+//		chooser.addObject("chooserTest1", chooserTest1);
+//		chooser.addObject("chooserTest2", chooserTest2);
+		
+		
+
 		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
 		leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
 		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
-		
-		chooser.addDefault("Center Gear", centerGear);
+		//chooser.addDefault("Center Gear", centerGear);
+		chooser.addObject("Center Gear", centerGear);
 		chooser.addObject("Left Gear", leftGear);
 		chooser.addObject("Right Gear", rightGear);
 		
-		SmartDashboard.putData("Auto mode", chooser);
+		
+		
+		SmartDashboard.putData("Autonomous mode", chooser);
 
 
 		
