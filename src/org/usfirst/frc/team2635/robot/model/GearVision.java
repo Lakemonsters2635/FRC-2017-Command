@@ -160,7 +160,7 @@ public class GearVision extends Vision {
 			}
 		}
 		if(welike!=null){
-			System.out.println("Target Found, welike:" +welike);
+			//System.out.println("Target Found, welike:" +welike);
 			if (welike < reck1.size()  && welike < reck2.size() && welike < reck3.size()){
 				Rect rect1 = reck1.get(welike);
 				Rect rect2 = reck2.get(welike);
@@ -195,7 +195,7 @@ public class GearVision extends Vision {
 		double fullYFOV = 41.8;
 		double pixelHeight = 480;
 		double halfFOV = fullYFOV / 2;
-		double distanceFromZero = 51;
+		double distanceFromZero = 16;
 		
 		
 		//get y of middle of rect
@@ -221,6 +221,7 @@ public class GearVision extends Vision {
 		double pixelRatioHorizontal = centerhalf / (pixelHeight/2);
 		double angle = halfFOV * pixelRatioHorizontal;
 		double angle_Abs = Math.abs(angle);
+		System.out.println("angle_Abs: " + angle_Abs);
 		double angle_Radians = angle_Abs*Math.PI*2/360;
 		
 		double distance = distanceFromZero/Math.tan(angle_Radians);

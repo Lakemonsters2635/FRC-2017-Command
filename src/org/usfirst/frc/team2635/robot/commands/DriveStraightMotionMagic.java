@@ -5,7 +5,7 @@ import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.DriveParameters;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
-
+import org.usfirst.frc.team2635.robot.model.UltrasonicParameters;
 
 import com.ctre.CANTalon.TalonControlMode;
 
@@ -21,6 +21,7 @@ public class DriveStraightMotionMagic extends Command {
 	public boolean reverse;
 	double rpm;
 	public int cycleCtr;
+	UltrasonicParameters ultraSonicParams;
 	
 	MotionParameters driveParams; 
 	
@@ -29,14 +30,25 @@ public class DriveStraightMotionMagic extends Command {
 	
     public DriveStraightMotionMagic(double rpm, double driveDistance, boolean reverse) {
     	
-    	
+        requires(Robot.drive);
     	this.rpm = rpm;
     	this.driveDistance = driveDistance;
     	this.reverse = reverse;
-    	driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
+    	
 
     }
 
+    public DriveStraightMotionMagic(double rpm, UltrasonicParameters ultrasonicParams) 
+    {
+    	this.ultraSonicParams = ultrasonicParams;
+    	this.rpm = rpm;
+    	this.driveDistance = 0;
+    	this.reverse = false;
+    	
+    }
+    
+
+    
 
     	
 
@@ -46,6 +58,11 @@ public class DriveStraightMotionMagic extends Command {
     protected void initialize() {
     	System.out.println("DrivesStraightMotionMagic initialize");
 
+    	if (driveDistance == 0 && ultraSonicParams != null && ultraSonicParams.rightInches != null)
+    	{
+    		driveDistance = ultraSonicParams.rightInches - RobotMap.BUMPER_TO_SONAR_DISTANCE;
+    	}
+    	driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
     	Robot.drive.DriveInit();
     	Robot.drive.initMotionMagic();
 

@@ -4,16 +4,18 @@ import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.model.UltrasonicParameters;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
  *
  */
-public class UltrasonicCommand extends Command {
+public class UltrasonicCommand extends TimedCommand {
 	public UltrasonicParameters ultrasonicParameters;
 	
-    public UltrasonicCommand(UltrasonicParameters params) {
+    public UltrasonicCommand(UltrasonicParameters params, double timeout) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	super(timeout);
     	this.ultrasonicParameters = params;
     }
 
@@ -23,17 +25,33 @@ public class UltrasonicCommand extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	ultrasonicParameters.leftInches =  Robot.ultrasonic.getLeftDistanceInches();
+    	//ultrasonicParameters.leftInches =  Robot.ultrasonic.getLeftDistanceInches();
     	ultrasonicParameters.rightInches = Robot.ultrasonic.getRightDistanceInches();
     	
-    	System.out.println("leftInches:" + ultrasonicParameters.leftInches + "\trightInches:" + ultrasonicParameters.rightInches);
+    	
     	
   
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        return false;
+    	
+    	boolean isTimedOut = this.isTimedOut();
+    	if (isTimedOut)
+    	{
+    		System.out.println("rightInches:" + ultrasonicParameters.rightInches);
+    		if (ultrasonicParameters.rightInches == null)
+    		{
+    			ultrasonicParameters.rightInches = new Double(0.0);	
+    		}
+    		else if (ultrasonicParameters.rightInches <= 11)
+    		{
+    			ultrasonicParameters.rightInches = 0.0;
+    		}
+
+    	}
+    	
+    	return isTimedOut;
     }
 
     // Called once after isFinished returns true

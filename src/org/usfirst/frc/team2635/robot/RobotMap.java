@@ -57,6 +57,10 @@ public class RobotMap {
 	
 	public static double WHEEL_RADIUS_INCHES = 3.0  * 1.0; 
 	public static double WHEEL_SEPARATION_INCHES = 23.5; 
+	
+	
+	public static double BUMPER_TO_SONAR_DISTANCE = 4.0; //Distance from Outside of bumper to front-face of sonar.
+	
 	public static double AIM_P = 10.0;
 	public static double AIM_I = 0.0;
 	public static double AIM_D = 0.0;

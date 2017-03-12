@@ -12,7 +12,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveTeleop extends Command {
 
     public DriveTeleop() {
-       requires(Robot.drive);
+      requires(Robot.drive);
     }
 
     // Called just before this Command runs the first time

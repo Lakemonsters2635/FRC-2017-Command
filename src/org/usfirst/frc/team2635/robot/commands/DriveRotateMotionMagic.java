@@ -34,6 +34,7 @@ public class DriveRotateMotionMagic extends Command {
     public DriveRotateMotionMagic(double rpm, double targetAngle, double turnRadiusInches, boolean clockwise, boolean rotateCenter, VisionParameters visionParams) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
+    	requires(Robot.drive);
 
     	this.visionParams = visionParams;
     	this.rpm = rpm;
@@ -41,17 +42,24 @@ public class DriveRotateMotionMagic extends Command {
     	this.turnRadiusInches = turnRadiusInches;
     	this.clockwise = clockwise;
     	this.rotateCenter = rotateCenter; 
-    	
+    }
+    
+    public DriveRotateMotionMagic(double rpm, VisionParameters visionParams) {
 
+    	this.visionParams = visionParams;
+    	this.rpm = rpm;
+    	this.targetAngle = 0;
+    	this.turnRadiusInches = 0;
+    	this.clockwise = true;
+    	this.rotateCenter = true; 
     	
-
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	System.out.println("DriveRotateMotionMagic initialize");
     	
-    	if (visionParams != null && visionParams.AngleToTarget != null)
+    	if (targetAngle == 0 && visionParams != null && visionParams.AngleToTarget != null)
     	{
     		targetAngle = visionParams.AngleToTarget;
     	}

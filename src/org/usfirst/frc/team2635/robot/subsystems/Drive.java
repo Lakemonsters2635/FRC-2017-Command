@@ -38,6 +38,8 @@ public class Drive extends Subsystem {
 	CANTalon leftBack;
 	RobotDrive drive;
 	
+	DriveTeleop teleopCommand; 
+	
 	public double errNavxDrive;
 	
 	Navx navx = new Navx();
@@ -91,10 +93,25 @@ public class Drive extends Subsystem {
 		
 		DriveInit();
 		
-		drive = new RobotDrive(leftFront, rightFront);
-		angleController = new PIDController(RobotMap.AIM_D, RobotMap.AIM_I, RobotMap.AIM_D,
-				new NavxUnwrappedAnglePIDSource(navx), new DrivePIDOutput(drive));
+		//teleopCommand = new DriveTeleop();
+		
+		//drive = new RobotDrive(leftFront, rightFront);
+//		angleController = new PIDController(RobotMap.AIM_D, RobotMap.AIM_I, RobotMap.AIM_D,
+//				new NavxUnwrappedAnglePIDSource(navx), new DrivePIDOutput(drive));
 
+	}
+	
+	public void enableTeleop()
+	{
+		if (!teleopCommand.isRunning())
+		{
+			teleopCommand.start();
+		}
+	}
+	
+	public void disableTeleop()
+	{
+		teleopCommand.cancel();
 	}
 	
 	public void DriveInit()
@@ -148,7 +165,8 @@ public class Drive extends Subsystem {
 		// setDefaultCommand(new MySpecialCommand());
 		// Drive system will allow joystick control when not stated otherwise.
 		System.out.println("Init default command");
-		setDefaultCommand(new DriveTeleop());
+		teleopCommand = new DriveTeleop();
+		setDefaultCommand(teleopCommand);
 	}
 
 	/**
@@ -180,7 +198,16 @@ public class Drive extends Subsystem {
 	 *            Right side mag
 	 */
 	public void tankDrive(double left, double right) {
-		drive.tankDrive(left, right);
+		
+		//drive.tankDrive(left, right);
+		rightFront.setMotionMagicCruiseVelocity(400);
+		leftFront.setMotionMagicCruiseVelocity(400);
+		
+		rightFront.setMotionMagicAcceleration(400);
+		leftFront.setMotionMagicAcceleration(400);
+		
+		rightFront.set(-right);
+		leftFront.set(left);		
 	}
 
 	/**
@@ -191,9 +218,9 @@ public class Drive extends Subsystem {
 	 * @param rotate
 	 *            Rotate mag
 	 */
-	public void arcadeDrive(double move, double rotate) {
-		drive.arcadeDrive(move, rotate);
-	}
+//	public void arcadeDrive(double move, double rotate) {
+//		drive.arcadeDrive(move, rotate);
+//	}
 
 	/**
 	 * Enable control using the navx
@@ -244,9 +271,16 @@ public class Drive extends Subsystem {
 	 * Stop driving and instruct the talons to run in motion magic mode
 	 */
 	public void initMotionMagic() {
-		drive.tankDrive(0.0, 0.0);
-
-	
+		
+		
+		
+		
+		//drive.tankDrive(0.0, 0.0);
+		//drive.free();
+		//drive.setExpiration(0);
+		
+		//drive.setLeftRightMotorOutputs(0, 0);
+		//drive.stopMotor();
 		//_talon.SetFeedbackDevice(CTRE.TalonSrx.FeedbackDevice.CtreMagEncoder_Relative);
 		//SetSensorDirection ??
 
@@ -403,7 +437,7 @@ public class Drive extends Subsystem {
 			double output = -errNavxDrive * p;
 			System.out.println("updateMotionNavx:output:" + output );
 
-			drive.arcadeDrive(0.0, output);
+			//drive.arcadeDrive(0.0, output);
 		//}
 		
 

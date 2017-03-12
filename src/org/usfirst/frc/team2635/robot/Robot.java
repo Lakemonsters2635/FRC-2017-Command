@@ -65,14 +65,14 @@ public class Robot extends IterativeRobot {
 	Command driveCommand;
 	Command logNavxCommand;
 	CommandGroup teleopCommands;
-	CommandGroup logAndDrive = new CommandGroup();
 	MotionCommandGroup motionCommandGroup;
 	
 	MotionCommandGroup centerGear;
 	MotionCommandGroup leftGear;
 	MotionCommandGroup rightGear;
+	MotionCommandGroup visionTest;
 	
-	MotionCommandGroup chooserTest1;
+	MotionCommandGroup doNothingCmd;
 	MotionCommandGroup chooserTest2;
 
 	
@@ -102,7 +102,6 @@ public class Robot extends IterativeRobot {
 		
 		teleopCommands = new TeleopCommand();
 	    //motionCommandGroup = new MotionCommandGroup();
-		//logAndDrive.addParallel(new LogNavxValues());
 		//logAndDrive.addParallel(new DriveTeleop());
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		//chooser.addObject("My Auto", new MyAutoCommand());
@@ -114,14 +113,17 @@ public class Robot extends IterativeRobot {
 //		chooser.addObject("chooserTest2", chooserTest2);
 		
 		
-
+		doNothingCmd = MotionProfileLibrary.doNothing();
 		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
 		leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
 		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
+		visionTest = MotionProfileLibrary.visionTestSequence();
 		//chooser.addDefault("Center Gear", centerGear);
+		chooser.addDefault("Do Nothing", doNothingCmd);
 		chooser.addObject("Center Gear", centerGear);
 		chooser.addObject("Left Gear", leftGear);
 		chooser.addObject("Right Gear", rightGear);
+		chooser.addObject("Vision Test", visionTest);
 		
 		
 		
@@ -133,36 +135,37 @@ public class Robot extends IterativeRobot {
 		//motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
 		//motionCommandGroup = MotionProfileLibrary.getLeftGearPlacementSequence();
 		//motionCommandGroup = MotionProfileLibrary.RotateSequence();
-		
 
+			
 		
 		
-		oi.fireButton.whileHeld(new ShooterRevUp());
-		oi.fireButton.whenReleased(new ShooterReverseFire());
-		//oi.fireButton.whenPressed(new ShooterRevUp());
-		//oi.fireButton.whenReleased(new ShooterReverseFire());
-		
-		oi.feedInButton.whileHeld(new PickupBall(-1.0));
-		oi.feedOutButton.whileHeld(new PickupBall(1.0));
-		
-		oi.climbUpButton.whileHeld(new ClimberClimb());
-		//oi.climbDownButton.whileHeld(new ClimberClimb(1.0));
-		
-		oi.deliverButton.whenPressed(new DeliverGearForward());
-		oi.deliverButton.whenReleased(new DeliverGearBackwards());
-		
-		//VisionParameters vParams = new VisionParameters(null,null);
-		//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
-		
-		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
-		//oi.navxResetButton.whenReleased(new NavxReset());
-		
-		
-		
-		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
-		//oi.motionMagicButton.whenPressed(motionCommandGroup);
-		//double targetAngle = 90;
-		//oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
+			oi.fireButton.whileHeld(new ShooterRevUp());
+			oi.fireButton.whenReleased(new ShooterReverseFire());
+			//oi.fireButton.whenPressed(new ShooterRevUp());
+			//oi.fireButton.whenReleased(new ShooterReverseFire());
+			
+			oi.feedInButton.whileHeld(new PickupBall(-1.0));
+			oi.feedOutButton.whileHeld(new PickupBall(1.0));
+			
+			oi.climbUpButton.whileHeld(new ClimberClimb());
+			//oi.climbDownButton.whileHeld(new ClimberClimb(1.0));
+			
+			oi.deliverButton.whenPressed(new DeliverGearForward());
+			oi.deliverButton.whenReleased(new DeliverGearBackwards());
+			
+			//VisionParameters vParams = new VisionParameters(null,null);
+			//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
+			
+			//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
+			//oi.navxResetButton.whenReleased(new NavxReset());
+			
+			
+			
+			//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
+			//oi.motionMagicButton.whenPressed(motionCommandGroup);
+			//double targetAngle = 90;
+			//oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
+
 	}
 
 	/**
@@ -177,6 +180,7 @@ public class Robot extends IterativeRobot {
 
 	@Override
 	public void disabledPeriodic() {
+		//System.out.println("disabledPeriodic");
 		Scheduler.getInstance().run();
 	}
 
@@ -193,7 +197,11 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void autonomousInit() {
-		//autonomousCommand = chooser.getSelected();
+		
+		
+		System.out.println("-------------------------------Started Autonomous-------------------------");
+		//drive.disableTeleop();
+				//autonomousCommand = chooser.getSelected();
 //		autonomousCommand = new DriveRoutine();
 
 //		 try {
@@ -243,14 +251,18 @@ public class Robot extends IterativeRobot {
 		// teleop starts running. If you want the autonomous to
 		// continue until interrupted by another command, remove
 		// this line or comment it out.
-//		if (autonomousCommand != null)
-//			autonomousCommand.cancel();
+		if (motionCommandGroup != null)
+			motionCommandGroup.cancel();
+		
+		//drive.enableTeleop();
 //		if (teleopCommands != null)
 //			teleopCommands.start();
+		
 		//logAndDrive.start();
 		//Drive will run joystick automatically
 		
-
+		//drive.enableTeleop();
+		
 		
 			System.out.println("teleopInit");
 			
