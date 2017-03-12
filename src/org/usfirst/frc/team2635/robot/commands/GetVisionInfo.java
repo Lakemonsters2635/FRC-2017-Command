@@ -18,8 +18,13 @@ public class GetVisionInfo extends Command {
 	public double duration;
 	Timer timer;
 	Double averageAquiredAngle;
+	Double averageAquiredDistance;
+	
 	int sampleCount;
 	Double currentAngleSample;
+	Double currentDistanceSample;
+	
+	boolean hasExecuted;
 	
     public GetVisionInfo(VisionParameters visionParams, String targetName, double duration) {
         // Use requires() here to declare subsystem dependencies
@@ -33,50 +38,48 @@ public class GetVisionInfo extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	hasExecuted = false;
     	timer.reset();
     	timer.start();
     	sampleCount = 0;
     	averageAquiredAngle = null;
-    	
+     	Robot.light.lightOn();
+
     	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
-    	
-    	
-     	Robot.light.lightOn();
- 
     	if (targetName == "Gear")
     	{    	
     		Robot.vision.gearAim();
-    		
-    		// 
-    		
     		currentAngleSample = Robot.vision.getAngleToGear();
-    		visionParameters.DistanceToTarget = Robot.vision.getDistanceToGear();
+    		currentDistanceSample = Robot.vision.getDistanceToGear();
    		
     	}
     	else if (targetName == "Boiler")
     	{
     		Robot.vision.aim();
     		currentAngleSample = Robot.vision.getAngleToBoiler();
-    		visionParameters.DistanceToTarget = Robot.vision.getDistanceToBoiler();
+    		currentDistanceSample = Robot.vision.getDistanceToBoiler();
     	}
     	
     	
-    	 //System.out.println("currentAngleSample: " + currentAngleSample + "\t currentDistance:" + visionParameters.DistanceToTarget);
-    	if (currentAngleSample != null)
-    	{
-    		sampleCount++;
-    		if (sampleCount == 1)
-    		{
-    			averageAquiredAngle = 0.0;
-    		}
-    		averageAquiredAngle =  (averageAquiredAngle * (sampleCount-1) +  currentAngleSample)/sampleCount;
-    	}
-    	
+	   	 //
+	   	if (currentAngleSample != null)
+	   	{
+	   		sampleCount++;
+	   		if (sampleCount == 1)
+	   		{
+	   			averageAquiredAngle = 0.0;
+	   			averageAquiredDistance = 0.0;
+	   		}
+	   		averageAquiredAngle =  (averageAquiredAngle * (sampleCount-1) +  currentAngleSample)/sampleCount;
+	   		averageAquiredDistance  =  (averageAquiredDistance * (sampleCount-1) +  currentDistanceSample)/sampleCount;
+	   	}
+	   	
+	   	System.out.println("currentAngleSample: " + currentAngleSample + "\t currentDistance:" + currentDistanceSample);
     	//visionParameters.AngleToTarget averageAquiredAngle 
     	
     }
@@ -84,8 +87,12 @@ public class GetVisionInfo extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	
+    
     	
-    	 //boolean timeElapsed =  (timer.get() * 1000 > duration);
+    	//System.out.println("currentAngleSample: " + currentAngleSample + "\t currentDistance:" + visionParameters.DistanceToTarget);
+
+    	
+    
     	 boolean timeElapsed = timer.hasPeriodPassed(duration);
     	 boolean isDone = false;
     	 if (timeElapsed)
@@ -94,10 +101,20 @@ public class GetVisionInfo extends Command {
     		 if (averageAquiredAngle == null)
     		 {
     			 averageAquiredAngle = 0.0;
+    			 visionParameters.AngleToTarget = 0.0;
     			 System.out.println("WARNING:averageAquiredAngle is NULL. Setting to 0.0");
     		 }
+    		 
+    		 if (averageAquiredDistance == null)
+    		 {
+    			 averageAquiredDistance = 0.0;
+    			 visionParameters.DistanceToTarget = 0.0;
+    			 System.out.println("WARNING:averageAquiredDistance is NULL. Setting to 0.0");
+    		 }	 
+    	
     		 visionParameters.AngleToTarget = averageAquiredAngle;
-
+    		 visionParameters.DistanceToTarget = averageAquiredDistance;
+    		 
     		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
     	 }
     	
