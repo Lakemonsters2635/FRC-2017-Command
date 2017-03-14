@@ -32,8 +32,8 @@ public class GearVision extends Vision {
 		reck1 = new ArrayList<Rect>();
 		reck2 = new ArrayList<Rect>();
 		reck3 = new ArrayList<Rect>();
-		for( Integer b = 0; b < boundRect.size(); b++ ) {
-			for (Integer j = 1; j< boundRect.size(); j++) {
+		for(Integer b = 0; b < boundRect.size(); b++) {
+			for (Integer j = 1; j < boundRect.size(); j++) {
 				//Integer j = b;
 				if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b) {
 					Rect rect1 = boundRect.get(b);
@@ -48,7 +48,7 @@ public class GearVision extends Vision {
 					SmartDashboard.putInt("rect1y",rect1.y);
 					SmartDashboard.putInt("rect2y", rect2.y);
 					//Decide which rectangle is left or right
-					if(rect1.x<rect2.x){
+					if (rect1.x<rect2.x) {
 						leftH = (double) rect1.height;
 						leftW = (double) rect1.width;
 						rightH = (double) rect2.height;
@@ -71,7 +71,7 @@ public class GearVision extends Vision {
 					
 					//Do checks on rectangle pair
 					Double comp1;
-					if(leftH>=rightH) {
+					if (leftH>=rightH) {
 						comp1 = leftH/rightH;
 					} else {
 						comp1 = rightH/leftH;
@@ -169,10 +169,10 @@ public class GearVision extends Vision {
 				Imgproc.rectangle( source, temp.tl(),  temp.br(),  new Scalar(0,255,0), 2, 8, 0);
 				//Create new variables for correct boxes
 				confRectFull=temp; 
-				if(rect1.x<rect2.x){
+				if (rect1.x < rect2.x) {
 					confRectLeft=rect1;
 					confRectRight=rect2;
-				} else{
+				} else {
 					confRectLeft=rect2;
 					confRectRight=rect1;
 				}
@@ -186,8 +186,7 @@ public class GearVision extends Vision {
 	}
 	
 	public Double getDistance() {
-		if(confRectRight == null)
-		{
+		if(confRectRight == null) {
 			return  null;
 		}
 		double fullYFOV = 41.8;

@@ -54,7 +54,6 @@ public class Drive extends Subsystem {
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
@@ -85,7 +84,6 @@ public class Drive extends Subsystem {
 	PIDController angleController;
 
 	public Drive() {
-
 		rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
 		leftFront = new CANTalon(RobotMap.DRIVE_LEFT_FRONT);
 		rightBack = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
@@ -101,21 +99,17 @@ public class Drive extends Subsystem {
 
 	}
 	
-	public void enableTeleop()
-	{
-		if (!teleopCommand.isRunning())
-		{
+	public void enableTeleop() {
+		if (!teleopCommand.isRunning()) {
 			teleopCommand.start();
 		}
 	}
 	
-	public void disableTeleop()
-	{
+	public void disableTeleop() {
 		teleopCommand.cancel();
 	}
 	
-	public void DriveInit()
-	{
+	public void DriveInit() {
 
 		rightFront.changeControlMode(TalonControlMode.PercentVbus);
 		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
@@ -376,10 +370,6 @@ public class Drive extends Subsystem {
 	}
 	
 	public void driveStraightMotionMagic(MotionParameters  driveParams) {
-
-
-
-		
 		rightFront.setMotionMagicCruiseVelocity(driveParams.rightVelocity);
 		leftFront.setMotionMagicCruiseVelocity(driveParams.leftVelocity);
 		
@@ -403,27 +393,20 @@ public class Drive extends Subsystem {
 	}
 	
 	
-	public void navxSetPoint(double heading)
-	{
+	public void navxSetPoint(double heading) {
 		
 	}
 	
-	public boolean motionNavxFinished(double targetHeading)
-	{
+	public boolean motionNavxFinished(double targetHeading) {
 		double currentHeading = navx.getAngle();
 		errNavxDrive = targetHeading - currentHeading;
 		
-		System.out.println("motionNavxFinished:targetHeading:" + targetHeading   + "\tcurrentHeading: " + currentHeading + "\terrNavxDrive: " + errNavxDrive);
-
-		
+		System.out.println("motionNavxFinished:targetHeading:" + targetHeading   + "\tcurrentHeading: " + currentHeading + "\terrNavxDrive: " + errNavxDrive);		
 		
 		return (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE);
-		
-
 	}
 	
-	public void updateMotionNavx(double heading)
-	{
+	public void updateMotionNavx(double heading) {
 		//this.navx.getHeading()
 		//rightFront.set(rotationParams.innerWheelRotations);
 		//leftFront.set(rotationParams.outerWheelRotations);
@@ -500,8 +483,7 @@ public class Drive extends Subsystem {
 //		
 //	}
 	
-	public Navx getNavx()
-	{
+	public Navx getNavx() {
 		return navx;
 	}
 	

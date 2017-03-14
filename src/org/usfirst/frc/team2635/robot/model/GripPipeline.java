@@ -138,23 +138,17 @@ public class GripPipeline implements VisionPipeline {
 	 * @param maskSize the size of the mask.
 	 * @param output The image in which to store the output.
 	 */
-	private void findContours(Mat input, boolean externalOnly,
-		List<MatOfPoint> contours) {
-		Mat hierarchy = new Mat();
-		contours.clear();
-		int mode;
-		if (externalOnly) {
-			mode = Imgproc.RETR_EXTERNAL;
-		}
-		else {
-			mode = Imgproc.RETR_LIST;
-		}
-		int method = Imgproc.CHAIN_APPROX_SIMPLE;
-		Imgproc.findContours(input, contours, hierarchy, mode, method);
+	private void findContours(Mat input, boolean externalOnly, List<MatOfPoint> contours) {
+			Mat hierarchy = new Mat();
+			contours.clear();
+			int mode;
+			if (externalOnly) {
+				mode = Imgproc.RETR_EXTERNAL;
+			} else {
+				mode = Imgproc.RETR_LIST;
+			}
+			int method = Imgproc.CHAIN_APPROX_SIMPLE;
+			Imgproc.findContours(input, contours, hierarchy, mode, method);
 	}
-
-
-
-
 }
 

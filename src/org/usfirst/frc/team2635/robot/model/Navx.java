@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  * Navx hardware
  */
-public class Navx  {
+public class Navx {
 
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
@@ -16,26 +16,22 @@ public class Navx  {
 	double accumulator = 0.0;
 	Double previous = null;
 	double unwrapTolerance = 180;
-	public Navx()
-	{
+	public Navx() {
 		navx = new AHRS(SPI.Port.kMXP);
 	}
 	/**
 	 * Get the angle
 	 * @return The angle from -inf to inf
 	 */
-    public double getAngle()
-    {
+    public double getAngle() {
     	return navx.getAngle();
     }
     
-    public double getHeading()
-    {
+    public double getHeading() {
     	return navx.getFusedHeading();
     }
     
-    public float[] getDisplacement()
-    {
+    public float[] getDisplacement() {
     	float[] displacement = new float[3];
     	displacement[0] = navx.getDisplacementX();
     	displacement[1] = navx.getDisplacementY();
@@ -44,8 +40,7 @@ public class Navx  {
     	return displacement;
     }
     
-    public void reset()
-    {
+    public void reset() {
         navx.reset();
         navx.resetDisplacement();
     }

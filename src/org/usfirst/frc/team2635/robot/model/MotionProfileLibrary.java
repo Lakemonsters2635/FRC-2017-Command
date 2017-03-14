@@ -13,7 +13,7 @@ import edu.wpi.first.wpilibj.command.WaitCommand;
 public class MotionProfileLibrary {
 	
 	public static MotionParameters getRotationParameters(double targetAngle, double wheelRadiusInches, double turnRadiusInches, double wheelSeparationInches,  
-														   double rpm, boolean Clockwise, boolean rotateCenter) {
+														   		double rpm, boolean Clockwise, boolean rotateCenter) {
 		final double INCHES_PER_ROTATION = wheelRadiusInches * 2 * Math.PI;
 		
 		double arcLengthRight;

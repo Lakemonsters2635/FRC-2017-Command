@@ -7,8 +7,7 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
  */
 public class MotionCommandGroup extends CommandGroup {
 
-    public MotionCommandGroup()
-    {
+    public MotionCommandGroup() {
     	//requires(Robot.drive);
         // Add Commands here:
         // e.g. addSequential(new Command1());

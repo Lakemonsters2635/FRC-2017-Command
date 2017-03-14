@@ -22,13 +22,11 @@ public class Vision {
 	ArrayList<MatOfPoint> grip;
 	UsbCamera camera;
 	
-	public Vision(UsbCamera camera)
-	{
+	public Vision(UsbCamera camera) {
 		this.camera = camera;
 	}
 	
-	public Vision()
-	{
+	public Vision() {
 	}
 	
 	

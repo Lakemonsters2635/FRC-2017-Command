@@ -36,12 +36,9 @@ public class UltrasonicCommand extends TimedCommand {
     	if (isTimedOut)
     	{
     		System.out.println("rightInches:" + ultrasonicParameters.rightInches);
-    		if (ultrasonicParameters.rightInches == null)
-    		{
+    		if (ultrasonicParameters.rightInches == null) {
     			ultrasonicParameters.rightInches = new Double(0.0);	
-    		}
-    		else if (ultrasonicParameters.rightInches <= 11)
-    		{
+    		} else if (ultrasonicParameters.rightInches <= 11) {
     			ultrasonicParameters.rightInches = 0.0;
     		}
 

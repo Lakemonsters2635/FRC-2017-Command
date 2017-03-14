@@ -14,20 +14,16 @@ public class OI {
 	public final Joystick rightJoystick = new Joystick(RobotMap.JOYSTICK_RIGHT);
 	public final Joystick leftJoystick = new Joystick(RobotMap.JOYSTICK_LEFT);
 	
-	public final double getLeftY()
-	{
+	public final double getLeftY() {
 		return -leftJoystick.getRawAxis(RobotMap.LEFT_DRIVE_Y);
 	}
-	public final double getRightY()
-	{
+	public final double getRightY() {
 		return -rightJoystick.getRawAxis(RobotMap.RIGHT_DRIVE_Y);
 	}
-	public final double getRightZ()
-	{
+	public final double getRightZ() {
 		return rightJoystick.getRawAxis(RobotMap.RIGHT_DRIVE_Z);
 	}
-	public final double getLeftZ()
-	{
+	public final double getLeftZ() {
 		return leftJoystick.getRawAxis(RobotMap.LEFT_DRIVE_Z);
 	}
 	

@@ -46,8 +46,7 @@ public class DriveCameraAnglePID extends Command {
     	
     	System.out.println("angle:" + angle);
     	System.out.println("distance:" + distance);
-    	if(angle != null)
-    	{
+    	if(angle != null) {
     		System.out.println("angle NOT NULL:" + angle);
     		Robot.drive.driveAnglePID(angle);
     	}

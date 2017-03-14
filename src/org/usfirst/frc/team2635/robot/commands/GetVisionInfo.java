@@ -16,8 +16,6 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class GetVisionInfo extends Command {
-
-
 	ArrayList<Double>  angleSamples;
 	ArrayList<Double>  distanceSamples;
 	public VisionParameters visionParameters; 
@@ -28,7 +26,6 @@ public class GetVisionInfo extends Command {
 	Double averageAquiredDistance;
 	
 	int sampleCount;
-
 	
 	boolean hasExecuted;
 	
@@ -50,9 +47,7 @@ public class GetVisionInfo extends Command {
     	sampleCount = 0;
     	angleSamples = new ArrayList<Double>();
     	distanceSamples = new ArrayList<Double>();
-     	Robot.light.lightOn();
-
-    	
+     	Robot.light.lightOn();    	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -61,39 +56,30 @@ public class GetVisionInfo extends Command {
     	Double distance = null;
     	Double roundedAngle = null;
     	Double roundedDistance = null;
-    	if (targetName == "Gear")
-    	{    	
+    	if (targetName == "Gear") {    	
     		Robot.vision.gearAim();
     		angle = Robot.vision.getAngleToGear();
     		distance = Robot.vision.getDistanceToGear();
-    		if (angle!= null){
+    		if (angle!= null) {
     		     roundedAngle = roundit(angle, 2);
     		     //System.out.println("roundedAngle: " + roundedAngle);
    				angleSamples.add(angle);
-    		}
-    		else
-    		{
+    		} else {
     			System.out.println("angle is NULL");
     		}
-    		
     		
     		if (distance!= null){
     			distanceSamples.add(distance);
     		}
-    		
-   		
-    	}
-    	else if (targetName == "Boiler")
-    	{
+    	} else if (targetName == "Boiler") {
     		Robot.vision.aim();
     		angle = Robot.vision.getAngleToBoiler();
     		distance = Robot.vision.getDistanceToBoiler();
     		
-    		if (angle!= null){
-    			
+    		if (angle!= null) {
     			angleSamples.add(angle);
     		}
-    		if (distance!= null){
+    		if (distance!= null) {
     			distanceSamples.add(distance);
     		}
     	}
@@ -109,17 +95,10 @@ public class GetVisionInfo extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	
-    
-    	
-    	//System.out.println("currentAngleSample: " + currentAngleSample + "\t currentDistance:" + visionParameters.DistanceToTarget);
-
-    	
-    
+    	//System.out.println("currentAngleSample: " + currentAngleSample + "\t currentDistance:" + visionParameters.DistanceToTarget);  	
     	 boolean timeElapsed = timer.hasPeriodPassed(duration);
     	 boolean isDone = false;
-    	 if (timeElapsed)
-    	 {
+    	 if (timeElapsed) {
     		 isDone = true;
     		 Double modeAngle = modeit(angleSamples);
     		 System.out.println("modeAngle: " + modeAngle);
@@ -130,10 +109,7 @@ public class GetVisionInfo extends Command {
     		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
     	 }
     	
-    	
-    	 return isDone;
-
-         
+    	 return isDone;        
     }
 
     // Called once after isFinished returns true
@@ -151,17 +127,13 @@ public class GetVisionInfo extends Command {
     	timer.reset();
     }
     
-    double roundit(double num, double N)
-    {
+    double roundit(double num, double N) {
         double d = Math.log10(num);
         double power;
-        if (num > 0)
-        {
+        if (num > 0) {
             d = Math.ceil(d);
             power = -(d-N);
-        }
-        else
-        {
+        } else {
             d = Math.floor(d); 
             power = -(d-N);
         }
@@ -181,9 +153,7 @@ public class GetVisionInfo extends Command {
         for (int i = 0; i < samples.size(); i++) {
            list.add(samples.get(i));
            tree.add(samples.get(i));
-        }
-   
-      
+        }     
    
         // Contains all the modes
         List<Double> modes = new ArrayList<Double>();
@@ -203,8 +173,6 @@ public class GetVisionInfo extends Command {
       
         //Just return first.
         return modes.get(0);
-      
-   
     }
 
 }

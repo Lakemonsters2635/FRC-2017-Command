@@ -1,7 +1,6 @@
 package org.usfirst.frc.team2635.robot.model;
 
-public class MotionParameters
-{
+public class MotionParameters {
 	
 	public double rightVelocity;
 	public double leftVelocity;

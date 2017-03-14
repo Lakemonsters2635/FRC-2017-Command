@@ -6,15 +6,15 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class VisionLight {
 	Solenoid vlight;
 	
-	public VisionLight(int channel){
+	public VisionLight(int channel) {
 		vlight = new Solenoid(channel);
 		
 	}
-	public void lightOn(){
+	public void lightOn() {
 		vlight.set(true);
 	}
 	
-	public void lightOff(){
+	public void lightOff() {
 		vlight.set(false);
 	}
 }

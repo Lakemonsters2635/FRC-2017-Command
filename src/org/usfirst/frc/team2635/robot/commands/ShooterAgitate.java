@@ -34,14 +34,12 @@ public class ShooterAgitate extends Command {
     	count = 0;
     	currentMagnitude = -currentMagnitude;
 	    
-    	if(!isPaused){
+    		if(!isPaused) {
 	    		currentMagnitude = 0;
 	    		isPaused = true;
 	    		magnitude = -magnitude;
 	    		System.out.println("isPaused");
-	    	}
-	    	
-	    	else{
+	    	} else {
 	    		currentMagnitude = magnitude;
 	    		isPaused = false;
 	    	}

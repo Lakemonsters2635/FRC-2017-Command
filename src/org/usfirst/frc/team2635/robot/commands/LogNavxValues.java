@@ -26,8 +26,7 @@ public class LogNavxValues extends Command {
 //    	SmartDashboard.putNumber("Navx angle" ,Robot.drive.getNavx().getAngle());
 //    	SmartDashboard.putNumber("Navx unwrapped angle", Robot.drive.getNavx().getUnwrappedAngle());
     	
-    	if (!wasPressed)
-    	{
+    	if (!wasPressed) {
 	    	System.out.println("Navx angle: " + Robot.drive.getNavx().getAngle());
 	    	System.out.println("Navx heading: " + Robot.drive.getNavx().getHeading());
 	    	float[] displacement = Robot.drive.getNavx().getDisplacement();
