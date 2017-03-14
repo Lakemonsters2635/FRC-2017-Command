@@ -68,6 +68,7 @@ public class Robot extends IterativeRobot {
 	
 	MotionCommandGroup centerGear;
 	MotionCommandGroup leftGear;
+	MotionCommandGroup leftGearSimple;
 	MotionCommandGroup rightGear;
 	MotionCommandGroup visionTest;
 	
@@ -115,12 +116,14 @@ public class Robot extends IterativeRobot {
 		doNothingCmd = MotionProfileLibrary.doNothing();
 		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
 		leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
+		leftGearSimple = MotionProfileLibrary.getSimpleLeftGearPlacementSequence();
 		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
 		visionTest = MotionProfileLibrary.visionTestSequence();
 		//chooser.addDefault("Center Gear", centerGear);
 		chooser.addDefault("Do Nothing", doNothingCmd);
 		chooser.addObject("Center Gear", centerGear);
 		chooser.addObject("Left Gear", leftGear);
+		chooser.addObject("Left Gear Simple", leftGearSimple);
 		chooser.addObject("Right Gear", rightGear);
 		chooser.addObject("Vision Test", visionTest);
 		

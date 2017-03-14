@@ -221,7 +221,7 @@ public class GearVision extends Vision {
 		double pixelRatioHorizontal = centerhalf / (pixelHeight/2);
 		double angle = halfFOV * pixelRatioHorizontal;
 		double angle_Abs = Math.abs(angle);
-		System.out.println("angle_Abs: " + angle_Abs);
+		//System.out.println("angle_Abs: " + angle_Abs);
 		double angle_Radians = angle_Abs*Math.PI*2/360;
 		
 		double distance = distanceFromZero/Math.tan(angle_Radians);

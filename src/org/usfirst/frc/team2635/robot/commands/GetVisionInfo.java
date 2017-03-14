@@ -1,5 +1,10 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
+
 import org.usfirst.frc.team2635.robot.Robot;
 
 import org.usfirst.frc.team2635.robot.model.VisionParameters;
@@ -13,16 +18,17 @@ import edu.wpi.first.wpilibj.command.Command;
 public class GetVisionInfo extends Command {
 
 
+	ArrayList<Double>  angleSamples;
+	ArrayList<Double>  distanceSamples;
 	public VisionParameters visionParameters; 
 	public String targetName;
 	public double duration;
 	Timer timer;
-	Double averageAquiredAngle;
+	//Double averageAquiredAngle;
 	Double averageAquiredDistance;
 	
 	int sampleCount;
-	Double currentAngleSample;
-	Double currentDistanceSample;
+
 	
 	boolean hasExecuted;
 	
@@ -42,7 +48,8 @@ public class GetVisionInfo extends Command {
     	timer.reset();
     	timer.start();
     	sampleCount = 0;
-    	averageAquiredAngle = null;
+    	angleSamples = new ArrayList<Double>();
+    	distanceSamples = new ArrayList<Double>();
      	Robot.light.lightOn();
 
     	
@@ -50,36 +57,52 @@ public class GetVisionInfo extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	
+    	Double angle = null;
+    	Double distance = null;
+    	Double roundedAngle = null;
+    	Double roundedDistance = null;
     	if (targetName == "Gear")
     	{    	
     		Robot.vision.gearAim();
-    		currentAngleSample = Robot.vision.getAngleToGear();
-    		currentDistanceSample = Robot.vision.getDistanceToGear();
+    		angle = Robot.vision.getAngleToGear();
+    		distance = Robot.vision.getDistanceToGear();
+    		if (angle!= null){
+    		     roundedAngle = roundit(angle, 2);
+    		     //System.out.println("roundedAngle: " + roundedAngle);
+   				angleSamples.add(angle);
+    		}
+    		else
+    		{
+    			System.out.println("angle is NULL");
+    		}
+    		
+    		
+    		if (distance!= null){
+    			distanceSamples.add(distance);
+    		}
+    		
    		
     	}
     	else if (targetName == "Boiler")
     	{
     		Robot.vision.aim();
-    		currentAngleSample = Robot.vision.getAngleToBoiler();
-    		currentDistanceSample = Robot.vision.getDistanceToBoiler();
+    		angle = Robot.vision.getAngleToBoiler();
+    		distance = Robot.vision.getDistanceToBoiler();
+    		
+    		if (angle!= null){
+    			
+    			angleSamples.add(angle);
+    		}
+    		if (distance!= null){
+    			distanceSamples.add(distance);
+    		}
     	}
     	
     	
 	   	 //
-	   	if (currentAngleSample != null)
-	   	{
-	   		sampleCount++;
-	   		if (sampleCount == 1)
-	   		{
-	   			averageAquiredAngle = 0.0;
-	   			averageAquiredDistance = 0.0;
-	   		}
-	   		averageAquiredAngle =  (averageAquiredAngle * (sampleCount-1) +  currentAngleSample)/sampleCount;
-	   		averageAquiredDistance  =  (averageAquiredDistance * (sampleCount-1) +  currentDistanceSample)/sampleCount;
-	   	}
+	 
 	   	
-	   	System.out.println("currentAngleSample: " + currentAngleSample + "\t currentDistance:" + currentDistanceSample);
+	   	//System.out.println("roundedAngle: " + roundedAngle + "\t roundedDistance:" + roundit(distance, 2));
     	//visionParameters.AngleToTarget averageAquiredAngle 
     	
     }
@@ -98,22 +121,11 @@ public class GetVisionInfo extends Command {
     	 if (timeElapsed)
     	 {
     		 isDone = true;
-    		 if (averageAquiredAngle == null)
-    		 {
-    			 averageAquiredAngle = 0.0;
-    			 visionParameters.AngleToTarget = 0.0;
-    			 System.out.println("WARNING:averageAquiredAngle is NULL. Setting to 0.0");
-    		 }
+    		 Double modeAngle = modeit(angleSamples);
+    		 System.out.println("modeAngle: " + modeAngle);
     		 
-    		 if (averageAquiredDistance == null)
-    		 {
-    			 averageAquiredDistance = 0.0;
-    			 visionParameters.DistanceToTarget = 0.0;
-    			 System.out.println("WARNING:averageAquiredDistance is NULL. Setting to 0.0");
-    		 }	 
-    	
-    		 visionParameters.AngleToTarget = averageAquiredAngle;
-    		 visionParameters.DistanceToTarget = averageAquiredDistance;
+    		 visionParameters.AngleToTarget = modeit(angleSamples);
+    		 visionParameters.DistanceToTarget = modeit(distanceSamples);
     		 
     		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
     	 }
@@ -138,4 +150,61 @@ public class GetVisionInfo extends Command {
     	timer.stop();
     	timer.reset();
     }
+    
+    double roundit(double num, double N)
+    {
+        double d = Math.log10(num);
+        double power;
+        if (num > 0)
+        {
+            d = Math.ceil(d);
+            power = -(d-N);
+        }
+        else
+        {
+            d = Math.floor(d); 
+            power = -(d-N);
+        }
+
+        return (double)(num * Math.pow(10.0, power) + 0.5) * Math.pow(10.0, -power);
+    }
+    
+    Double modeit(ArrayList<Double> samples){
+    	
+    	 
+        // list of all the numbers 
+        List<Double> list = new ArrayList<Double>();
+   
+        // list of all the numbers with no duplicates
+        TreeSet<Double> tree = new TreeSet<Double>();
+   
+        for (int i = 0; i < samples.size(); i++) {
+           list.add(samples.get(i));
+           tree.add(samples.get(i));
+        }
+   
+      
+   
+        // Contains all the modes
+        List<Double> modes = new ArrayList<Double>();
+   
+        double highmark = 0;
+        for (Double x: tree) {
+           double freq = Collections.frequency(list, x);
+           if (freq == highmark) {
+              modes.add(x);
+           }
+           if (freq > highmark) {
+              modes.clear();
+              modes.add(x);
+              highmark = freq;
+           } 
+        }
+      
+        //Just return first.
+        return modes.get(0);
+      
+   
+    }
+
 }

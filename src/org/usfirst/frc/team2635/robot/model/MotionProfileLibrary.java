@@ -288,7 +288,7 @@ public class MotionProfileLibrary
 		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);
 		
 		String targetName = "Gear";
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,1.5); //FHE: Is two seconds for vision right?
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3); //FHE: Is two seconds for vision right?
 		
 		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(rpm,  visionParams);		
 		
@@ -324,6 +324,96 @@ public class MotionProfileLibrary
 		return resultGroup;
 		
 	}
+	
+	public static MotionCommandGroup getSimpleLeftGearPlacementSequence()
+	{
+		
+		//1. Drive n Inches forward
+		//2. Vision. Get Angle (NOT DONE YET)
+		//   Rotate Angle (NOT DONE YET)
+		//3. Vision. Get Distance (NOT DONE YET)
+		//3. Drive N Inches (NOT DONE YET)
+		//4. Activate Pneumatics 
+		//Wait N seconds for Pneumatics
+		//Reverse Pneumatics
+		//Wait N seconds for reveres Pneumatics
+		
+		//DriveForward
+		//public ConfigurationInfo = new ConfigurationInfo();
+		double drive1Distance = 75.385;
+		double distanceAfter60degreeRotation = 31.177;
+		
+		VisionParameters visionParams = new VisionParameters(null,null);
+		MotionCommandGroup resultGroup = new MotionCommandGroup();
+		
+		
+		double straightVelocity = 100;
+		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(straightVelocity, drive1Distance, false);
+		
+		
+		double rpm = 75;
+		double targetAngle = 60;
+		double turnRadiusInche = 0;
+		boolean clockwise = true;
+		boolean rotateCenter = true;
+		
+		
+		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter, visionParams);
+	
+
+		
+		
+		//drive after rotate.
+		//Actual distance is 31.177, but we want to stop for sonar reading.
+		
+		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity,31.177, false);
+
+		
+		
+		straightVelocity = 75; //slow down for final approach
+
+
+		
+		DeliverGearForward gearForward = new DeliverGearForward();
+		DeliverGearForward gearForward2 = new DeliverGearForward();
+
+		
+		WaitCommand waitCmd = new WaitCommand(1);
+		WaitCommand waitCmd2 = new WaitCommand(1);
+		WaitCommand waitCmd3 = new WaitCommand(1);
+		WaitCommand waitCmd4 = new WaitCommand(1);
+		
+		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);
+		
+		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
+		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
+			
+
+		
+		resultGroup.addSequential(drive1);
+		resultGroup.addSequential(rotateCmd);
+		resultGroup.addSequential(drive2);
+		resultGroup.addSequential(gearForward);
+		resultGroup.addSequential(waitCmd);
+		resultGroup.addSequential(gearBackward);
+		resultGroup.addSequential(waitCmd2);
+		resultGroup.addSequential(gearForward2);
+		resultGroup.addSequential(waitCmd3);
+		resultGroup.addSequential(gearBackward2);
+		resultGroup.addSequential(waitCmd4);
+		resultGroup.addSequential(shortDriveBackwards);
+
+		
+		//resultGroup.addSequential(cmd2);
+		
+		//FHE:TODO. This Camera Command Looks for the boiler. We need a Vision solution for Gear Placement.
+		//		DriveCameraAnglePID findPegCmd = new DriveCameraAnglePID();
+		//		resultGroup.addSequential(findPegCmd);		
+		
+		return resultGroup;
+		
+	}
+	
 	
 	public static MotionCommandGroup doNothing()
 	{
