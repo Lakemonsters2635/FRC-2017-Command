@@ -140,25 +140,24 @@ public class GearVision extends Vision {
 			}
 		}
 		
-		for (Integer i=0;i<poss.length;i++){
-			
-			if(i==0&&poss[i]!=null){
+		for (Integer i=0;i<poss.length;i++) {
+			if (i==0&&poss[i]!=null) {
 				confirmed = poss[i];
 				welike = i;
-			} else if(i==0&&poss[i]==null){
+			} else if(i==0&&poss[i]==null) {
 				confirmed = 0.0;
 				welike = i;
-			} else if(poss[i]!=null){
+			} else if(poss[i]!=null) {
 				if(1-Math.abs(poss[i]-1)>1-Math.abs(confirmed-1)){
 					confirmed = poss[i];
 					welike = i;
 				}
 				
-			} else{
+			} else {
 				break;
 			}
 		}
-		if(welike!=null){
+		if (welike!= null) {
 			//System.out.println("Target Found, welike:" +welike);
 			if (welike < reck1.size()  && welike < reck2.size() && welike < reck3.size()){
 				Rect rect1 = reck1.get(welike);
@@ -181,12 +180,12 @@ public class GearVision extends Vision {
 		}
 	}
 	 
-	public void viewShooter(){
+	public void viewShooter() {
    		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
 	
-	public Double getDistance(){
+	public Double getDistance() {
 		if(confRectRight == null)
 		{
 			return  null;
@@ -228,9 +227,8 @@ public class GearVision extends Vision {
 		return new Double(distance);
 	}
 	
-	public Double getAngle(){
-		if(confRectRight == null||confRectLeft == null)
-		{
+	public Double getAngle() {
+		if (confRectRight == null || confRectLeft == null) {
 			return  null;
 		}
 		double fullXFOV = 53.14;
