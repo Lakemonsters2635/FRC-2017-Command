@@ -296,7 +296,7 @@ public class Drive extends Subsystem {
 	    
 	    //FOR COMPETITION BOT DO THE FOLLOWING
 	    rightFront.reverseOutput(true);
-	     leftFront.reverseOutput(true);
+	    leftFront.reverseOutput(true);
 	    //END COMPETITION BOT
 	     
 	     //WE believe the following is the same as reverseOutput
