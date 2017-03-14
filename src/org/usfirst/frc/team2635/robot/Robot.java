@@ -59,7 +59,6 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static UltrasonicSensors ultrasonic;
 	public static LightSubsystem light;
-
 	
 	Command autonomousCommand;
 	Command driveCommand;
@@ -125,46 +124,39 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Right Gear", rightGear);
 		chooser.addObject("Vision Test", visionTest);
 		
-		
-		
 		SmartDashboard.putData("Autonomous mode", chooser);
 
-
-		
 		
 		//motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
 		//motionCommandGroup = MotionProfileLibrary.getLeftGearPlacementSequence();
 		//motionCommandGroup = MotionProfileLibrary.RotateSequence();
-
-			
 		
-		
-			oi.fireButton.whileHeld(new ShooterRevUp());
-			oi.fireButton.whenReleased(new ShooterReverseFire());
-			//oi.fireButton.whenPressed(new ShooterRevUp());
-			//oi.fireButton.whenReleased(new ShooterReverseFire());
+		oi.fireButton.whileHeld(new ShooterRevUp());
+		oi.fireButton.whenReleased(new ShooterReverseFire());
+		//oi.fireButton.whenPressed(new ShooterRevUp());
+		//oi.fireButton.whenReleased(new ShooterReverseFire());
+	
+		oi.feedInButton.whileHeld(new PickupBall(-1.0));
+		oi.feedOutButton.whileHeld(new PickupBall(1.0));
 			
-			oi.feedInButton.whileHeld(new PickupBall(-1.0));
-			oi.feedOutButton.whileHeld(new PickupBall(1.0));
+		oi.climbUpButton.whileHeld(new ClimberClimb());
+		//oi.climbDownButton.whileHeld(new ClimberClimb(1.0));
 			
-			oi.climbUpButton.whileHeld(new ClimberClimb());
-			//oi.climbDownButton.whileHeld(new ClimberClimb(1.0));
+		oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
+		oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
 			
-			oi.deliverButton.whenPressed(new DeliverGearForward());
-			oi.deliverButton.whenReleased(new DeliverGearBackwards());
+		//VisionParameters vParams = new VisionParameters(null,null);
+		//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
 			
-			//VisionParameters vParams = new VisionParameters(null,null);
-			//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
-			
-			//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
-			//oi.navxResetButton.whenReleased(new NavxReset());
-			
+		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
+		//oi.navxResetButton.whenReleased(new NavxReset());
 			
 			
-			//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
-			//oi.motionMagicButton.whenPressed(motionCommandGroup);
-			//double targetAngle = 90;
-			//oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
+			
+		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
+		//oi.motionMagicButton.whenPressed(motionCommandGroup);
+		//double targetAngle = 90;
+		//oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
 
 	}
 
