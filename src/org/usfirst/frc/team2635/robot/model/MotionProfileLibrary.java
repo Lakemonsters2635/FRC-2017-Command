@@ -181,7 +181,7 @@ public class MotionProfileLibrary
 		WaitCommand waitCmd3 = new WaitCommand(1);
 		WaitCommand waitCmd4 = new WaitCommand(1);
 		
-		String targetName = "Gear";
+		//String targetName = "Gear";
 		//VisionParameters visionParams = new VisionParameters(null,null);
 		//GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3);
 		
@@ -221,32 +221,7 @@ public class MotionProfileLibrary
 	}
     	
 
-	public static MotionCommandGroup visionTestSequence()
-	{
-		VisionParameters visionParams = new VisionParameters(null,null);
-		UltrasonicParameters ultrasonicParams = new UltrasonicParameters(null, null);
-		//
-		
-		MotionCommandGroup resultGroup = new MotionCommandGroup();
-		double rpm = 300;
-		double targetAngle = 60;
-		double turnRadiusInches = 0;
-		boolean clockwise = true;
-		boolean rotateCenter = true;
-		
-		String targetName = "Gear";
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3); //FHE: Is two seconds for vision right?
-		
-		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(rpm,  visionParams);		
 
-		UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 1);
-		resultGroup.addSequential(visionCmd1);
-		resultGroup.addSequential(ultrasonicCmd1);
-		resultGroup.addSequential(rotateBasedOnVision);
-		
-		return resultGroup;
-		
-	}
 	
 	public static MotionCommandGroup getLeftGearPlacementSequence()
 	{
@@ -273,12 +248,12 @@ public class MotionProfileLibrary
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		
 		
-		double straightVelocity = 300;
+		double straightVelocity = 100;
 
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(straightVelocity, drive1Distance, false);
 		
 		
-		double rpm = 300;
+		double rpm = 75;
 		double targetAngle = 60;
 		double turnRadiusInche = 0;
 		boolean clockwise = true;
@@ -449,6 +424,35 @@ public class MotionProfileLibrary
 		return resultGroup;
 		
 	}
+	
+	
+	public static MotionCommandGroup visionTestSequence()
+	{
+		VisionParameters visionParams = new VisionParameters(null,null);
+		UltrasonicParameters ultrasonicParams = new UltrasonicParameters(null, null);
+		//
+		
+		MotionCommandGroup resultGroup = new MotionCommandGroup();
+		double rpm = 300;
+		double targetAngle = 60;
+		double turnRadiusInches = 0;
+		boolean clockwise = true;
+		boolean rotateCenter = true;
+		
+		String targetName = "Gear";
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3); //FHE: Is two seconds for vision right?
+		
+		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(rpm,  visionParams);		
+
+		UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 1);
+		resultGroup.addSequential(visionCmd1);
+		resultGroup.addSequential(ultrasonicCmd1);
+		resultGroup.addSequential(rotateBasedOnVision);
+		
+		return resultGroup;
+		
+	}
+	
 }
 	
 	
