@@ -37,14 +37,7 @@ public class DriveStraightMotionMagic extends Command {
     	this.reverse = false;
     	
     }
-    
-
-    
-
-    	
-
-
-
+   
     // Called just before this Command runs the first time
     protected void initialize() {
     	System.out.println("DrivesStraightMotionMagic initialize");
@@ -74,7 +67,7 @@ public class DriveStraightMotionMagic extends Command {
     	//if (cycleCtr > 1000)
     	//{
     		//System.out.println("DriveStraightMotionMagic execute");
-    		Robot.drive.driveStraightMotionMagic(driveParams);
+    	Robot.drive.driveStraightMotionMagic(driveParams);
     		//cycleCtr = 0;
     	//}
     	
@@ -85,8 +78,7 @@ public class DriveStraightMotionMagic extends Command {
     	boolean done = Robot.drive.motionMagicDone(driveParams, Robot.drive.DRIVE_ERROR_TOLERANCE);
     	if (done) {
     		System.out.println("DriveStraightMotionMagic is done");
-    	}
-    	else {
+    	} else {
     		//System.out.println("DriveStraightMotionMagic is NOT done");
     	}
     		
