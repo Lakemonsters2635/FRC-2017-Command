@@ -27,8 +27,7 @@ public class DeliverGearBackwards extends TimedCommand {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	boolean isTimedOut = this.isTimedOut();
-    	return isTimedOut;
+    	return this.isTimedOut();
     }
 
     // Called once after isFinished returns true
