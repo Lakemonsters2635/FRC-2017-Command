@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.usfirst.frc.team2635.robot.Robot;
+import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearBackwards;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
 import org.usfirst.frc.team2635.robot.commands.DriveCameraAnglePID;
@@ -172,8 +173,8 @@ public class MotionProfileLibrary
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, distance1, false);
 	
 				
-		DeliverGearForward gearForward = new DeliverGearForward();
-		DeliverGearForward gearForward2 = new DeliverGearForward();
+		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
 
 		
 		WaitCommand waitCmd = new WaitCommand(1);
@@ -188,8 +189,8 @@ public class MotionProfileLibrary
 		//UltrasonicParameters ultrasonicParams = new UltrasonicParameters(null, null);
 		//UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams);
 		
-		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
-		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
+		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
 		
 		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(velocity, distance1, true);
 		
@@ -260,7 +261,7 @@ public class MotionProfileLibrary
 		boolean rotateCenter = true;
 		
 		
-		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter, visionParams);
+		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter);
 	
 
 		
@@ -276,8 +277,8 @@ public class MotionProfileLibrary
 		DriveStraightMotionMagic driveOnSonar = new DriveStraightMotionMagic(straightVelocity, ultrasonicParams);
 
 		
-		DeliverGearForward gearForward = new DeliverGearForward();
-		DeliverGearForward gearForward2 = new DeliverGearForward();
+		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
 
 		
 		WaitCommand waitCmd = new WaitCommand(1);
@@ -292,8 +293,8 @@ public class MotionProfileLibrary
 		
 		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(rpm,  visionParams);		
 		
-		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
-		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
+		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
 			
 
 		
@@ -358,7 +359,7 @@ public class MotionProfileLibrary
 		boolean rotateCenter = true;
 		
 		
-		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter, visionParams);
+		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter);
 	
 
 		
@@ -374,8 +375,8 @@ public class MotionProfileLibrary
 
 
 		
-		DeliverGearForward gearForward = new DeliverGearForward();
-		DeliverGearForward gearForward2 = new DeliverGearForward();
+		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
 
 		
 		WaitCommand waitCmd = new WaitCommand(1);
@@ -385,8 +386,8 @@ public class MotionProfileLibrary
 		
 		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);
 		
-		DeliverGearBackwards gearBackward = new DeliverGearBackwards();
-		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards();
+		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
 			
 
 		
@@ -401,7 +402,7 @@ public class MotionProfileLibrary
 		resultGroup.addSequential(waitCmd3);
 		resultGroup.addSequential(gearBackward2);
 		resultGroup.addSequential(waitCmd4);
-		resultGroup.addSequential(shortDriveBackwards);
+		//resultGroup.addSequential(shortDriveBackwards);
 
 		
 		//resultGroup.addSequential(cmd2);
@@ -461,7 +462,7 @@ public class MotionProfileLibrary
 		boolean clockwise = false;
 		boolean rotateCenter = true;
 		
-		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter, visionParams);
+		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter);
 	
 
 		
@@ -524,10 +525,7 @@ public class MotionProfileLibrary
 		
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		double rpm = 300;
-		double targetAngle = 60;
-		double turnRadiusInches = 0;
-		boolean clockwise = true;
-		boolean rotateCenter = true;
+
 		
 		String targetName = "Gear";
 		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3); //FHE: Is two seconds for vision right?

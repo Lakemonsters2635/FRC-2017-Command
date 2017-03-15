@@ -120,7 +120,7 @@ public class GearVision extends Vision {
 					
 					SmartDashboard.putDouble("comp3", comp3);
 					SmartDashboard.putDouble("comp4", comp4);
-					if (rect1.height>20&&rect2.height>20){
+					if (rect1.height>20&&rect2.height>20&&.6<comp1&&1.4>comp1&&.6<comp2&&1.4>comp2&&.6<comp3&&1.4>comp3&&.6<comp4&&1.4>comp4){
 						Double done = 1 - (1 * Math.abs(4 - (comp1+comp2+comp3+comp4)));
 						for(int i=0;i<999;i++){
 							if(poss[i]==null){

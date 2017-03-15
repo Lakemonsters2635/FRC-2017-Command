@@ -60,6 +60,7 @@ public class Robot extends IterativeRobot {
 	public static UltrasonicSensors ultrasonic;
 	public static LightSubsystem light;
 	
+
 	Command autonomousCommand;
 	Command driveCommand;
 	Command logNavxCommand;
@@ -85,6 +86,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		System.out.println("robotInit");
+		
+
+		
 		oi = new OI();
 		drive = new Drive();
 		shooter = new Shooter();
@@ -101,33 +105,10 @@ public class Robot extends IterativeRobot {
 		
 		
 		teleopCommands = new TeleopCommand();
-	    //motionCommandGroup = new MotionCommandGroup();
-		//logAndDrive.addParallel(new DriveTeleop());
-		//chooser.addDefault("Default Auto", new ExampleCommand());
-		//chooser.addObject("My Auto", new MyAutoCommand());
 		
-		//FHE TEST CODE
-//		chooserTest1 = MotionProfileLibrary.ChooserTest1();
-//		chooserTest2 = MotionProfileLibrary.ChooserTest2();
-//		chooser.addObject("chooserTest1", chooserTest1);
-//		chooser.addObject("chooserTest2", chooserTest2);
+		InitializeChooser();
 		
 		
-		doNothingCmd = MotionProfileLibrary.doNothing();
-		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
-		leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
-		leftGearSimple = MotionProfileLibrary.getSimpleLeftGearPlacementSequence();
-		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
-		visionTest = MotionProfileLibrary.visionTestSequence();
-		//chooser.addDefault("Center Gear", centerGear);
-		chooser.addDefault("Do Nothing", doNothingCmd);
-		chooser.addObject("Center Gear", centerGear);
-		chooser.addObject("Left Gear", leftGear);
-		chooser.addObject("Left Gear Simple", leftGearSimple);
-		chooser.addObject("Right Gear", rightGear);
-		chooser.addObject("Vision Test", visionTest);
-		
-		SmartDashboard.putData("Autonomous mode", chooser);
 
 		
 		//motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
@@ -163,6 +144,26 @@ public class Robot extends IterativeRobot {
 
 	}
 
+	public void InitializeChooser()
+	{
+		doNothingCmd = MotionProfileLibrary.doNothing();
+		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
+		leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
+		leftGearSimple = MotionProfileLibrary.getSimpleLeftGearPlacementSequence();
+		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
+		visionTest = MotionProfileLibrary.visionTestSequence();
+		
+		chooser.initTable(null);
+		chooser.addDefault("Do Nothing", doNothingCmd);
+		chooser.addObject("Center Gear", centerGear);
+		chooser.addObject("Left Gear", leftGear);
+		chooser.addObject("Left Gear Simple", leftGearSimple);
+		chooser.addObject("Right Gear", rightGear);
+		chooser.addObject("Vision Test", visionTest);
+
+		
+		SmartDashboard.putData("Autonomous mode", chooser);
+	}
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
 	 * You can use it to reset any subsystem information you want to clear when
@@ -193,6 +194,10 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		
+		InitializeChooser();
+		//chooser.addDefault("Center Gear", centerGear);
+		
+
 		
 		System.out.println("-------------------------------Started Autonomous-------------------------");
 		//drive.disableTeleop();
