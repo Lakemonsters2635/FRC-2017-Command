@@ -78,9 +78,15 @@ public class DriveStraightMotionMagic extends Command {
     	boolean done = Robot.drive.motionMagicDone(driveParams, Robot.drive.DRIVE_ERROR_TOLERANCE);
     	if (done) {
     		System.out.println("DriveStraightMotionMagic is done");
-    	} else {
-    		//System.out.println("DriveStraightMotionMagic is NOT done");
+
+    		if (ultraSonicParams != null)
+    		{
+	    		ultraSonicParams.leftInches = null;
+	    		ultraSonicParams.rightInches = null;
+    		}
+
     	}
+
     		
     	return done;
     	//return false;
