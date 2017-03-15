@@ -115,6 +115,8 @@ public class Drive extends Subsystem {
 
 		driveParameters = new DriveParameters();
 		
+		initMotionMagic();
+		
 		rightFront.changeControlMode(TalonControlMode.PercentVbus);
 		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		rightFront.configEncoderCodesPerRev(250);
@@ -193,20 +195,30 @@ public class Drive extends Subsystem {
 	 */
 	public void tankDrive(double left, double right) {
 		//drive.tankDrive(left, right);
-		rightFront.setMotionMagicCruiseVelocity(400);
-		leftFront.setMotionMagicCruiseVelocity(400);
-		
-		rightFront.setMotionMagicAcceleration(400);
-		leftFront.setMotionMagicAcceleration(400);
-		
-		rightFront.set(-right);
-		leftFront.set(left);		
+		boolean tankDriveEncoders = true;
+		if (tankDriveEncoders) {
+			final int FULL_SPEED_ROTATION_INCREMENT = 3000;
+			driveParameters.rightWheelRotations += left / FULL_SPEED_ROTATION_INCREMENT;
+			driveParameters.leftWheelRotations += right / FULL_SPEED_ROTATION_INCREMENT;
+			
+			rightFront.set(driveParameters.rightWheelRotations);
+			leftFront.set(driveParameters.leftWheelRotations);
+		} else {
+			rightFront.setMotionMagicCruiseVelocity(400);
+			leftFront.setMotionMagicCruiseVelocity(400);
+			
+			rightFront.setMotionMagicAcceleration(400);
+			leftFront.setMotionMagicAcceleration(400);
+			
+			rightFront.set(-right);
+			leftFront.set(left);
+		}
 	}
 	
 	public void tankDriveMagicMotion(double left, double right) {
 		final int FULL_SPEED_ROTATION_INCREMENT = 3000;
-		driveParameters.rightWheelRotations = left / FULL_SPEED_ROTATION_INCREMENT;
-		driveParameters.leftWheelRotations = right / FULL_SPEED_ROTATION_INCREMENT;
+		driveParameters.rightWheelRotations += left / FULL_SPEED_ROTATION_INCREMENT;
+		driveParameters.leftWheelRotations += right / FULL_SPEED_ROTATION_INCREMENT;
 		
 		rightFront.set(driveParameters.rightWheelRotations);
 		leftFront.set(driveParameters.leftWheelRotations);
