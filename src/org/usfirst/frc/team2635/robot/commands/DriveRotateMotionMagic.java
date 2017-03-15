@@ -45,7 +45,6 @@ public class DriveRotateMotionMagic extends Command {
     }
     
     public DriveRotateMotionMagic(double rpm, VisionParameters visionParams) {
-
     	this.visionParams = visionParams;
     	this.rpm = rpm;
     	this.targetAngle = 0;
@@ -60,8 +59,10 @@ public class DriveRotateMotionMagic extends Command {
     	System.out.println("DriveRotateMotionMagic initialize");
     	
 
-    	if (targetAngle == 0 && visionParams != null && visionParams.AngleToTarget != null)
-    	{
+
+
+
+    	if (targetAngle == 0 && visionParams != null && visionParams.AngleToTarget != null) {
     		targetAngle = visionParams.AngleToTarget;
     		System.out.println("DriveRotate.visionParams.AngleToTarget:" + visionParams.AngleToTarget);
     	}
@@ -88,17 +89,13 @@ public class DriveRotateMotionMagic extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	//System.out.println("DriveRotateMotionMagic execute");
-    	
-    	
-    	Robot.drive.rotateMotionMagic(rotationParams);
-    	
-    	
+    	Robot.drive.rotateMotionMagic(rotationParams);   	
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	boolean done = Robot.drive.motionMagicDone(rotationParams, Robot.drive.ROTATE_ERROR_TOLERANCE);
-    	if (done){
+    	if (done) {
     		System.out.println("DriveRotateMotionMagic is done");
         	rpm = 0;
         	targetAngle = 0;
