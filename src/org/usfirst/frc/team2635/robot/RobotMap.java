@@ -56,7 +56,8 @@ public class RobotMap {
 	public static final int BUTTON_NAVX_RESET = 11;
 	
 	public static final double WHEEL_RADIUS_INCHES = 3.0  * 1.0; 
-	public static final double WHEEL_SEPARATION_INCHES = 23.5; 
+	public static final double WHEEL_SEPARATION_INCHES = 23.5;
+	public static final int CANTALON_ENCODER_PPR = 100; //TODO set this value to what it is actuall
 	
 	public static final double BUMPER_TO_SONAR_DISTANCE = 4.0; //Distance from Outside of bumper to front-face of sonar.
 	
