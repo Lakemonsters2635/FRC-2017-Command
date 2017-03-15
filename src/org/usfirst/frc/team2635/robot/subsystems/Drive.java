@@ -40,6 +40,8 @@ public class Drive extends Subsystem {
 	
 	DriveTeleop teleopCommand; 
 	
+	DriveParameters driveParameters;
+	
 	public double errNavxDrive;
 	
 	Navx navx = new Navx();
@@ -110,8 +112,9 @@ public class Drive extends Subsystem {
 	}
 	
 	public void driveInit() {
-		DriveParameters driveParameters = new DriveParameters();
 
+		driveParameters = new DriveParameters();
+		
 		rightFront.changeControlMode(TalonControlMode.PercentVbus);
 		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		rightFront.configEncoderCodesPerRev(250);
@@ -201,7 +204,12 @@ public class Drive extends Subsystem {
 	}
 	
 	public void tankDriveMagicMotion(double left, double right) {
-		 
+		final int FULL_SPEED_ROTATION_INCREMENT = 3000;
+		driveParameters.rightWheelRotations = left / FULL_SPEED_ROTATION_INCREMENT;
+		driveParameters.leftWheelRotations = right / FULL_SPEED_ROTATION_INCREMENT;
+		
+		rightFront.set(driveParameters.rightWheelRotations);
+		leftFront.set(driveParameters.leftWheelRotations);
 	}
 	
 	public void scootch(double throttle, double speed, double range) {
