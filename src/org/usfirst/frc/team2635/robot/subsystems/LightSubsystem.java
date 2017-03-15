@@ -12,15 +12,15 @@ public class LightSubsystem extends Subsystem {
     // here. Call these from Commands.
 Solenoid vlight;
 	
-	public LightSubsystem(int channel){
+	public LightSubsystem(int channel) {
 		vlight = new Solenoid(channel);
 		
 	}
-	public void lightOn(){
+	public void lightOn() {
 		vlight.set(true);
 	}
 	
-	public void lightOff(){
+	public void lightOff() {
 		vlight.set(false);
 	}
 	

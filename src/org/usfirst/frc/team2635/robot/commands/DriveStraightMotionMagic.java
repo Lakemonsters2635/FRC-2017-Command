@@ -15,8 +15,6 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveStraightMotionMagic extends Command {
-
-	
 	public double driveDistance;
 	public boolean reverse;
 	double rpm;
@@ -25,41 +23,26 @@ public class DriveStraightMotionMagic extends Command {
 	
 	MotionParameters driveParams; 
 	
-	
-	
-	
     public DriveStraightMotionMagic(double rpm, double driveDistance, boolean reverse) {
-    	
         requires(Robot.drive);
     	this.rpm = rpm;
     	this.driveDistance = driveDistance;
     	this.reverse = reverse;
-    	
-
     }
 
-    public DriveStraightMotionMagic(double rpm, UltrasonicParameters ultrasonicParams) 
-    {
+    public DriveStraightMotionMagic(double rpm, UltrasonicParameters ultrasonicParams) {
     	this.ultraSonicParams = ultrasonicParams;
     	this.rpm = rpm;
     	this.driveDistance = 0;
     	this.reverse = false;
     	
     }
-    
-
-    
-
-    	
-
-
-
+   
     // Called just before this Command runs the first time
     protected void initialize() {
     	System.out.println("DrivesStraightMotionMagic initialize");
 
-    	if (driveDistance == 0 && ultraSonicParams != null && ultraSonicParams.rightInches != null)
-    	{
+    	if (driveDistance == 0 && ultraSonicParams != null && ultraSonicParams.rightInches != null){
     		driveDistance = ultraSonicParams.rightInches - RobotMap.BUMPER_TO_SONAR_DISTANCE;
     	}
     	driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
@@ -84,7 +67,7 @@ public class DriveStraightMotionMagic extends Command {
     	//if (cycleCtr > 1000)
     	//{
     		//System.out.println("DriveStraightMotionMagic execute");
-    		Robot.drive.driveStraightMotionMagic(driveParams);
+    	Robot.drive.driveStraightMotionMagic(driveParams);
     		//cycleCtr = 0;
     	//}
     	
@@ -93,13 +76,9 @@ public class DriveStraightMotionMagic extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	boolean done = Robot.drive.motionMagicDone(driveParams, Robot.drive.DRIVE_ERROR_TOLERANCE);
-    	if (done)
-    	{
+    	if (done) {
     		System.out.println("DriveStraightMotionMagic is done");
-
-    	}
-    	else
-    	{
+    	} else {
     		//System.out.println("DriveStraightMotionMagic is NOT done");
     	}
     		
@@ -112,8 +91,6 @@ public class DriveStraightMotionMagic extends Command {
     	System.out.println("DriveStraightMotionMagic end");
     	Robot.drive.initMotionMagic();
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
-    	
-
     }
 
     // Called when another command which requires one or more of the same
