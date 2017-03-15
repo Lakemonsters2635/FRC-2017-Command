@@ -96,6 +96,11 @@ public class DriveStraightMotionMagic extends Command {
     	if (done)
     	{
     		System.out.println("DriveStraightMotionMagic is done");
+    		if (ultraSonicParams != null)
+    		{
+	    		ultraSonicParams.leftInches = null;
+	    		ultraSonicParams.rightInches = null;
+    		}
 
     	}
     	else

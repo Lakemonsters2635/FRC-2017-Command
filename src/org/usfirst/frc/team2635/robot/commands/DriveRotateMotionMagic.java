@@ -59,11 +59,15 @@ public class DriveRotateMotionMagic extends Command {
     protected void initialize() {
     	System.out.println("DriveRotateMotionMagic initialize");
     	
+
     	if (targetAngle == 0 && visionParams != null && visionParams.AngleToTarget != null)
     	{
     		targetAngle = visionParams.AngleToTarget;
     		System.out.println("DriveRotate.visionParams.AngleToTarget:" + visionParams.AngleToTarget);
     	}
+    	
+    		
+    		
     	
     	
     	System.out.println("DriveRotate.targetAngle:" + targetAngle);
@@ -99,7 +103,11 @@ public class DriveRotateMotionMagic extends Command {
         	rpm = 0;
         	targetAngle = 0;
         	turnRadiusInches = 0;
-    		
+        	if (visionParams != null)
+        	{
+	    		visionParams.AngleToTarget = null;
+	    		visionParams.DistanceToTarget = null;
+        	}
     	}
     	return done;
     }

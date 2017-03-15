@@ -120,7 +120,7 @@ public class GearVision extends Vision {
 					
 					SmartDashboard.putDouble("comp3", comp3);
 					SmartDashboard.putDouble("comp4", comp4);
-					if (rect1.height>20&&rect2.height>20&&.6<comp1&&1.4>comp1&&.6<comp2&&1.4>comp2&&.6<comp3&&1.4>comp3&&.6<comp4&&1.4>comp4){
+					if (rect1.height>20&&rect2.height>20&&.7<comp1&&1.3>comp1&&.7<comp2&&1.3>comp2&&.7<comp3&&1.3>comp3&&.7<comp4&&1.3>comp4){
 						Double done = 1 - (1 * Math.abs(4 - (comp1+comp2+comp3+comp4)));
 						for(int i=0;i<999;i++){
 							if(poss[i]==null){
@@ -184,6 +184,12 @@ public class GearVision extends Vision {
 	 
 	public void viewShooter(){
    		//put the processed image with rectangles on smartdashboard
+		Point line11 = new Point(0,240);
+		Point line12 = new Point(620,240);
+		Point line21 = new Point(320,0);
+		Point line22 = new Point(320,480);
+		Imgproc.line(source, line11, line12, new Scalar(255,255,255));
+		Imgproc.line(source, line21, line22, new Scalar(255,255,255));
 		cvSource.putFrame(source);
 	}
 	
