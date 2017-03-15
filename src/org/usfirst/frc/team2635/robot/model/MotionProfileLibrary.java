@@ -517,6 +517,22 @@ public class MotionProfileLibrary
 	}
 	
 	
+	public static MotionCommandGroup RotateTest()
+	{
+		VisionParameters visionParams = new VisionParameters(null,null);
+		double rpm = 100;
+		double targetAngle = 60;
+		double turnRadiusInche = 0;
+		boolean clockwise = false;
+		boolean rotateCenter = true;
+		
+		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle, turnRadiusInche, clockwise, rotateCenter);
+		MotionCommandGroup resultGroup = new MotionCommandGroup();
+
+		
+		return resultGroup;
+	}
+	
 	public static MotionCommandGroup visionTestSequence()
 	{
 		VisionParameters visionParams = new VisionParameters(null,null);
