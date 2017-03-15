@@ -31,12 +31,12 @@ public class DriveRotateMotionMagic extends Command {
 	
 	MotionParameters rotationParams; 
 	
-    public DriveRotateMotionMagic(double rpm, double targetAngle, double turnRadiusInches, boolean clockwise, boolean rotateCenter, VisionParameters visionParams) {
+    public DriveRotateMotionMagic(double rpm, double targetAngle, double turnRadiusInches, boolean clockwise, boolean rotateCenter) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
 
-    	this.visionParams = visionParams;
+    	
     	this.rpm = rpm;
     	this.targetAngle = targetAngle;
     	this.turnRadiusInches = turnRadiusInches;
@@ -60,7 +60,11 @@ public class DriveRotateMotionMagic extends Command {
     	
     	if (targetAngle == 0 && visionParams != null && visionParams.AngleToTarget != null) {
     		targetAngle = visionParams.AngleToTarget;
+    		System.out.println("DriveRotate.visionParams.AngleToTarget:" + visionParams.AngleToTarget);
     	}
+    	
+    	
+    	System.out.println("DriveRotate.targetAngle:" + targetAngle);
     	rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
 				RobotMap.WHEEL_RADIUS_INCHES, turnRadiusInches, RobotMap.WHEEL_SEPARATION_INCHES, rpm, clockwise,
 				rotateCenter);
@@ -86,6 +90,10 @@ public class DriveRotateMotionMagic extends Command {
     	boolean done = Robot.drive.motionMagicDone(rotationParams, Robot.drive.ROTATE_ERROR_TOLERANCE);
     	if (done) {
     		System.out.println("DriveRotateMotionMagic is done");
+        	rpm = 0;
+        	targetAngle = 0;
+        	turnRadiusInches = 0;
+    		
     	}
     	return done;
     }
@@ -100,6 +108,9 @@ public class DriveRotateMotionMagic extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	System.out.println("DriveRotateMotionMagic interrupted");
+    	rpm = 0;
+    	targetAngle = 0;
+    	turnRadiusInches = 0;
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
     }
 }

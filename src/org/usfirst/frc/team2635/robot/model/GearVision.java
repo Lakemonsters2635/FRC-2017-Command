@@ -23,19 +23,20 @@ public class GearVision extends Vision {
 	Double confirmed;
 	Integer welike;
 	
-	public GearVision(UsbCamera camera) {
+	public GearVision(UsbCamera camera){
 		super(camera);
 	}
 	
-	public void confirmBox() {
+	public void confirmBox(){
 		Double[] poss = new Double[999];
 		reck1 = new ArrayList<Rect>();
 		reck2 = new ArrayList<Rect>();
 		reck3 = new ArrayList<Rect>();
-		for(Integer b = 0; b < boundRect.size(); b++) {
-			for (Integer j = 1; j < boundRect.size(); j++) {
+		for( Integer b = 0; b < boundRect.size(); b++ ){
+			for (Integer j = 1; j< boundRect.size(); j++){
 				//Integer j = b;
-				if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b) {
+				if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b){
+				
 					Rect rect1 = boundRect.get(b);
 					Rect rect2 = boundRect.get(j);
 					Rect temp;
@@ -48,7 +49,7 @@ public class GearVision extends Vision {
 					SmartDashboard.putInt("rect1y",rect1.y);
 					SmartDashboard.putInt("rect2y", rect2.y);
 					//Decide which rectangle is left or right
-					if (rect1.x<rect2.x) {
+					if(rect1.x<rect2.x){
 						leftH = (double) rect1.height;
 						leftW = (double) rect1.width;
 						rightH = (double) rect2.height;
@@ -57,7 +58,8 @@ public class GearVision extends Vision {
 						//Uncomment to see what box is being tested
 						//Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
 						check = 0;
-					} else {
+					}
+					else {
 						leftH = (double) rect2.height;
 						leftW = (double) rect2.width;
 						rightH = (double) rect1.height;
@@ -71,21 +73,21 @@ public class GearVision extends Vision {
 					
 					//Do checks on rectangle pair
 					Double comp1;
-					if (leftH>=rightH) {
+					if(leftH>=rightH){
 						comp1 = leftH/rightH;
 					} else {
 						comp1 = rightH/leftH;
 					}
 					Double comp2;
-					if (leftH >= rightH) {
+					if(leftH>=rightH){
 					comp2 = leftW/rightW;
 					} else {
 						comp2 = rightW/leftW;
 					}
 					
 					Double comp3;
-					if (check==0) {
-						Double comp31 = (rect1.width*4.375);
+					if(check==0){
+						Double comp31 =  (rect1.width*4.375);
 						Double comp32 = rect1.x+comp31;
 						comp3 = comp32/rect2.x;
 						//SmartDashboard.putDouble("comp31", comp31);
@@ -95,7 +97,7 @@ public class GearVision extends Vision {
 						//SmartDashboard.putDouble("rect1.x", rect1.x);
 						//SmartDashboard.putDouble("rect2.x", rect2.x);
 						
-					} else {
+					} else{
 						Double comp31 = (rect2.width*4.375);
 						Double comp32 = rect2.x+comp31;
 						comp3 = comp32/rect1.x;
@@ -106,7 +108,6 @@ public class GearVision extends Vision {
 						//SmartDashboard.putDouble("rect2.x", rect2.x);
 						//SmartDashboard.putDouble("rect1.x", rect1.x);
 					}
-					
 					Double comp4;
 					Point b1 = rect1.br();
 					Point b2 = rect2.br();
@@ -119,15 +120,15 @@ public class GearVision extends Vision {
 					
 					SmartDashboard.putDouble("comp3", comp3);
 					SmartDashboard.putDouble("comp4", comp4);
-					if (rect1.height>20&&rect2.height>20) {
+					if (rect1.height>20&&rect2.height>20&&.6<comp1&&1.4>comp1&&.6<comp2&&1.4>comp2&&.6<comp3&&1.4>comp3&&.6<comp4&&1.4>comp4){
 						Double done = 1 - (1 * Math.abs(4 - (comp1+comp2+comp3+comp4)));
-						for (int i=0;i<999;i++) {
-							if (poss[i]==null) {
+						for(int i=0;i<999;i++){
+							if(poss[i]==null){
 								poss[i]=done;
-								if (rect1.x<rect2.x) {
+								if(rect1.x<rect2.x){
 									reck1.add(rect1);
 									reck2.add(rect2);
-								} else {
+								} else{
 									reck1.add(rect2);
 									reck2.add(rect1);
 								}
@@ -140,24 +141,25 @@ public class GearVision extends Vision {
 			}
 		}
 		
-		for (Integer i=0;i<poss.length;i++) {
-			if (i==0&&poss[i]!=null) {
+		for (Integer i=0;i<poss.length;i++){
+			
+			if(i==0&&poss[i]!=null){
 				confirmed = poss[i];
 				welike = i;
-			} else if(i==0&&poss[i]==null) {
+			} else if(i==0&&poss[i]==null){
 				confirmed = 0.0;
 				welike = i;
-			} else if(poss[i]!=null) {
+			} else if(poss[i]!=null){
 				if(1-Math.abs(poss[i]-1)>1-Math.abs(confirmed-1)){
 					confirmed = poss[i];
 					welike = i;
 				}
 				
-			} else {
+			} else{
 				break;
 			}
 		}
-		if (welike!= null) {
+		if(welike!=null){
 			//System.out.println("Target Found, welike:" +welike);
 			if (welike < reck1.size()  && welike < reck2.size() && welike < reck3.size()){
 				Rect rect1 = reck1.get(welike);
@@ -169,10 +171,10 @@ public class GearVision extends Vision {
 				Imgproc.rectangle( source, temp.tl(),  temp.br(),  new Scalar(0,255,0), 2, 8, 0);
 				//Create new variables for correct boxes
 				confRectFull=temp; 
-				if (rect1.x < rect2.x) {
+				if(rect1.x<rect2.x){
 					confRectLeft=rect1;
 					confRectRight=rect2;
-				} else {
+				} else{
 					confRectLeft=rect2;
 					confRectRight=rect1;
 				}
@@ -180,13 +182,14 @@ public class GearVision extends Vision {
 		}
 	}
 	 
-	public void viewShooter() {
+	public void viewShooter(){
    		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
 	
-	public Double getDistance() {
-		if(confRectRight == null) {
+	public Double getDistance(){
+		if(confRectRight == null)
+		{
 			return  null;
 		}
 		double fullYFOV = 41.8;
@@ -226,8 +229,9 @@ public class GearVision extends Vision {
 		return new Double(distance);
 	}
 	
-	public Double getAngle() {
-		if (confRectRight == null || confRectLeft == null) {
+	public Double getAngle(){
+		if(confRectRight == null||confRectLeft == null)
+		{
 			return  null;
 		}
 		double fullXFOV = 53.14;

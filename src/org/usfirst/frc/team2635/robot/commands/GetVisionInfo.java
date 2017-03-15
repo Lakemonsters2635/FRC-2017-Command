@@ -115,7 +115,8 @@ public class GetVisionInfo extends Command {
     // Called once after isFinished returns true
     protected void end() {
     	timer.stop();
-    	
+    	angleSamples.clear();
+    	distanceSamples.clear();
     	Robot.light.lightOff();
     }
 
@@ -125,6 +126,9 @@ public class GetVisionInfo extends Command {
     	Robot.light.lightOff();
     	timer.stop();
     	timer.reset();
+    	
+    	angleSamples.clear();
+    	distanceSamples.clear();
     }
     
     double roundit(double num, double N) {
