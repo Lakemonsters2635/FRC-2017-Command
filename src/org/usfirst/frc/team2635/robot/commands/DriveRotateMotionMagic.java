@@ -69,7 +69,7 @@ public class DriveRotateMotionMagic extends Command {
 				RobotMap.WHEEL_RADIUS_INCHES, turnRadiusInches, RobotMap.WHEEL_SEPARATION_INCHES, rpm, clockwise,
 				rotateCenter);
     	
-    	Robot.drive.DriveInit();
+    	Robot.drive.driveInit();
     	Robot.drive.initMotionMagic();
     	Robot.drive.setMotionMagicPIDF(
     			RobotMap.MOTION_MAGIC_P,

@@ -46,7 +46,7 @@ public class DriveStraightMotionMagic extends Command {
     		driveDistance = ultraSonicParams.rightInches - RobotMap.BUMPER_TO_SONAR_DISTANCE;
     	}
     	driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
-    	Robot.drive.DriveInit();
+    	Robot.drive.driveInit();
     	Robot.drive.initMotionMagic();
 
     	cycleCtr = 1000;

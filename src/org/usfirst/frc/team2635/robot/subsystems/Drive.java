@@ -89,7 +89,7 @@ public class Drive extends Subsystem {
 		rightBack = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
 		leftBack = new CANTalon(RobotMap.DRIVE_LEFT_BACK);
 		
-		DriveInit();
+		driveInit();
 		
 		//teleopCommand = new DriveTeleop();
 		
@@ -109,7 +109,8 @@ public class Drive extends Subsystem {
 		teleopCommand.cancel();
 	}
 	
-	public void DriveInit() {
+	public void driveInit() {
+		DriveParameters driveParameters = new DriveParameters();
 
 		rightFront.changeControlMode(TalonControlMode.PercentVbus);
 		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
@@ -148,10 +149,6 @@ public class Drive extends Subsystem {
 		rightFront.configPeakOutputVoltage(12, -12);
 		leftBack.configPeakOutputVoltage(12, -12);
 		rightBack.configPeakOutputVoltage(12, -12);
-		
-
-		
-
 	}
 
 	public void initDefaultCommand() {
@@ -192,7 +189,6 @@ public class Drive extends Subsystem {
 	 *            Right side mag
 	 */
 	public void tankDrive(double left, double right) {
-		
 		//drive.tankDrive(left, right);
 		rightFront.setMotionMagicCruiseVelocity(400);
 		leftFront.setMotionMagicCruiseVelocity(400);
@@ -202,6 +198,18 @@ public class Drive extends Subsystem {
 		
 		rightFront.set(-right);
 		leftFront.set(left);		
+	}
+	
+	public void tankDriveMagicMotion(double left, double right) {
+		 
+	}
+	
+	public void scootch(double throttle, double speed, double range) {
+		double currentRange = throttle * range;
+		if (currentRange > 0) {
+			rightFront.set(speed);
+			leftFront.set(speed);
+		}
 	}
 
 	/**
