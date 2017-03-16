@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2635.robot.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.opencv.core.Mat;
@@ -21,7 +22,8 @@ public class Vision {
 	ArrayList<Rect> boundRect;
 	ArrayList<MatOfPoint> grip;
 	UsbCamera camera;
-	
+	String currentdatehour;
+	String currentdate;
 	public Vision(UsbCamera camera) {
 		this.camera = camera;
 	}
@@ -39,6 +41,7 @@ public class Vision {
 		source = new Mat();
 		cvSource = CameraServer.getInstance().putVideo("new", 640, 480);
 		
+		currentdate = new SimpleDateFormat("MM/dd/yyy").format(new java.util.Date());
 		
 	}
 	

@@ -1,11 +1,13 @@
 package org.usfirst.frc.team2635.robot.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.UsbCamera;
@@ -183,13 +185,17 @@ public class GearVision extends Vision {
 	}
 	 
 	public void viewShooter(){
-   		//put the processed image with rectangles on smartdashboard
+   		//Draw Crosshairs
 		Point line11 = new Point(0,240);
 		Point line12 = new Point(620,240);
 		Point line21 = new Point(320,0);
 		Point line22 = new Point(320,480);
 		Imgproc.line(source, line11, line12, new Scalar(255,255,255));
 		Imgproc.line(source, line21, line22, new Scalar(255,255,255));
+		//Save Image
+		currentdatehour = new SimpleDateFormat("MM/dd/yyy HH:mm:ss:ms").format(new java.util.Date());
+		Imgcodecs.imwrite("C:\\Users\\Robby Robot\\Vision Log\\"+currentdate+"\\"+currentdatehour+".jpg", source);
+		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
 	
