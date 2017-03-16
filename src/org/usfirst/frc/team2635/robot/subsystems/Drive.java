@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
-	public static final double ROTATE_ERROR_TOLERANCE = 0.03;
+	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
 	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
 
 	public double currentHeadingOffset = 0;
@@ -375,6 +375,7 @@ public class Drive extends Subsystem {
 
 		rightFront.set(rotationParams.rightWheelRotations);
 		leftFront.set(rotationParams.leftWheelRotations);
+		
 //		System.out.println("Right wheel rotations: " + rotationParams.rightWheelRotations +
 //				"\tLeft wheel rotations: " + rotationParams.leftWheelRotations +
 //				"\tRight acceleration: " + rotationParams.rightAcceleration +

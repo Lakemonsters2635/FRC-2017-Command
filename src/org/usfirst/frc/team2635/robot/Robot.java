@@ -12,12 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team2635.robot.commands.ClimberClimb;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearBackwards;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
+import org.usfirst.frc.team2635.robot.commands.GetVisionInfo;
 import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
 import org.usfirst.frc.team2635.robot.commands.PickupBall;
 import org.usfirst.frc.team2635.robot.commands.ShooterRevUp;
 import org.usfirst.frc.team2635.robot.commands.ShooterReverseFire;
 import org.usfirst.frc.team2635.robot.commands.TeleopCommand;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
+import org.usfirst.frc.team2635.robot.model.VisionParameters;
 import org.usfirst.frc.team2635.robot.subsystems.Climber;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
 import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
@@ -64,6 +66,7 @@ public class Robot extends IterativeRobot {
 	
 	MotionCommandGroup doNothingCmd;
 	MotionCommandGroup chooserTest2;
+	MotionCommandGroup rotateTest;
 
 	
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -115,12 +118,15 @@ public class Robot extends IterativeRobot {
 		oi.climbUpButton.whileHeld(new ClimberClimb());
 		//oi.climbDownButton.whileHeld(new ClimberClimb(1.0));
 			
-		oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
-		oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
+		//oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
+		//oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
 			
-		//VisionParameters vParams = new VisionParameters(null,null);
-		//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
-			
+		oi.deliverButton.whenPressed(new DeliverGearForward());
+		oi.deliverButton.whenReleased(new DeliverGearBackwards());
+		VisionParameters vParams = new VisionParameters(null,null);
+		//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 2));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
+		oi.aimCameraButton.whileHeld(MotionProfileLibrary.visionTestSequence());
+		
 		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
 		//oi.navxResetButton.whenReleased(new NavxReset());
 			
@@ -141,6 +147,7 @@ public class Robot extends IterativeRobot {
 		leftGearSimple = MotionProfileLibrary.getSimpleLeftGearPlacementSequence();
 		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
 		visionTest = MotionProfileLibrary.visionTestSequence();
+		rotateTest = MotionProfileLibrary.rotateTestSequence();
 		
 		chooser.initTable(null);
 		chooser.addDefault("Do Nothing", doNothingCmd);
@@ -149,6 +156,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Left Gear Simple", leftGearSimple);
 		chooser.addObject("Right Gear", rightGear);
 		chooser.addObject("Vision Test", visionTest);
+		chooser.addObject("Rotation Test", rotateTest);
 
 		
 		SmartDashboard.putData("Autonomous mode", chooser);

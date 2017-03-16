@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,23 +32,29 @@ public class GetVisionInfo extends Command {
 	
     public GetVisionInfo(VisionParameters visionParams, String targetName, double duration) {
         // Use requires() here to declare subsystem dependencies
+    	//requires(Robot.light);
     	//requires(Robot.vision);
     	this.visionParameters = visionParams;
     	this.targetName = targetName;
     	this.duration = duration;
     	timer = new Timer();
     	
+    	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
     	hasExecuted = false;
+     	Robot.light.lightOn();    
     	timer.reset();
     	timer.start();
     	sampleCount = 0;
     	angleSamples = new ArrayList<Double>();
     	distanceSamples = new ArrayList<Double>();
-     	Robot.light.lightOn();    	
+    	
+    	System.out.println("Vision Initialized at "+ LocalDateTime.now());
+    	
+	
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -103,8 +110,27 @@ public class GetVisionInfo extends Command {
     		 Double modeAngle = modeit(angleSamples);
     		 System.out.println("modeAngle: " + modeAngle);
     		 
-    		 visionParameters.AngleToTarget = modeit(angleSamples);
-    		 visionParameters.DistanceToTarget = modeit(distanceSamples);
+    		 if (angleSamples.size() > 0)
+    		 {
+    			 visionParameters.AngleToTarget = modeit(angleSamples);
+    		 }
+    		 else
+    		 {
+    			 visionParameters.AngleToTarget = 0.0;
+    		 }
+    		 
+    		 if (distanceSamples.size() > 0)
+    		 {
+    			 visionParameters.DistanceToTarget = modeit(distanceSamples);
+    		 }
+    		 else
+    		 {
+    			 visionParameters.DistanceToTarget = 0.0;
+    		 }
+    			
+    		 
+    		 
+    		 System.out.println("Vision Finished at "+ LocalDateTime.now());
     		 
     		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
     	 }
@@ -117,6 +143,7 @@ public class GetVisionInfo extends Command {
     	timer.stop();
     	angleSamples.clear();
     	distanceSamples.clear();
+    	 System.out.println("Vision Ended at "+ LocalDateTime.now());
     	Robot.light.lightOff();
     }
 
@@ -129,6 +156,8 @@ public class GetVisionInfo extends Command {
     	
     	angleSamples.clear();
     	distanceSamples.clear();
+    	
+    	System.out.println("Vision Interrupted at "+ LocalDateTime.now());
     }
     
     double roundit(double num, double N) {
@@ -176,7 +205,15 @@ public class GetVisionInfo extends Command {
         }
       
         //Just return first.
-        return modes.get(0);
+        if (modes.size() > 0)
+        {
+        	return modes.get(0);
+        }
+        else
+        {
+        	return 0.0;
+        }
+        
     }
 
 }

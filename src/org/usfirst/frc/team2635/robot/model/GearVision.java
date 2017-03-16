@@ -207,7 +207,8 @@ public class GearVision extends Vision {
 		double fullYFOV = 41.8;
 		double pixelHeight = 480;
 		double halfFOV = fullYFOV / 2;
-		double distanceFromZero = 16;
+		double distanceFromZero = 10.25;
+		double cameraInclination = 6.8;
 		
 		
 		//get y of middle of rect
@@ -236,7 +237,7 @@ public class GearVision extends Vision {
 		//System.out.println("angle_Abs: " + angle_Abs);
 		double angle_Radians = angle_Abs*Math.PI*2/360;
 		
-		double distance = distanceFromZero/Math.tan(angle_Radians);
+		double distance = distanceFromZero/Math.tan(angle_Radians - cameraInclination);
 		
 		return new Double(distance);
 	}
