@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import java.time.LocalDateTime;
+
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.DriveParameters;
@@ -40,17 +42,14 @@ public class DriveStraightMotionMagic extends Command {
    
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("DrivesStraightMotionMagic initialize");
-
+    	System.out.println("DrivesStraightMotionMagic initialized at "  + LocalDateTime.now());
+       	
     	if (driveDistance == 0 && ultraSonicParams != null && ultraSonicParams.rightInches != null){
     		driveDistance = ultraSonicParams.rightInches - RobotMap.BUMPER_TO_SONAR_DISTANCE;
     	}
     	driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
     	Robot.drive.driveInit();
     	Robot.drive.initMotionMagic();
-
-    	cycleCtr = 1000;
-    	
     	Robot.drive.setMotionMagicPIDF(
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_P,
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_I,

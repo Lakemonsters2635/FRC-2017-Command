@@ -1,5 +1,6 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import java.time.LocalDateTime;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -23,15 +24,13 @@ public class DriveRotateMotionMagic extends Command {
 	double targetAngle;
 	VisionParameters visionParams;
 	double turnRadiusInches;
-	boolean clockwise;
-	boolean rotateCenter;
 	public boolean hasExecuted;
-	
+
 
 	
 	MotionParameters rotationParams; 
 	
-    public DriveRotateMotionMagic(double rpm, double targetAngle, double turnRadiusInches, boolean clockwise, boolean rotateCenter) {
+    public DriveRotateMotionMagic(double rpm, double targetAngle, double turnRadiusInches) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
@@ -40,8 +39,7 @@ public class DriveRotateMotionMagic extends Command {
     	this.rpm = rpm;
     	this.targetAngle = targetAngle;
     	this.turnRadiusInches = turnRadiusInches;
-    	this.clockwise = clockwise;
-    	this.rotateCenter = rotateCenter; 
+
     }
     
     public DriveRotateMotionMagic(double rpm, VisionParameters visionParams) {
@@ -49,33 +47,32 @@ public class DriveRotateMotionMagic extends Command {
     	this.rpm = rpm;
     	this.targetAngle = 0;
     	this.turnRadiusInches = 0;
-    	this.clockwise = true;
-    	this.rotateCenter = true; 
+
     	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("DriveRotateMotionMagic initialize");
+    	System.out.println("DriveRotateMotionMagic initialized at " + LocalDateTime.now());
     	
-
-
-
-
-    	if (targetAngle == 0 && visionParams != null && visionParams.AngleToTarget != null) {
+    	if (visionParams != null && visionParams.AngleToTarget != null)
+    	{
+    		
     		targetAngle = visionParams.AngleToTarget;
-    		System.out.println("DriveRotate.visionParams.AngleToTarget:" + visionParams.AngleToTarget);
+    		System.out.println("Get Rotation by VisionParams.AngleToTarget:" + visionParams.AngleToTarget);
+    	   	rotationParams = MotionProfileLibrary.getRotationParameters(visionParams.AngleToTarget,
+    				RobotMap.WHEEL_RADIUS_INCHES, turnRadiusInches, RobotMap.WHEEL_SEPARATION_INCHES, rpm);
+
+    	}
+    	else
+    	{
+    		System.out.println("Get Rotation by fixed:" + targetAngle);
+    		rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
+    				RobotMap.WHEEL_RADIUS_INCHES, turnRadiusInches, RobotMap.WHEEL_SEPARATION_INCHES, rpm);
     	}
     	
-    		
-    		
-    	
-    	
-    	System.out.println("DriveRotate.targetAngle:" + targetAngle);
-    	rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
-				RobotMap.WHEEL_RADIUS_INCHES, turnRadiusInches, RobotMap.WHEEL_SEPARATION_INCHES, rpm, clockwise,
-				rotateCenter);
-    	
+ 
+     	
     	Robot.drive.driveInit();
     	Robot.drive.initMotionMagic();
     	Robot.drive.setMotionMagicPIDF(
@@ -96,7 +93,7 @@ public class DriveRotateMotionMagic extends Command {
     protected boolean isFinished() {
     	boolean done = Robot.drive.motionMagicDone(rotationParams, Robot.drive.ROTATE_ERROR_TOLERANCE);
     	if (done) {
-    		System.out.println("DriveRotateMotionMagic is done");
+    		System.out.println("DriveRotateMotionMagic is done at " + LocalDateTime.now());
         	rpm = 0;
         	targetAngle = 0;
         	turnRadiusInches = 0;
@@ -105,23 +102,32 @@ public class DriveRotateMotionMagic extends Command {
 	    		visionParams.AngleToTarget = null;
 	    		visionParams.DistanceToTarget = null;
         	}
+        	
+        	
     	}
     	return done;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("DriveRotateMotionMagic end");
+    	System.out.println("DriveRotateMotionMagic ended at " + LocalDateTime.now());
+    	Robot.drive.initMotionMagic();
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
+  
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	System.out.println("DriveRotateMotionMagic interrupted");
+    	System.out.println("DriveRotateMotionMagic interrupted at " + LocalDateTime.now());
     	rpm = 0;
     	targetAngle = 0;
     	turnRadiusInches = 0;
+    	if (visionParams != null)
+    	{
+    		visionParams.AngleToTarget = null;
+    		visionParams.DistanceToTarget = null;
+    	}
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
     }
 }
