@@ -194,7 +194,7 @@ public class GearVision extends Vision {
 		Imgproc.line(source, line21, line22, new Scalar(255,255,255));
 		//Save Image
 		currentdatehour = new SimpleDateFormat("MM/dd/yyy HH:mm:ss:ms").format(new java.util.Date());
-		Imgcodecs.imwrite("C:\\Users\\Robby Robot\\Vision Log\\"+currentdate+"\\"+currentdatehour+".jpg", source);
+		Imgcodecs.imwrite("C:\\Users\\Robbie Robot\\Vision Log\\"+currentdate+"\\"+currentdatehour+".jpg", source);
 		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
