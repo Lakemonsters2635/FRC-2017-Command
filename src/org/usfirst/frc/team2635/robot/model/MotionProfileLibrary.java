@@ -167,10 +167,8 @@ public class MotionProfileLibrary
 			//System.out.println("leftAcceleration:" + leftAcceleration);
 			//
 			//System.out.println("leftWheelRotations:" + leftWheelRotations);
-			//System.out.println("rightWheelRotations:" + rightWheelRotations);
-			
-			
-			}
+			//System.out.println("rightWheelRotations:" + rightWheelRotations);		
+	}
 
 	
 	public static MotionParameters getDriveParameters(double wheelRadiusInches, double distanceInches, double rpm, boolean reverse)
