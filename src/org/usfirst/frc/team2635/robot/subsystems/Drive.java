@@ -5,7 +5,6 @@ import java.util.function.Function;
 
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
-import org.usfirst.frc.team2635.robot.model.DriveParameters;
 import org.usfirst.frc.team2635.robot.model.Navx;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
