@@ -47,6 +47,22 @@ public class Drive extends Subsystem {
 	
 	Navx navx = new Navx();
 
+	public Drive(boolean enableTankDriveWithEncoders) {
+		rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
+		leftFront = new CANTalon(RobotMap.DRIVE_LEFT_FRONT);
+		rightBack = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
+		leftBack = new CANTalon(RobotMap.DRIVE_LEFT_BACK);
+
+		driveInit();
+
+		//teleopCommand = new DriveTeleop();
+
+		//drive = new RobotDrive(leftFront, rightFront);
+//		angleController = new PIDController(RobotMap.AIM_D, RobotMap.AIM_I, RobotMap.AIM_D,
+//				new NavxUnwrappedAnglePIDSource(navx), new DrivePIDOutput(drive));
+
+	}
+
 	class NavxUnwrappedAnglePIDSource implements PIDSource {
 		Navx navx;
 
@@ -85,22 +101,6 @@ public class Drive extends Subsystem {
 	}
 
 	PIDController angleController;
-
-	public Drive() {
-		rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
-		leftFront = new CANTalon(RobotMap.DRIVE_LEFT_FRONT);
-		rightBack = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
-		leftBack = new CANTalon(RobotMap.DRIVE_LEFT_BACK);
-		
-		driveInit();
-		
-		//teleopCommand = new DriveTeleop();
-		
-		//drive = new RobotDrive(leftFront, rightFront);
-//		angleController = new PIDController(RobotMap.AIM_D, RobotMap.AIM_I, RobotMap.AIM_D,
-//				new NavxUnwrappedAnglePIDSource(navx), new DrivePIDOutput(drive));
-
-	}
 	
 	public void enableTeleop() {
 		if (!teleopCommand.isRunning()) {
@@ -133,7 +133,6 @@ public class Drive extends Subsystem {
 
 	
 	public void driveInit() {
-
 		if (enableTankDriveWithEncoders) {
 			initMotionMagic();
 		} else {
@@ -178,7 +177,6 @@ public class Drive extends Subsystem {
 
 		leftBack.changeControlMode(TalonControlMode.Follower);
 		leftBack.set(leftFront.getDeviceID());
-
 	}
 
 	/**

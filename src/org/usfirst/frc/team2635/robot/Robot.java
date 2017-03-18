@@ -48,7 +48,6 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static UltrasonicSensors ultrasonic;
 	public static LightSubsystem light;
-	
 
 	Command autonomousCommand;
 	Command driveCommand;
@@ -64,7 +63,6 @@ public class Robot extends IterativeRobot {
 	
 	MotionCommandGroup doNothingCmd;
 	MotionCommandGroup rotateTest;
-
 	
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
@@ -107,7 +105,7 @@ public class Robot extends IterativeRobot {
 		
 		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
 		//oi.navxResetButton.whenReleased(new NavxReset());
-		
+
 		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
 		//oi.motionMagicButton.whenPressed(motionCommandGroup);
 		//double targetAngle = 90;
