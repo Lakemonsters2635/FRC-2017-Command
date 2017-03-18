@@ -141,24 +141,23 @@ public class Drive extends Subsystem {
 
 	
 	public void driveInit() {
-		
-		initMotionMagic();
-		
-		rightFront.changeControlMode(TalonControlMode.PercentVbus);
-		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		rightFront.configEncoderCodesPerRev(250);
-		//rightFront.setInverted(true);
-		//leftFront.setInverted(true);
 
-		rightBack.changeControlMode(TalonControlMode.Follower);
-		rightBack.set(rightFront.getDeviceID());
+		if (enableTankDriveWithEncoders) {
+			initMotionMagic();
+		} else {
+			rightFront.changeControlMode(TalonControlMode.PercentVbus);
+			rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+			rightFront.configEncoderCodesPerRev(250);
 
-		leftFront.changeControlMode(TalonControlMode.PercentVbus);
-		leftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		leftFront.configEncoderCodesPerRev(250);
-		leftBack.changeControlMode(TalonControlMode.Follower);
-		leftBack.set(leftFront.getDeviceID());
+			rightBack.changeControlMode(TalonControlMode.Follower);
+			rightBack.set(rightFront.getDeviceID());
 
+			leftFront.changeControlMode(TalonControlMode.PercentVbus);
+			leftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+			leftFront.configEncoderCodesPerRev(250);
+			leftBack.changeControlMode(TalonControlMode.Follower);
+			leftBack.set(leftFront.getDeviceID());
+		}
 	}
 
 	public void initDefaultCommand() {
@@ -426,9 +425,9 @@ public class Drive extends Subsystem {
 		
 		//if (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE)
 		//{
-			double p = 0.01;
-			double output = -errNavxDrive * p;
-			System.out.println("updateMotionNavx:output:" + output );
+		double p = 0.01;
+		double output = -errNavxDrive * p;
+		System.out.println("updateMotionNavx:output:" + output );
 
 			//drive.arcadeDrive(0.0, output);
 		//}
