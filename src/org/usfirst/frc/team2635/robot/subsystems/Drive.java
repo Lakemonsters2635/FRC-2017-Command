@@ -40,6 +40,8 @@ public class Drive extends Subsystem {
 	
 	DriveTeleop teleopCommand; 
 	
+	DriveParameters driveParameters;
+	
 	public double errNavxDrive;
 	
 	Navx navx = new Navx();
@@ -109,9 +111,27 @@ public class Drive extends Subsystem {
 		}
 	}
 	
+	public boolean teleopIsRunning()
+	{
+		if (teleopCommand != null)
+		{
+			return teleopCommand.isRunning();
+		}
+		else
+		{
+			return false;
+		}
+	
+	}
+	
+	
 	public void disableTeleop()
 	{
-		teleopCommand.cancel();
+		if (teleopCommand.isRunning())
+		{
+			teleopCommand.cancel();
+		}
+		
 	}
 	
 	public void DriveInit()
@@ -121,42 +141,17 @@ public class Drive extends Subsystem {
 		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		rightFront.configEncoderCodesPerRev(250);
 		//rightFront.setInverted(true);
-		
-
-		
-		//status |= _talon.ConfigNominalOutputVoltage(0f, 0f, kTimeoutMs);
-		//status |= _talon.ConfigPeakOutputVoltage(+12f, -12f, kTimeoutMs);
-		
+		//leftFront.setInverted(true);
 
 		rightBack.changeControlMode(TalonControlMode.Follower);
-		
-
 		rightBack.set(rightFront.getDeviceID());
-
 
 		leftFront.changeControlMode(TalonControlMode.PercentVbus);
 		leftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		leftFront.configEncoderCodesPerRev(250);
-		
-	
-		//leftFront.setInverted(true);
-
-
 		leftBack.changeControlMode(TalonControlMode.Follower);
 		leftBack.set(leftFront.getDeviceID());
 
-		leftFront.configNominalOutputVoltage(0, 0);
-		rightFront.configNominalOutputVoltage(0, 0);
-		leftBack.configNominalOutputVoltage(0, 0);
-		rightBack.configNominalOutputVoltage(0, 0);
-		
-		leftFront.configPeakOutputVoltage(12, -12);
-		rightFront.configPeakOutputVoltage(12, -12);
-		leftBack.configPeakOutputVoltage(12, -12);
-		rightBack.configPeakOutputVoltage(12, -12);
-		
-
-		
 
 	}
 
@@ -198,7 +193,6 @@ public class Drive extends Subsystem {
 	 *            Right side mag
 	 */
 	public void tankDrive(double left, double right) {
-		
 		//drive.tankDrive(left, right);
 		rightFront.setMotionMagicCruiseVelocity(400);
 		leftFront.setMotionMagicCruiseVelocity(400);
@@ -208,6 +202,23 @@ public class Drive extends Subsystem {
 		
 		rightFront.set(-right);
 		leftFront.set(left);		
+	}
+	
+	public void tankDriveMagicMotion(double left, double right) {
+		final int FULL_SPEED_ROTATION_INCREMENT = 3000;
+		driveParameters.rightWheelRotations = left / FULL_SPEED_ROTATION_INCREMENT;
+		driveParameters.leftWheelRotations = right / FULL_SPEED_ROTATION_INCREMENT;
+		
+		rightFront.set(driveParameters.rightWheelRotations);
+		leftFront.set(driveParameters.leftWheelRotations);
+	}
+	
+	public void scootch(double throttle, double speed, double range) {
+		double currentRange = throttle * range;
+		if (currentRange > 0) {
+			rightFront.set(speed);
+			leftFront.set(speed);
+		}
 	}
 
 	/**
@@ -294,15 +305,15 @@ public class Drive extends Subsystem {
 	
 		setDriveMode(TalonControlMode.MotionMagic);
 		
-	    rightFront.setMotionMagicCruiseVelocity(200.0);
-	    leftFront.setMotionMagicCruiseVelocity(200.0);
-	    rightFront.setMotionMagicAcceleration(400.0);
-	    leftFront.setMotionMagicAcceleration(400.0);
+//	    rightFront.setMotionMagicCruiseVelocity(200.0);
+//	    leftFront.setMotionMagicCruiseVelocity(200.0);
+//	    rightFront.setMotionMagicAcceleration(400.0);
+//	    leftFront.setMotionMagicAcceleration(400.0);
 	    //rightFront.setInverted(true);
 	    
 	    //FOR COMPETITION BOT DO THE FOLLOWING
 	    rightFront.reverseOutput(true);
-	     leftFront.reverseOutput(true);
+	    leftFront.reverseOutput(true);
 	    //END COMPETITION BOT
 	     
 	     //WE believe the following is the same as reverseOutput
@@ -376,10 +387,6 @@ public class Drive extends Subsystem {
 	}
 	
 	public void driveStraightMotionMagic(MotionParameters  driveParams) {
-
-
-
-		
 		rightFront.setMotionMagicCruiseVelocity(driveParams.rightVelocity);
 		leftFront.setMotionMagicCruiseVelocity(driveParams.leftVelocity);
 		
@@ -403,27 +410,20 @@ public class Drive extends Subsystem {
 	}
 	
 	
-	public void navxSetPoint(double heading)
-	{
+	public void navxSetPoint(double heading) {
 		
 	}
 	
-	public boolean motionNavxFinished(double targetHeading)
-	{
+	public boolean motionNavxFinished(double targetHeading) {
 		double currentHeading = navx.getAngle();
 		errNavxDrive = targetHeading - currentHeading;
 		
-		System.out.println("motionNavxFinished:targetHeading:" + targetHeading   + "\tcurrentHeading: " + currentHeading + "\terrNavxDrive: " + errNavxDrive);
-
-		
+		System.out.println("motionNavxFinished:targetHeading:" + targetHeading   + "\tcurrentHeading: " + currentHeading + "\terrNavxDrive: " + errNavxDrive);		
 		
 		return (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE);
-		
-
 	}
 	
-	public void updateMotionNavx(double heading)
-	{
+	public void updateMotionNavx(double heading) {
 		//this.navx.getHeading()
 		//rightFront.set(rotationParams.innerWheelRotations);
 		//leftFront.set(rotationParams.outerWheelRotations);
@@ -500,8 +500,7 @@ public class Drive extends Subsystem {
 //		
 //	}
 	
-	public Navx getNavx()
-	{
+	public Navx getNavx() {
 		return navx;
 	}
 	

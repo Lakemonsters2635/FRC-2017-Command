@@ -88,5 +88,7 @@ public class RobotMap {
     public static int LEFT_ULTRASONIC_CHANNEL = 1;
     public static int RIGHT_ULTRASONIC_CHANNEL = 2;
     
-    public static int VISION_LIGHT_CHANNEL = 7;
+    public static final int VISION_LIGHT_CHANNEL = 7;
+    
+    public static double GEAR_DELIVERY_TIMEOUT = 1.0;  // units are seconds
 }

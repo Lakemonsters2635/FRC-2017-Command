@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import java.time.LocalDateTime;
+
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.DriveParameters;
@@ -46,28 +48,30 @@ public class DriveStraightMotionMagic extends Command {
     	this.reverse = false;
     	
     }
-    
-
-    
-
-    	
-
-
-
+   
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("DrivesStraightMotionMagic initialize");
-
-    	if (driveDistance == 0 && ultraSonicParams != null && ultraSonicParams.rightInches != null)
+    	System.out.println("DrivesStraightMotionMagic initialized at "  + LocalDateTime.now());
+       	
+    	
+    	if (ultraSonicParams != null && ultraSonicParams.rightInches != null)
     	{
-    		driveDistance = ultraSonicParams.rightInches - RobotMap.BUMPER_TO_SONAR_DISTANCE;
+    		
+    		//targetAngle = visionParams.AngleToTarget;
+    		System.out.println("Get Drive Params by UltraSonicParams.rightInches:" + ultraSonicParams.rightInches);
+    		driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, ultraSonicParams.rightInches, rpm, reverse);
+   
     	}
-    	driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
+    	else
+    	{
+       		System.out.println("Get Drive Params by fixed distance:" + driveDistance);
+    		driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
+    	}
+    	
+    	
+    	
     	Robot.drive.DriveInit();
     	Robot.drive.initMotionMagic();
-
-    	cycleCtr = 1000;
-    	
     	Robot.drive.setMotionMagicPIDF(
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_P,
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_I,
@@ -93,14 +97,15 @@ public class DriveStraightMotionMagic extends Command {
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
     	boolean done = Robot.drive.motionMagicDone(driveParams, Robot.drive.DRIVE_ERROR_TOLERANCE);
-    	if (done)
-    	{
+    	if (done) {
     		System.out.println("DriveStraightMotionMagic is done");
 
-    	}
-    	else
-    	{
-    		//System.out.println("DriveStraightMotionMagic is NOT done");
+    		if (ultraSonicParams != null)
+    		{
+	    		ultraSonicParams.leftInches = null;
+	    		ultraSonicParams.rightInches = null;
+    		}
+
     	}
     		
     	return done;

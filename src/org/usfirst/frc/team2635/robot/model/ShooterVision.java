@@ -22,25 +22,23 @@ public class ShooterVision extends Vision {
 	Integer confirmed;
 	Integer welike;
 			
-	public ShooterVision(UsbCamera camera) 
-	{
+	public ShooterVision(UsbCamera camera) {
 		super(camera);
 	}
 	
 	@SuppressWarnings("deprecation")
-	public void confirmBox(){
+	public void confirmBox() {
 		Integer[] poss = new Integer[999];
 		
 		reck1 = new ArrayList<Rect>();
 		reck2 = new ArrayList<Rect>();
 		reck3 = new ArrayList<Rect>();
-		for( Integer b = 0; b < boundRect.size(); b++ ){
-			for (Integer j = 1; j< boundRect.size(); j++){
+		for (Integer b = 0; b < boundRect.size(); b++) {
+			for (Integer j = 1; j < boundRect.size(); j++) {
 				confRectTop=null;
 				confRectBot=null;
 				//Integer j = b;
-				if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b){
-				
+				if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b) {
 					Rect rect1 = boundRect.get(b);
 					Rect rect2 = boundRect.get(j);
 					Rect temp;
@@ -55,7 +53,7 @@ public class ShooterVision extends Vision {
 					//Decide which rectangle is top
 					Point tl1;
 					Point tl2;
-					if(rect1.y<rect2.y){
+					if (rect1.y < rect2.y) {
 						topH = rect1.height;
 						topW = rect1.width;
 						botH = rect2.height;
@@ -65,8 +63,7 @@ public class ShooterVision extends Vision {
 						temp = Imgproc.boundingRect(new MatOfPoint(rect2.br(),rect1.tl()));
 						//Uncomment to see what box is being tested
 						//Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
-					}
-					else {
+					} else {
 						topH = rect2.height;
 						topW = rect2.width;
 						botH = rect1.height;
@@ -97,14 +94,14 @@ public class ShooterVision extends Vision {
 					Imgproc.line(source, new Point(320,0), new Point(320, 480), new Scalar(255,255,255));
 					Imgproc.line(source, new Point(0,240), new Point(640, 240), new Scalar(255,255,255));
 					Integer done = 1 - (1 * Math.abs(4 - (comp1+comp2+comp3+comp4)));
-					if(rect1.width>15&&rect2.width>15){
-						for(Integer i=0;i>999;i++){
+					if (rect1.width > 15 && rect2.width > 15) {
+						for (Integer i=0; i>999; i++) {
 							if(poss[i]==null){
 								poss[i]=done;
-								if(rect1.y<rect2.y){
+								if (rect1.y < rect2.y) {
 									reck1.add(rect1);
 									reck2.add(rect2);
-								} else{
+								} else {
 									reck1.add(rect2);
 									reck2.add(rect1);
 								}
@@ -155,37 +152,37 @@ public class ShooterVision extends Vision {
 			//System.out.println("this is confirmation");
 		}
 		
-		for (Integer i=0;i>poss.length;i++){
-			if(i==0&&poss[i]!=null){
+		for (Integer i=0; i>poss.length; i++) {
+			if (i == 0 && poss[i] != null) {
 				confirmed = poss[i];
 				welike = i;
-			} else if(i==0&&poss[i]==null){
+			} else if (i == 0 && poss[i] == null) {
 				confirmed = 0;
 				welike = i;
-			} else if(poss[i]!=null){
-				if(1-Math.abs(poss[i]-1)>1-Math.abs(confirmed-1)){
+			} else if (poss[i] != null) {
+				if (1 - Math.abs(poss[i] - 1) > 1 - Math.abs(confirmed - 1)) {
 					confirmed = poss[i];
 					welike = i;
 				}
-			} else{
+			} else {
 				break;
 			}
 		}
 		
-		if(welike!=null){
+		if (welike != null) {
 			System.out.println("Target Found");
 			if (welike < reck1.size()  && welike < reck2.size() && welike < reck3.size()){
 				Rect rect1 = reck1.get(welike);
 				Rect rect2 = reck2.get(welike);
 				Rect temp = reck3.get(welike);
 				//Draw confirmed rectangles
-				Imgproc.rectangle( source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0 );
-				Imgproc.rectangle( source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0 );
-				Imgproc.rectangle( source, temp.tl(),  temp.br(),  new Scalar(0,255,0), 2, 8, 0);
+				Imgproc.rectangle(source, rect2.tl(), rect2.br(), new Scalar(0,0,255), 2, 8, 0);
+				Imgproc.rectangle(source, rect1.tl(), rect1.br(), new Scalar(0,0,255), 2, 8, 0);
+				Imgproc.rectangle(source, temp.tl(),  temp.br(),  new Scalar(0,255,0), 2, 8, 0);
 				//Create new variables for correct boxes
-				confRectFull=temp; 
-				confRectTop=rect1;
-				confRectBot=rect2;
+				confRectFull = temp; 
+				confRectTop = rect1;
+				confRectBot = rect2;
 		
 		//Post size of boundRect arraylist
 //		SmartDashboard.putInt("boundrect array size", boundRect.size());
@@ -193,14 +190,13 @@ public class ShooterVision extends Vision {
 		}
 	}
 	
-	public void viewShooter(){
+	public void viewShooter() {
 		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
 	
-	public Double getDistance(){
-		if(confRectTop == null)
-		{
+	public Double getDistance() {
+		if(confRectTop == null) {
 			return  null;
 		}
 		double fullYFOV = 41.8;
@@ -239,9 +235,8 @@ public class ShooterVision extends Vision {
 		return new Double(distance);
 	}
 	
-	public Double getAngle(){
-		if(confRectTop == null)
-		{
+	public Double getAngle() {
+		if (confRectTop == null) {
 			return  null;
 		}
 		double fullXFOV = 53.14;
@@ -260,7 +255,7 @@ public class ShooterVision extends Vision {
 		double pixelRatioHorizontal = centerhalf / (pixelWidth/2);
 		double angle = halfFOV * pixelRatioHorizontal;
 		
-		return  new Double(angle);
+		return new Double(angle);
 	}
 	
 } 

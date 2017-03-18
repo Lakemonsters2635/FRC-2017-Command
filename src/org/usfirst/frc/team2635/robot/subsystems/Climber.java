@@ -21,8 +21,7 @@ public class Climber extends Subsystem {
 	
 	public static double totalPowerLimit = 400;
 	
-    public Climber()
-    {
+    public Climber() {
     	climb1 = new CANTalon(RobotMap.ROPE_CLIMBER_1);
     	climb1.changeControlMode(TalonControlMode.Voltage);
     	
@@ -36,8 +35,7 @@ public class Climber extends Subsystem {
         //setDefaultCommand(new MySpecialCommand());
     }
 	
-    public void climb(double magnitude)
-    {
+    public void climb(double magnitude) {
     	
     	
     	double climb1Amps = climb1.getOutputCurrent();
@@ -60,16 +58,13 @@ public class Climber extends Subsystem {
     	System.out.println("totalWatts is: " + totalWatts);
     	double limitVoltage = Math.signum(magnitude)*totalPowerLimit/(climb1Amps + climb2Amps);
     	
-    	if(totalWatts > totalPowerLimit){
+    	if(totalWatts > totalPowerLimit) {
     		System.out.println("Limiting Voltage to: " + limitVoltage);
     		climb1.set(limitVoltage);
-    	}
-    	else{
+    	} else {
     		System.out.println("Setting Voltage to: " + magnitude);
     		climb1.set(magnitude);
-    	}
-    
-    	
+    	}    	
     }
 }	
 
