@@ -42,9 +42,7 @@ public class Drive extends Subsystem {
 	CANTalon leftFront;
 	CANTalon leftBack;
 	
-	DriveTeleop teleopCommand; 
-	
-	DriveParameters driveParameters;
+	DriveTeleop teleopCommand;
 	
 	public double errNavxDrive;
 	
@@ -124,8 +122,6 @@ public class Drive extends Subsystem {
 	}
 	
 	public void driveInit() {
-
-		driveParameters = new DriveParameters();
 		
 		initMotionMagic();
 		
