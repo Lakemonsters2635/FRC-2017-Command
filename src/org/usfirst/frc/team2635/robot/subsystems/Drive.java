@@ -47,11 +47,9 @@ public class Drive extends Subsystem {
 	
 	Navx navx = new Navx();
 
-	public Drive(double maxAcceleration, double maxVelocity, double leftWheelRotations, double rightWheelRotations, boolean enableTankDriveWithEncoders) {
+	public Drive(double maxAcceleration, double maxVelocity, boolean enableTankDriveWithEncoders) {
 		this.maxAcceleration = maxAcceleration;
 		this.maxVelocity = maxVelocity;
-		this.leftWheelRotations = leftWheelRotations;
-		this.rightWheelRotations = rightWheelRotations;
 		this.enableTankDriveWithEncoders = enableTankDriveWithEncoders;
 	}
 
