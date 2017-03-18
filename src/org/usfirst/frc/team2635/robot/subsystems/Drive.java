@@ -27,6 +27,13 @@ public class Drive extends Subsystem {
 	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
 	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
 
+	public double maxAcceleration;
+	public double maxVelocity;
+	public double leftWheelRotations;
+	public double rightWheelRotations;
+
+	boolean enableTankDriveWithEncoders;
+
 	public double currentHeadingOffset = 0;
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -34,7 +41,6 @@ public class Drive extends Subsystem {
 	CANTalon rightBack;
 	CANTalon leftFront;
 	CANTalon leftBack;
-	RobotDrive drive;
 	
 	DriveTeleop teleopCommand; 
 	
@@ -43,6 +49,14 @@ public class Drive extends Subsystem {
 	public double errNavxDrive;
 	
 	Navx navx = new Navx();
+
+	public Drive(double maxAcceleration, double maxVelocity, double leftWheelRotations, double rightWheelRotations, boolean enableTankDriveWithEncoders) {
+		this.maxAcceleration = maxAcceleration;
+		this.maxVelocity = maxVelocity;
+		this.leftWheelRotations = leftWheelRotations;
+		this.rightWheelRotations = rightWheelRotations;
+		this.enableTankDriveWithEncoders = enableTankDriveWithEncoders;
+	}
 
 	class NavxUnwrappedAnglePIDSource implements PIDSource {
 		Navx navx;
@@ -192,15 +206,13 @@ public class Drive extends Subsystem {
 	 *            Right side mag
 	 */
 	public void tankDrive(double left, double right) {
-		//drive.tankDrive(left, right);
-		boolean tankDriveEncoders = true;
-		if (tankDriveEncoders) {
+		if (enableTankDriveWithEncoders) {
 			final int FULL_SPEED_ROTATION_INCREMENT = 3000;
-			driveParameters.rightWheelRotations += left / FULL_SPEED_ROTATION_INCREMENT;
-			driveParameters.leftWheelRotations += right / FULL_SPEED_ROTATION_INCREMENT;
+			rightWheelRotations += left / FULL_SPEED_ROTATION_INCREMENT;
+			leftWheelRotations += right / FULL_SPEED_ROTATION_INCREMENT;
 			
-			rightFront.set(driveParameters.rightWheelRotations);
-			leftFront.set(driveParameters.leftWheelRotations);
+			rightFront.set(rightWheelRotations);
+			leftFront.set(leftWheelRotations);
 		} else {
 			rightFront.setMotionMagicCruiseVelocity(400);
 			leftFront.setMotionMagicCruiseVelocity(400);
@@ -351,16 +363,7 @@ public class Drive extends Subsystem {
 	/**
 	 * Update the talon's motion magic parameters based on given parameters
 	 * 
-	 * @param targetAngle
-	 *            Angle to go to
-	 * @param turnRadiusInches
-	 *            Turn radius
-	 * @param rpm
-	 *            Rpm to go to
-	 * @param clockwise
-	 *            Clockwise circle?
-	 * @param rotateCenter
-	 *            Rotate about center?
+	 * @param rotationParams
 	 */
 	public void rotateMotionMagic(MotionParameters rotationParams) {
 
@@ -454,16 +457,9 @@ public class Drive extends Subsystem {
 	/**
 	 * Checks if motion magic routine is finished based on given parameters.
 	 * 
-	 * @param targetAngle
-	 *            Angle to go to
-	 * @param turnRadiusInches
-	 *            Turn radius
-	 * @param rpm
-	 *            Rpm to go to
-	 * @param clockwise
-	 *            Clockwise circle?
-	 * @param rotateCenter
-	 *            Rotate about center?
+	 * @param rotationParams
+	 * @param errorTolerance
+	 *
 	 * @return true if  false if not.
 	 */
 	public boolean motionMagicDone(MotionParameters rotationParams, double errorTolerance) {
