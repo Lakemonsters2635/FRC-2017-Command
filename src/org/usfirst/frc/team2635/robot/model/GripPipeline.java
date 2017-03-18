@@ -41,6 +41,9 @@ public class GripPipeline implements VisionPipeline {
 	 */
 	@Override	public void process(Mat source0) {
 		// Step HSV_Threshold0:
+		
+		
+		findContoursOutput = new ArrayList<MatOfPoint>();
 		Mat hsvThresholdInput = source0;
 
 		double[] hsvThresholdHue = {0.0, 180.0};
@@ -138,23 +141,17 @@ public class GripPipeline implements VisionPipeline {
 	 * @param maskSize the size of the mask.
 	 * @param output The image in which to store the output.
 	 */
-	private void findContours(Mat input, boolean externalOnly,
-		List<MatOfPoint> contours) {
-		Mat hierarchy = new Mat();
-		contours.clear();
-		int mode;
-		if (externalOnly) {
-			mode = Imgproc.RETR_EXTERNAL;
-		}
-		else {
-			mode = Imgproc.RETR_LIST;
-		}
-		int method = Imgproc.CHAIN_APPROX_SIMPLE;
-		Imgproc.findContours(input, contours, hierarchy, mode, method);
+	private void findContours(Mat input, boolean externalOnly, List<MatOfPoint> contours) {
+			Mat hierarchy = new Mat();
+			contours.clear();
+			int mode;
+			if (externalOnly) {
+				mode = Imgproc.RETR_EXTERNAL;
+			} else {
+				mode = Imgproc.RETR_LIST;
+			}
+			int method = Imgproc.CHAIN_APPROX_SIMPLE;
+			Imgproc.findContours(input, contours, hierarchy, mode, method);
 	}
-
-
-
-
 }
 

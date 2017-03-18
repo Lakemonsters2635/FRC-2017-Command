@@ -12,25 +12,14 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team2635.robot.commands.ClimberClimb;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearBackwards;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
-import org.usfirst.frc.team2635.robot.commands.DriveCameraAnglePID;
-import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
-import org.usfirst.frc.team2635.robot.commands.DriveRotateNavx;
-import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
-import org.usfirst.frc.team2635.robot.commands.GetVisionInfo;
-//import org.usfirst.frc.team2635.robot.commands.ExampleCommand;
-import org.usfirst.frc.team2635.robot.commands.LogNavxValues;
 import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
-import org.usfirst.frc.team2635.robot.commands.NavxReset;
 import org.usfirst.frc.team2635.robot.commands.PickupBall;
-import org.usfirst.frc.team2635.robot.commands.ShooterFire;
 import org.usfirst.frc.team2635.robot.commands.ShooterRevUp;
 import org.usfirst.frc.team2635.robot.commands.ShooterReverseFire;
 import org.usfirst.frc.team2635.robot.commands.TeleopCommand;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
-import org.usfirst.frc.team2635.robot.model.VisionParameters;
 import org.usfirst.frc.team2635.robot.subsystems.Climber;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
-import org.usfirst.frc.team2635.robot.subsystems.ExampleSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
 import org.usfirst.frc.team2635.robot.subsystems.LightSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.Pickup;
@@ -69,11 +58,12 @@ public class Robot extends IterativeRobot {
 	
 	MotionCommandGroup centerGear;
 	MotionCommandGroup leftGear;
+	MotionCommandGroup leftGearSimple;
 	MotionCommandGroup rightGear;
 	MotionCommandGroup visionTest;
 	
 	MotionCommandGroup doNothingCmd;
-	MotionCommandGroup chooserTest2;
+	MotionCommandGroup rotateTest;
 
 	
 	SendableChooser<Command> chooser = new SendableChooser<>();
@@ -106,28 +96,9 @@ public class Robot extends IterativeRobot {
 		//chooser.addDefault("Default Auto", new ExampleCommand());
 		//chooser.addObject("My Auto", new MyAutoCommand());
 		
-		//FHE TEST CODE
-//		chooserTest1 = MotionProfileLibrary.ChooserTest1();
-//		chooserTest2 = MotionProfileLibrary.ChooserTest2();
-//		chooser.addObject("chooserTest1", chooserTest1);
-//		chooser.addObject("chooserTest2", chooserTest2);
+		InitializeChooser();
 		
-		
-		doNothingCmd = MotionProfileLibrary.doNothing();
-		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
-		leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
-		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
-		visionTest = MotionProfileLibrary.visionTestSequence();
-		//chooser.addDefault("Center Gear", centerGear);
-		chooser.addDefault("Do Nothing", doNothingCmd);
-		chooser.addObject("Center Gear", centerGear);
-		chooser.addObject("Left Gear", leftGear);
-		chooser.addObject("Right Gear", rightGear);
-		chooser.addObject("Vision Test", visionTest);
-		
-		
-		
-		SmartDashboard.putData("Autonomous mode", chooser);
+
 
 
 		
@@ -150,8 +121,12 @@ public class Robot extends IterativeRobot {
 			oi.climbUpButton.whileHeld(new ClimberClimb());
 			//oi.climbDownButton.whileHeld(new ClimberClimb(1.0));
 			
-			oi.deliverButton.whenPressed(new DeliverGearForward());
-			oi.deliverButton.whenReleased(new DeliverGearBackwards());
+
+			
+			oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
+			oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
+
+			
 			
 			//VisionParameters vParams = new VisionParameters(null,null);
 			//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
@@ -168,6 +143,28 @@ public class Robot extends IterativeRobot {
 
 	}
 
+	public void InitializeChooser()
+	{
+		doNothingCmd = MotionProfileLibrary.doNothing();
+		centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
+		leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
+		leftGearSimple = MotionProfileLibrary.getSimpleLeftGearPlacementSequence();
+		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
+		visionTest = MotionProfileLibrary.visionTestSequence();
+		rotateTest = MotionProfileLibrary.rotateTestSequence();
+		
+		chooser.initTable(null);
+		chooser.addDefault("Do Nothing", doNothingCmd);
+		chooser.addObject("Center Gear", centerGear);
+		chooser.addObject("Left Gear", leftGear);
+		chooser.addObject("Left Gear Simple", leftGearSimple);
+		chooser.addObject("Right Gear", rightGear);
+		chooser.addObject("Vision Test", visionTest);
+		chooser.addObject("Rotation Test", rotateTest);
+
+		
+		SmartDashboard.putData("Autonomous mode", chooser);
+	}
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
 	 * You can use it to reset any subsystem information you want to clear when
@@ -176,11 +173,17 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		System.out.println("disabledInit");
+		if (motionCommandGroup != null && motionCommandGroup.isRunning())
+		{
+			motionCommandGroup.cancel();
+		}
 	}
 
 	@Override
 	public void disabledPeriodic() {
-		//System.out.println("disabledPeriodic");
+		
+		
+		
 		Scheduler.getInstance().run();
 	}
 
@@ -198,31 +201,27 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		
-		
-		System.out.println("-------------------------------Started Autonomous-------------------------");
-		//drive.disableTeleop();
-				//autonomousCommand = chooser.getSelected();
-//		autonomousCommand = new DriveRoutine();
 
-//		 try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
 		
-//		if (motionCommandGroup != null){
-//			
-//			motionCommandGroup.start();
-//		}
-	
+		if (motionCommandGroup != null && motionCommandGroup.isRunning())
+		{
+			motionCommandGroup.cancel();
+		}
+		
+
+		if (drive.teleopIsRunning())
+		{
+			drive.disableTeleop();
+		}
+		
+
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-		
+		System.out.println("-------------------------------Started Autonomous-------------------------");
 		motionCommandGroup = (MotionCommandGroup) chooser.getSelected();
 		motionCommandGroup.start();
 

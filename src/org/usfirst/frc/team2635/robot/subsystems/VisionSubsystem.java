@@ -11,66 +11,59 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 /**
  * The camera vision
  */
-public class VisionSubsystem extends Subsystem{
-
+public class VisionSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	Vision vision;
 	ShooterVision shooterVision;
 	GearVision gearVision;
 	UsbCamera camera;
-	public VisionSubsystem()
-	{
+	public VisionSubsystem() {
 		camera = CameraServer.getInstance().startAutomaticCapture();
 		//vision = new Vision(camera);
 		
-		shooterVision = new ShooterVision(camera);
+		//shooterVision = new ShooterVision(camera);
 		//shooterVision.camInit();
 		gearVision = new GearVision(camera);
 		gearVision.camInit();
 		
 	}
-    public void aim()
-    {
-    
-    	
-    	
+	
+    public void aim() {
     	shooterVision.createBox();
 		shooterVision.confirmBox();
 		shooterVision.viewShooter();
     }
     
-    public void gearAim()
-    {
+    public void gearAim() {
+    	//gearVision.camInit();
 		gearVision.createBox();
 		gearVision.confirmBox();
 		gearVision.viewShooter();
     }
     
-    public Double getAngleToBoiler()
-    {
+    public Double getAngleToBoiler() {
     	Double angle = shooterVision.getAngle();
     	shooterVision.viewShooter();
     	return angle;
     }
-    public Double getDistanceToBoiler()
-    {
+    
+    public Double getDistanceToBoiler() {
     	return shooterVision.getDistance();
     }
-    public Double getAngleToGear()
-    {
+    
+    public Double getAngleToGear() {
     	Double angle = gearVision.getAngle();
     	gearVision.viewShooter();
     	return angle;
     }
-    public Double getDistanceToGear()
-    {
+    
+    public Double getDistanceToGear() {
     	return gearVision.getDistance();
     }
     
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub
-		
 	}
 }
