@@ -47,12 +47,6 @@ public class Drive extends Subsystem {
 	
 	Navx navx = new Navx();
 
-	public Drive(double maxAcceleration, double maxVelocity, boolean enableTankDriveWithEncoders) {
-		this.maxAcceleration = maxAcceleration;
-		this.maxVelocity = maxVelocity;
-		this.enableTankDriveWithEncoders = enableTankDriveWithEncoders;
-	}
-
 	class NavxUnwrappedAnglePIDSource implements PIDSource {
 		Navx navx;
 
