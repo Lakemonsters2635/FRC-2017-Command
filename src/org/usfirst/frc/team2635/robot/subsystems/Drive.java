@@ -3,11 +3,9 @@ package org.usfirst.frc.team2635.robot.subsystems;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
 import org.usfirst.frc.team2635.robot.model.DriveParameters;
-import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.model.Navx;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
@@ -292,11 +290,7 @@ public class Drive extends Subsystem {
 	/**
 	 * Stop driving and instruct the talons to run in motion magic mode
 	 */
-	public void initMotionMagic() {
-		
-		
-		
-		
+	public void initMotionMagic() {		
 		//drive.tankDrive(0.0, 0.0);
 		//drive.free();
 		//drive.setExpiration(0);
@@ -327,12 +321,12 @@ public class Drive extends Subsystem {
 	    leftFront.reverseOutput(true);
 	    //END COMPETITION BOT
 	     
-	     //WE believe the following is the same as reverseOutput
-	     //rightFront.reverseSensor(true);
-	     //rightFront.reverseSensor(false);
+	    //WE believe the following is the same as reverseOutput
+	    //rightFront.reverseSensor(true);
+	    //rightFront.reverseSensor(false);
 	     
-		    //rightFront.reverseOutput(true);
-		    // leftFront.reverseOutput(true);
+		//rightFront.reverseOutput(true);
+		//leftFront.reverseOutput(true);
 	     
 		rightFront.setPosition(0.0);
 		leftFront.setPosition(0.0);

@@ -1,24 +1,14 @@
 package org.usfirst.frc.team2635.robot.model;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import org.usfirst.frc.team2635.robot.Robot;
-import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearBackwards;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
-import org.usfirst.frc.team2635.robot.commands.DriveCameraAnglePID;
 import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.DriveStraightMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.GetVisionInfo;
 import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
 import org.usfirst.frc.team2635.robot.commands.UltrasonicCommand;
 
-import edu.wpi.first.wpilibj.command.CommandGroup;
-import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.command.WaitCommand;
-
-import java.util.ArrayList;
 
 public class MotionProfileLibrary
 {
