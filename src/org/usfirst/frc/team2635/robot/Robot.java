@@ -75,9 +75,7 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		System.out.println("robotInit");
-		
 
-		
 		oi = new OI();
 		drive = new Drive();
 		shooter = new Shooter();
@@ -92,7 +90,6 @@ public class Robot extends IterativeRobot {
 		
 		InitializeChooser();
 
-		
 		oi.fireButton.whileHeld(new ShooterRevUp());
 		oi.fireButton.whenReleased(new ShooterReverseFire());
 		//oi.fireButton.whenPressed(new ShooterRevUp());
@@ -101,10 +98,8 @@ public class Robot extends IterativeRobot {
 		oi.feedInButton.whileHeld(new PickupBall(-1.0));
 		oi.feedOutButton.whileHeld(new PickupBall(1.0));
 			
-			oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
-			oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
-
-			
+		oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
+		oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
 
 		oi.climbUpButton.whileHeld(new ClimberClimb());
 
@@ -112,9 +107,7 @@ public class Robot extends IterativeRobot {
 		
 		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
 		//oi.navxResetButton.whenReleased(new NavxReset());
-			
-			
-			
+		
 		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
 		//oi.motionMagicButton.whenPressed(motionCommandGroup);
 		//double targetAngle = 90;
