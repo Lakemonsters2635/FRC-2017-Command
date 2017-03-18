@@ -192,11 +192,14 @@ public class GearVision extends Vision {
 		Point line22 = new Point(320,480);
 		Imgproc.line(source, line11, line12, new Scalar(255,255,255));
 		Imgproc.line(source, line21, line22, new Scalar(255,255,255));
+		
+		//put the processed image with rectangles on smartdashboard
+		cvSource.putFrame(source);
+	}
+	public void saveShooter(){
 		//Save Image
 		currentdatehour = new SimpleDateFormat("MM/dd/yyy HH:mm:ss:ms").format(new java.util.Date());
 		Imgcodecs.imwrite("C:\\Users\\Robbie Robot\\Vision Log\\"+currentdate+"\\"+currentdatehour+".jpg", source);
-		//put the processed image with rectangles on smartdashboard
-		cvSource.putFrame(source);
 	}
 	
 	public Double getDistance(){
