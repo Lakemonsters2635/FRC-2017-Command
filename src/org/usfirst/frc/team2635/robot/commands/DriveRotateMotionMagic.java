@@ -25,25 +25,21 @@ public class DriveRotateMotionMagic extends Command {
 	VisionParameters visionParams;
 	double turnRadiusInches;
 	public boolean hasExecuted;
-	
+
 
 	
 	MotionParameters rotationParams; 
 	
+
     public DriveRotateMotionMagic(double rpm, double targetAngle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	requires(Robot.drive);
-
-    	
     	this.rpm = rpm;
     	this.targetAngle = targetAngle;
-
-
-    }
+   }
     
     public DriveRotateMotionMagic(double rpm, VisionParameters visionParams) {
-
     	this.visionParams = visionParams;
     	this.rpm = rpm;
     	this.targetAngle = 0;
@@ -72,7 +68,6 @@ public class DriveRotateMotionMagic extends Command {
     				RobotMap.WHEEL_RADIUS_INCHES, RobotMap.WHEEL_SEPARATION_INCHES, rpm);
     	}
     	
-    	//Robot.drive.DriveInit();
     	Robot.drive.initMotionMagic();
     	Robot.drive.setMotionMagicPIDF(
     			RobotMap.MOTION_MAGIC_P,
@@ -85,11 +80,7 @@ public class DriveRotateMotionMagic extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	//System.out.println("DriveRotateMotionMagic execute");
-    	
-    	
-    	Robot.drive.rotateMotionMagic(rotationParams);
-    	
-    	
+    	Robot.drive.rotateMotionMagic(rotationParams);   	
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -97,14 +88,12 @@ public class DriveRotateMotionMagic extends Command {
     	boolean done = Robot.drive.motionMagicDone(rotationParams, Robot.drive.ROTATE_ERROR_TOLERANCE);
     	if (done) {
     		System.out.println("DriveRotateMotionMagic is done at " + LocalDateTime.now());
-
         	if (visionParams != null)
         	{
 	    		visionParams.AngleToTarget = null;
 	    		visionParams.DistanceToTarget = null;
         	}
-        	
-        	
+
     	}
     	return done;
     }
@@ -121,7 +110,6 @@ public class DriveRotateMotionMagic extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	System.out.println("DriveRotateMotionMagic interrupted at " + LocalDateTime.now());
-
     	if (visionParams != null)
     	{
     		visionParams.AngleToTarget = null;

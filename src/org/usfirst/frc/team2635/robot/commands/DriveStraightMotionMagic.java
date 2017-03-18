@@ -17,8 +17,6 @@ import edu.wpi.first.wpilibj.command.Command;
  *
  */
 public class DriveStraightMotionMagic extends Command {
-
-	
 	public double driveDistance;
 	public boolean reverse;
 	double rpm;
@@ -27,21 +25,14 @@ public class DriveStraightMotionMagic extends Command {
 	
 	MotionParameters driveParams; 
 	
-	
-	
-	
     public DriveStraightMotionMagic(double rpm, double driveDistance, boolean reverse) {
-    	
         requires(Robot.drive);
     	this.rpm = rpm;
     	this.driveDistance = driveDistance;
     	this.reverse = reverse;
-    	
-
     }
 
-    public DriveStraightMotionMagic(double rpm, UltrasonicParameters ultrasonicParams) 
-    {
+    public DriveStraightMotionMagic(double rpm, UltrasonicParameters ultrasonicParams) {
     	this.ultraSonicParams = ultrasonicParams;
     	this.rpm = rpm;
     	this.driveDistance = 0;
@@ -53,6 +44,7 @@ public class DriveStraightMotionMagic extends Command {
     protected void initialize() {
     	System.out.println("DrivesStraightMotionMagic initialized at "  + LocalDateTime.now());
        	
+
     	
     	if (ultraSonicParams != null && ultraSonicParams.rightInches != null)
     	{
@@ -69,8 +61,7 @@ public class DriveStraightMotionMagic extends Command {
     	}
     	
     	
-    	
-    	Robot.drive.DriveInit();
+
     	Robot.drive.initMotionMagic();
     	Robot.drive.setMotionMagicPIDF(
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_P,
@@ -83,14 +74,9 @@ public class DriveStraightMotionMagic extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//
-    	//cycleCtr++;
-    	//if (cycleCtr > 1000)
-    	//{
-    		//System.out.println("DriveStraightMotionMagic execute");
-    		Robot.drive.driveStraightMotionMagic(driveParams);
-    		//cycleCtr = 0;
-    	//}
+
+    	Robot.drive.driveStraightMotionMagic(driveParams);
+
     	
     }
 
@@ -107,7 +93,6 @@ public class DriveStraightMotionMagic extends Command {
     		}
 
     	}
-    		
     	return done;
     	//return false;
     }
@@ -117,8 +102,6 @@ public class DriveStraightMotionMagic extends Command {
     	System.out.println("DriveStraightMotionMagic end");
     	Robot.drive.initMotionMagic();
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
-    	
-
     }
 
     // Called when another command which requires one or more of the same

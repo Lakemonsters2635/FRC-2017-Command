@@ -48,8 +48,8 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static UltrasonicSensors ultrasonic;
 	public static LightSubsystem light;
-
 	
+
 	Command autonomousCommand;
 	Command driveCommand;
 	Command logNavxCommand;
@@ -75,6 +75,9 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		System.out.println("robotInit");
+		
+
+		
 		oi = new OI();
 		drive = new Drive();
 		shooter = new Shooter();
@@ -84,62 +87,38 @@ public class Robot extends IterativeRobot {
 		
 		ultrasonic = new UltrasonicSensors();
 		vision = new VisionSubsystem();
-		
 		light = new LightSubsystem(RobotMap.VISION_LIGHT_CHANNEL);
-		
-
-		
-		
 		teleopCommands = new TeleopCommand();
-	    //motionCommandGroup = new MotionCommandGroup();
-		//logAndDrive.addParallel(new DriveTeleop());
-		//chooser.addDefault("Default Auto", new ExampleCommand());
-		//chooser.addObject("My Auto", new MyAutoCommand());
 		
 		InitializeChooser();
-		
-
-
 
 		
-		
-		//motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
-		//motionCommandGroup = MotionProfileLibrary.getLeftGearPlacementSequence();
-		//motionCommandGroup = MotionProfileLibrary.RotateSequence();
-
-			
-		
-		
-			oi.fireButton.whileHeld(new ShooterRevUp());
-			oi.fireButton.whenReleased(new ShooterReverseFire());
-			//oi.fireButton.whenPressed(new ShooterRevUp());
-			//oi.fireButton.whenReleased(new ShooterReverseFire());
-			
-			oi.feedInButton.whileHeld(new PickupBall(-1.0));
-			oi.feedOutButton.whileHeld(new PickupBall(1.0));
-			
-			oi.climbUpButton.whileHeld(new ClimberClimb());
-			//oi.climbDownButton.whileHeld(new ClimberClimb(1.0));
-			
-
+		oi.fireButton.whileHeld(new ShooterRevUp());
+		oi.fireButton.whenReleased(new ShooterReverseFire());
+		//oi.fireButton.whenPressed(new ShooterRevUp());
+		//oi.fireButton.whenReleased(new ShooterReverseFire());
+	
+		oi.feedInButton.whileHeld(new PickupBall(-1.0));
+		oi.feedOutButton.whileHeld(new PickupBall(1.0));
 			
 			oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
 			oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
 
 			
+
+		oi.climbUpButton.whileHeld(new ClimberClimb());
+
+		oi.aimCameraButton.whileHeld(MotionProfileLibrary.visionTestSequence());
+		
+		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
+		//oi.navxResetButton.whenReleased(new NavxReset());
 			
-			//VisionParameters vParams = new VisionParameters(null,null);
-			//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 30.0));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
-			
-			//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
-			//oi.navxResetButton.whenReleased(new NavxReset());
 			
 			
-			
-			//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
-			//oi.motionMagicButton.whenPressed(motionCommandGroup);
-			//double targetAngle = 90;
-			//oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
+		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
+		//oi.motionMagicButton.whenPressed(motionCommandGroup);
+		//double targetAngle = 90;
+		//oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
 
 	}
 
@@ -202,12 +181,15 @@ public class Robot extends IterativeRobot {
 	public void autonomousInit() {
 		
 
+
 		
 		if (motionCommandGroup != null && motionCommandGroup.isRunning())
 		{
 			motionCommandGroup.cancel();
 		}
-		
+
+		InitializeChooser();
+
 
 		if (drive.teleopIsRunning())
 		{
@@ -273,7 +255,6 @@ public class Robot extends IterativeRobot {
 	 */
 	@Override
 	public void teleopPeriodic() {
-		
 		Scheduler.getInstance().run();
 	}
 

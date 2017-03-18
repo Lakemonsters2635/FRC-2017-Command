@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
-	public static final double ROTATE_ERROR_TOLERANCE = 0.03;
+	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
 	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
 
 	public double currentHeadingOffset = 0;
@@ -56,7 +56,6 @@ public class Drive extends Subsystem {
 		@Override
 		public void setPIDSourceType(PIDSourceType pidSource) {
 			// TODO Auto-generated method stub
-
 		}
 
 		@Override
@@ -87,13 +86,12 @@ public class Drive extends Subsystem {
 	PIDController angleController;
 
 	public Drive() {
-
 		rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
 		leftFront = new CANTalon(RobotMap.DRIVE_LEFT_FRONT);
 		rightBack = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
 		leftBack = new CANTalon(RobotMap.DRIVE_LEFT_BACK);
 		
-		DriveInit();
+		driveInit();
 		
 		//teleopCommand = new DriveTeleop();
 		
@@ -103,14 +101,13 @@ public class Drive extends Subsystem {
 
 	}
 	
-	public void enableTeleop()
-	{
-		if (!teleopCommand.isRunning())
-		{
+	public void enableTeleop() {
+		if (!teleopCommand.isRunning()) {
 			teleopCommand.start();
 		}
 	}
 	
+
 	public boolean teleopIsRunning()
 	{
 		if (teleopCommand != null)
@@ -131,12 +128,13 @@ public class Drive extends Subsystem {
 		{
 			teleopCommand.cancel();
 		}
-		
 	}
-	
-	public void DriveInit()
-	{
 
+	
+	public void driveInit() {
+
+		driveParameters = new DriveParameters();
+		
 		rightFront.changeControlMode(TalonControlMode.PercentVbus);
 		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		rightFront.configEncoderCodesPerRev(250);
@@ -151,7 +149,6 @@ public class Drive extends Subsystem {
 		leftFront.configEncoderCodesPerRev(250);
 		leftBack.changeControlMode(TalonControlMode.Follower);
 		leftBack.set(leftFront.getDeviceID());
-
 
 	}
 
@@ -376,6 +373,7 @@ public class Drive extends Subsystem {
 
 		rightFront.set(rotationParams.rightWheelRotations);
 		leftFront.set(rotationParams.leftWheelRotations);
+		
 //		System.out.println("Right wheel rotations: " + rotationParams.rightWheelRotations +
 //				"\tLeft wheel rotations: " + rotationParams.leftWheelRotations +
 //				"\tRight acceleration: " + rotationParams.rightAcceleration +

@@ -27,6 +27,7 @@ public class UltrasonicCommand extends TimedCommand {
     protected void execute() {
     	//ultrasonicParameters.leftInches =  Robot.ultrasonic.getLeftDistanceInches();
     	ultrasonicParameters.rightInches = Robot.ultrasonic.getRightDistanceInches();
+
     	
 
 		if (ultrasonicParameters.rightInches == null)
@@ -40,6 +41,8 @@ public class UltrasonicCommand extends TimedCommand {
     	
   
     }
+
+
 
 
 

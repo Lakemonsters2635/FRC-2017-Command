@@ -6,6 +6,12 @@ import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
+
 import org.usfirst.frc.team2635.robot.Robot;
 
 import org.usfirst.frc.team2635.robot.model.VisionParameters;
@@ -15,41 +21,38 @@ import org.usfirst.frc.team2635.robot.model.VisionParameters;
 /**
  *
  */
+
 public class GetVisionInfo extends TimedCommand {
+
+
 	ArrayList<Double>  angleSamples;
 	ArrayList<Double>  distanceSamples;
 	public VisionParameters visionParameters; 
 	public String targetName;
-	//Double averageAquiredAngle;
-	//Double averageAquiredDistance;
 	
-	int sampleCount;
-	Double currentAngleSample;
-	Double currentDistanceSample;
-	
-	boolean hasExecuted;
+
 	
     public GetVisionInfo(VisionParameters visionParams, String targetName, double timeout) {
         // Use requires() here to declare subsystem dependencies
     	super(timeout);
     	requires(Robot.light);
     	requires(Robot.vision);
+
     	this.visionParameters = visionParams;
     	this.targetName = targetName;
 
+    	
     	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	hasExecuted = false;
      	Robot.light.lightOn();    
-    	sampleCount = 0;
     	angleSamples = new ArrayList<Double>();
     	distanceSamples = new ArrayList<Double>();
     	
     	System.out.println("Vision Initialized at "+ LocalDateTime.now());
-    	
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -86,6 +89,7 @@ public class GetVisionInfo extends TimedCommand {
     		}
     	}
 
+
     	
     }
 
@@ -117,17 +121,18 @@ public class GetVisionInfo extends TimedCommand {
 			 System.out.println("ARNING:Setting visionParameters.DistanceToTarget to 0.0");
 		 }	 
 	
-
+	    	angleSamples.clear();
+	    	distanceSamples.clear();
+	    	 System.out.println("Vision Ended at "+ LocalDateTime.now());
+	    	Robot.light.lightOff();
 		 
 		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
     	
-    	
-    	
-    	angleSamples.clear();
-    	distanceSamples.clear();
-    	 System.out.println("Vision Ended at "+ LocalDateTime.now());
-    	Robot.light.lightOff();
+
     }
+
+
+
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
