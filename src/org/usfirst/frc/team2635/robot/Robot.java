@@ -12,7 +12,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team2635.robot.commands.ClimberClimb;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearBackwards;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
-import org.usfirst.frc.team2635.robot.commands.GetVisionInfo;
 import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
 import org.usfirst.frc.team2635.robot.commands.PickupBall;
 import org.usfirst.frc.team2635.robot.commands.ShooterRevUp;
