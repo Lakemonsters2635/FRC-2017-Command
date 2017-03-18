@@ -86,5 +86,11 @@ public class RobotMap {
     
     public static final int VISION_LIGHT_CHANNEL = 7;
     
+<<<<<<< HEAD
+    public static final int VISION_LIGHT_CHANNEL = 7;
+    
+    public static double GEAR_DELIVERY_TIMEOUT = 1.0;  // units are seconds
+=======
     public static final double GEAR_DELIVERY_TIMEOUT = 1.0;  // units are seconds
+>>>>>>> origin/master
 }

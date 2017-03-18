@@ -39,7 +39,8 @@ public class Vision {
 		cvSink = new CvSink("cvSink");
 		cvSink.setSource(camera);
 		source = new Mat();
-		cvSource = CameraServer.getInstance().putVideo("new", 640, 480);
+		cvSource = CameraServer.getInstance().putVideo("Vision", 640, 480);
+	
 		
 		currentdate = new SimpleDateFormat("MM/dd/yyy").format(new java.util.Date());
 		

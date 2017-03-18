@@ -1,24 +1,21 @@
 package org.usfirst.frc.team2635.robot.commands;
 
-import org.usfirst.frc.team2635.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
- * Set the gear deliverer in the forwards position
+ *
  */
-public class DeliverGearForward extends TimedCommand {
-	
-    public DeliverGearForward(double timeout) {
-    	super(timeout);
-    	requires(Robot.deliverer);
+public class exampleTimedCommand extends TimedCommand {
+
+    public exampleTimedCommand(double timeout) {
+        super(timeout);
+        // Use requires() here to declare subsystem dependencies
+        // eg. requires(chassis);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.deliverer.setForward();
-   }
-
+    }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {

@@ -43,11 +43,24 @@ public class DriveStraightMotionMagic extends Command {
     protected void initialize() {
     	System.out.println("DrivesStraightMotionMagic initialized at "  + LocalDateTime.now());
        	
-    	if (driveDistance == 0 && ultraSonicParams != null && ultraSonicParams.rightInches != null){
-    		driveDistance = ultraSonicParams.rightInches - RobotMap.BUMPER_TO_SONAR_DISTANCE;
+
+    	
+    	if (ultraSonicParams != null && ultraSonicParams.rightInches != null)
+    	{
+    		
+    		//targetAngle = visionParams.AngleToTarget;
+    		System.out.println("Get Drive Params by UltraSonicParams.rightInches:" + ultraSonicParams.rightInches);
+    		driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, ultraSonicParams.rightInches, rpm, reverse);
+   
     	}
-    	driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
-    	Robot.drive.driveInit();
+    	else
+    	{
+       		System.out.println("Get Drive Params by fixed distance:" + driveDistance);
+    		driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
+    	}
+    	
+    	
+
     	Robot.drive.initMotionMagic();
     	Robot.drive.setMotionMagicPIDF(
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_P,
@@ -60,14 +73,9 @@ public class DriveStraightMotionMagic extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//
-    	//cycleCtr++;
-    	//if (cycleCtr > 1000)
-    	//{
-    		//System.out.println("DriveStraightMotionMagic execute");
+
     	Robot.drive.driveStraightMotionMagic(driveParams);
-    		//cycleCtr = 0;
-    	//}
+
     	
     }
 
@@ -84,8 +92,6 @@ public class DriveStraightMotionMagic extends Command {
     		}
 
     	}
-
-    		
     	return done;
     	//return false;
     }

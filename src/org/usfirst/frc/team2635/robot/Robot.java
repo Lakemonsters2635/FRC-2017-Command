@@ -18,7 +18,6 @@ import org.usfirst.frc.team2635.robot.commands.ShooterRevUp;
 import org.usfirst.frc.team2635.robot.commands.ShooterReverseFire;
 import org.usfirst.frc.team2635.robot.commands.TeleopCommand;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
-import org.usfirst.frc.team2635.robot.model.VisionParameters;
 import org.usfirst.frc.team2635.robot.subsystems.Climber;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
 import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
@@ -64,7 +63,6 @@ public class Robot extends IterativeRobot {
 	MotionCommandGroup visionTest;
 	
 	MotionCommandGroup doNothingCmd;
-	MotionCommandGroup chooserTest2;
 	MotionCommandGroup rotateTest;
 
 	
@@ -89,22 +87,11 @@ public class Robot extends IterativeRobot {
 		
 		ultrasonic = new UltrasonicSensors();
 		vision = new VisionSubsystem();
-		
 		light = new LightSubsystem(RobotMap.VISION_LIGHT_CHANNEL);
-		
-
-		
-		
 		teleopCommands = new TeleopCommand();
 		
 		InitializeChooser();
-		
-		
 
-		
-		//motionCommandGroup = MotionProfileLibrary.getCenterGearPlacementSequence();
-		//motionCommandGroup = MotionProfileLibrary.getLeftGearPlacementSequence();
-		//motionCommandGroup = MotionProfileLibrary.RotateSequence();
 		
 		oi.fireButton.whileHeld(new ShooterRevUp());
 		oi.fireButton.whenReleased(new ShooterReverseFire());
@@ -114,16 +101,13 @@ public class Robot extends IterativeRobot {
 		oi.feedInButton.whileHeld(new PickupBall(-1.0));
 		oi.feedOutButton.whileHeld(new PickupBall(1.0));
 			
+			oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
+			oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
+
+			
+
 		oi.climbUpButton.whileHeld(new ClimberClimb());
-		//oi.climbDownButton.whileHeld(new ClimberClimb(1.0));
-			
-		//oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
-		//oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
-			
-		oi.deliverButton.whenPressed(new DeliverGearForward());
-		oi.deliverButton.whenReleased(new DeliverGearBackwards());
-		VisionParameters vParams = new VisionParameters(null,null);
-		//oi.aimCameraButton.whileHeld(new GetVisionInfo(vParams, "Gear", 2));//new DriveCamera(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D));
+
 		oi.aimCameraButton.whileHeld(MotionProfileLibrary.visionTestSequence());
 		
 		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
@@ -168,11 +152,17 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void disabledInit() {
 		System.out.println("disabledInit");
+		if (motionCommandGroup != null && motionCommandGroup.isRunning())
+		{
+			motionCommandGroup.cancel();
+		}
 	}
 
 	@Override
 	public void disabledPeriodic() {
-		//System.out.println("disabledPeriodic");
+		
+		
+		
 		Scheduler.getInstance().run();
 	}
 
@@ -190,35 +180,30 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void autonomousInit() {
 		
+
+
+		
+		if (motionCommandGroup != null && motionCommandGroup.isRunning())
+		{
+			motionCommandGroup.cancel();
+		}
+
 		InitializeChooser();
-		//chooser.addDefault("Center Gear", centerGear);
+
+
+		if (drive.teleopIsRunning())
+		{
+			drive.disableTeleop();
+		}
 		
 
-		
-		System.out.println("-------------------------------Started Autonomous-------------------------");
-		//drive.disableTeleop();
-				//autonomousCommand = chooser.getSelected();
-//		autonomousCommand = new DriveRoutine();
-
-//		 try {
-//			Thread.sleep(1000);
-//		} catch (InterruptedException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-		
-//		if (motionCommandGroup != null){
-//			
-//			motionCommandGroup.start();
-//		}
-	
 		/*
 		 * String autoSelected = SmartDashboard.getString("Auto Selector",
 		 * "Default"); switch(autoSelected) { case "My Auto": autonomousCommand
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-		
+		System.out.println("-------------------------------Started Autonomous-------------------------");
 		motionCommandGroup = (MotionCommandGroup) chooser.getSelected();
 		motionCommandGroup.start();
 

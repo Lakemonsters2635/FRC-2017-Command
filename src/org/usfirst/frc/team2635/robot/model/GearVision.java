@@ -238,7 +238,7 @@ public class GearVision extends Vision {
 		
 		double distance = distanceFromZero/Math.tan(angle_Radians - cameraInclination);
 		
-		return new Double(distance);
+		return new Double(-distance);
 	}
 	
 	public Double getAngle(){

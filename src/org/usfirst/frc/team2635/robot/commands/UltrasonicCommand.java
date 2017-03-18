@@ -26,28 +26,30 @@ public class UltrasonicCommand extends TimedCommand {
     protected void execute() {
     	//ultrasonicParameters.leftInches =  Robot.ultrasonic.getLeftDistanceInches();
     	ultrasonicParameters.rightInches = Robot.ultrasonic.getRightDistanceInches();
+
+    	
+
+		if (ultrasonicParameters.rightInches == null)
+		{
+			ultrasonicParameters.rightInches = new Double(0.0);	
+		}
+		else if (ultrasonicParameters.rightInches <= 11)
+		{
+			ultrasonicParameters.rightInches = 0.0;
+		}
+    	
+  
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	
-    	boolean isTimedOut = this.isTimedOut();
-    	if (isTimedOut)
-    	{
-    		System.out.println("rightInches:" + ultrasonicParameters.rightInches);
-    		if (ultrasonicParameters.rightInches == null) {
-    			ultrasonicParameters.rightInches = new Double(0.0);	
-    		} else if (ultrasonicParameters.rightInches <= 11) {
-    			ultrasonicParameters.rightInches = 0.0;
-    		}
 
-    	}
-    	
-    	return isTimedOut;
-    }
 
-    // Called once after isFinished returns true
+
+
+
+    // Called once after timeout
     protected void end() {
+    	
+		System.out.println("rightInches:" + ultrasonicParameters.rightInches);
     }
 
     // Called when another command which requires one or more of the same

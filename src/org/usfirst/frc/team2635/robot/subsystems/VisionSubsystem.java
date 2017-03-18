@@ -22,7 +22,7 @@ public class VisionSubsystem extends Subsystem {
 		camera = CameraServer.getInstance().startAutomaticCapture();
 		//vision = new Vision(camera);
 		
-		shooterVision = new ShooterVision(camera);
+		//shooterVision = new ShooterVision(camera);
 		//shooterVision.camInit();
 		gearVision = new GearVision(camera);
 		gearVision.camInit();
@@ -36,6 +36,10 @@ public class VisionSubsystem extends Subsystem {
     }
     
     public void gearAim() {
+<<<<<<< HEAD
+    	//gearVision.camInit();
+=======
+>>>>>>> origin/master
 		gearVision.createBox();
 		gearVision.confirmBox();
 		gearVision.viewShooter();

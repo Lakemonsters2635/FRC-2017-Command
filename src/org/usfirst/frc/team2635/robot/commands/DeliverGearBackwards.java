@@ -2,16 +2,15 @@ package org.usfirst.frc.team2635.robot.commands;
 
 import org.usfirst.frc.team2635.robot.Robot;
 
-import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
  * Set the gear deliverer in the backwards position
  */
-public class DeliverGearBackwards extends Command {
+public class DeliverGearBackwards extends TimedCommand {
 
-    public DeliverGearBackwards() {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
+    public DeliverGearBackwards(double timeout) {
+    	super(timeout);
     	requires(Robot.deliverer);
     }
 
@@ -20,16 +19,12 @@ public class DeliverGearBackwards extends Command {
     	Robot.deliverer.setBackwards();
     }
 
+
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-        return true;
-    }
-
-    // Called once after isFinished returns true
+    // Called once after timeout
     protected void end() {
     }
 

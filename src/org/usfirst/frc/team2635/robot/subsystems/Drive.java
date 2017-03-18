@@ -117,9 +117,29 @@ public class Drive extends Subsystem {
 		}
 	}
 	
-	public void disableTeleop() {
-		teleopCommand.cancel();
+
+	public boolean teleopIsRunning()
+	{
+		if (teleopCommand != null)
+		{
+			return teleopCommand.isRunning();
+		}
+		else
+		{
+			return false;
+		}
+	
 	}
+	
+	
+	public void disableTeleop()
+	{
+		if (teleopCommand.isRunning())
+		{
+			teleopCommand.cancel();
+		}
+	}
+
 	
 	public void driveInit() {
 		
@@ -129,39 +149,17 @@ public class Drive extends Subsystem {
 		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		rightFront.configEncoderCodesPerRev(250);
 		//rightFront.setInverted(true);
-		
-
-		
-		//status |= _talon.ConfigNominalOutputVoltage(0f, 0f, kTimeoutMs);
-		//status |= _talon.ConfigPeakOutputVoltage(+12f, -12f, kTimeoutMs);
-		
+		//leftFront.setInverted(true);
 
 		rightBack.changeControlMode(TalonControlMode.Follower);
-		
-
 		rightBack.set(rightFront.getDeviceID());
-
 
 		leftFront.changeControlMode(TalonControlMode.PercentVbus);
 		leftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		leftFront.configEncoderCodesPerRev(250);
-		
-	
-		//leftFront.setInverted(true);
-
-
 		leftBack.changeControlMode(TalonControlMode.Follower);
 		leftBack.set(leftFront.getDeviceID());
 
-		leftFront.configNominalOutputVoltage(0, 0);
-		rightFront.configNominalOutputVoltage(0, 0);
-		leftBack.configNominalOutputVoltage(0, 0);
-		rightBack.configNominalOutputVoltage(0, 0);
-		
-		leftFront.configPeakOutputVoltage(12, -12);
-		rightFront.configPeakOutputVoltage(12, -12);
-		leftBack.configPeakOutputVoltage(12, -12);
-		rightBack.configPeakOutputVoltage(12, -12);
 	}
 
 	public void initDefaultCommand() {
@@ -309,10 +307,10 @@ public class Drive extends Subsystem {
 	
 		setDriveMode(TalonControlMode.MotionMagic);
 		
-	    rightFront.setMotionMagicCruiseVelocity(200.0);
-	    leftFront.setMotionMagicCruiseVelocity(200.0);
-	    rightFront.setMotionMagicAcceleration(400.0);
-	    leftFront.setMotionMagicAcceleration(400.0);
+//	    rightFront.setMotionMagicCruiseVelocity(200.0);
+//	    leftFront.setMotionMagicCruiseVelocity(200.0);
+//	    rightFront.setMotionMagicAcceleration(400.0);
+//	    leftFront.setMotionMagicAcceleration(400.0);
 	    //rightFront.setInverted(true);
 	    
 	    //FOR COMPETITION BOT DO THE FOLLOWING

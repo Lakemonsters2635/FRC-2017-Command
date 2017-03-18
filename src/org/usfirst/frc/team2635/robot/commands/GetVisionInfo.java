@@ -1,4 +1,10 @@
 package org.usfirst.frc.team2635.robot.commands;
+import edu.wpi.first.wpilibj.command.TimedCommand;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,51 +16,43 @@ import org.usfirst.frc.team2635.robot.Robot;
 
 import org.usfirst.frc.team2635.robot.model.VisionParameters;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
+
 
 /**
  *
  */
-public class GetVisionInfo extends Command {
+
+public class GetVisionInfo extends TimedCommand {
+
+
 	ArrayList<Double>  angleSamples;
 	ArrayList<Double>  distanceSamples;
 	public VisionParameters visionParameters; 
 	public String targetName;
-	public double duration;
-	Timer timer;
-	//Double averageAquiredAngle;
-	Double averageAquiredDistance;
 	
-	int sampleCount;
+
 	
-	boolean hasExecuted;
-	
-    public GetVisionInfo(VisionParameters visionParams, String targetName, double duration) {
+    public GetVisionInfo(VisionParameters visionParams, String targetName, double timeout) {
         // Use requires() here to declare subsystem dependencies
-    	//requires(Robot.light);
-    	//requires(Robot.vision);
+    	super(timeout);
+    	requires(Robot.light);
+    	requires(Robot.vision);
+
     	this.visionParameters = visionParams;
     	this.targetName = targetName;
-    	this.duration = duration;
-    	timer = new Timer();
+
     	
     	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	hasExecuted = false;
      	Robot.light.lightOn();    
-    	timer.reset();
-    	timer.start();
-    	sampleCount = 0;
     	angleSamples = new ArrayList<Double>();
     	distanceSamples = new ArrayList<Double>();
     	
     	System.out.println("Vision Initialized at "+ LocalDateTime.now());
-    	
-	
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -90,73 +88,58 @@ public class GetVisionInfo extends Command {
     			distanceSamples.add(distance);
     		}
     	}
-    	
-    	
-	   	 //
-	 
-	   	
-	   	//System.out.println("roundedAngle: " + roundedAngle + "\t roundedDistance:" + roundit(distance, 2));
-    	//visionParameters.AngleToTarget averageAquiredAngle 
+
+
     	
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	//System.out.println("currentAngleSample: " + currentAngleSample + "\t currentDistance:" + visionParameters.DistanceToTarget);  	
-    	 boolean timeElapsed = timer.hasPeriodPassed(duration);
-    	 boolean isDone = false;
-    	 if (timeElapsed) {
-    		 isDone = true;
-    		 Double modeAngle = modeit(angleSamples);
-    		 System.out.println("modeAngle: " + modeAngle);
-    		 
-    		 if (angleSamples.size() > 0)
-    		 {
-    			 visionParameters.AngleToTarget = modeit(angleSamples);
-    		 }
-    		 else
-    		 {
-    			 visionParameters.AngleToTarget = 0.0;
-    		 }
-    		 
-    		 if (distanceSamples.size() > 0)
-    		 {
-    			 visionParameters.DistanceToTarget = modeit(distanceSamples);
-    		 }
-    		 else
-    		 {
-    			 visionParameters.DistanceToTarget = 0.0;
-    		 }
-    			
-    		 
-    		 
-    		 System.out.println("Vision Finished at "+ LocalDateTime.now());
-    		 
-    		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
-    	 }
-    	
-    	 return isDone;        
-    }
+
 
     // Called once after isFinished returns true
     protected void end() {
-    	timer.stop();
-    	angleSamples.clear();
-    	distanceSamples.clear();
-    	 System.out.println("Vision Ended at "+ LocalDateTime.now());
-    	Robot.light.lightOff();
+    	
+		 Double modeAngle = modeit(angleSamples);
+		 System.out.println("modeAngle: " + modeAngle);
+		 
+		 if (angleSamples.size() > 0)
+		 {
+			 visionParameters.AngleToTarget = modeit(angleSamples);
+		 }
+		 else
+		 {
+			 visionParameters.AngleToTarget = 0.0;
+			 System.out.println("WARNING:Setting visionParameters.AngleToTarget to 0.0");
+		 }
+		 
+		 if (distanceSamples.size() > 0)
+		 {
+			 visionParameters.DistanceToTarget = modeit(distanceSamples);
+		 }
+		 else
+		 {
+			 visionParameters.DistanceToTarget = 0.0;
+			 System.out.println("ARNING:Setting visionParameters.DistanceToTarget to 0.0");
+		 }	 
+	
+	    	angleSamples.clear();
+	    	distanceSamples.clear();
+	    	 System.out.println("Vision Ended at "+ LocalDateTime.now());
+	    	Robot.light.lightOff();
+		 
+		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
+    	
+
     }
+
+
+
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
     	Robot.light.lightOff();
-    	timer.stop();
-    	timer.reset();
-    	
     	angleSamples.clear();
-    	distanceSamples.clear();
-    	
+    	distanceSamples.clear();  	
     	System.out.println("Vision Interrupted at "+ LocalDateTime.now());
     }
     
