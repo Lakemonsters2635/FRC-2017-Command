@@ -17,13 +17,13 @@ public class DriveTeleop extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
+        Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	//Robot.drive.tankDriveVoltage(Robot.oi.getLeftY(), Robot.oi.getRightY());
-    	Robot.drive.scootch(Robot.oi.getLeftThrottle());
+        //Robot.drive.tankDriveVoltage(Robot.oi.getLeftY(), Robot.oi.getRightY());
+        Robot.drive.scootch(Robot.oi.getLeftThrottle());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -33,12 +33,12 @@ public class DriveTeleop extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	Robot.drive.tankDriveVoltage(0, 0);
+        Robot.drive.tankDriveVoltage(0, 0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	Robot.drive.tankDriveVoltage(0, 0);
+        Robot.drive.tankDriveVoltage(0, 0);
     }
 }

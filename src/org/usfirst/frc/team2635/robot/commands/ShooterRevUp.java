@@ -1,9 +1,8 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
-
-import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
  * Spin up the flywheel and agitate.
@@ -11,14 +10,14 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 public class ShooterRevUp extends CommandGroup {
 
     public ShooterRevUp() {
-    	//Change this to sequential when a method to figure out if it's finished is implemented
-    	requires(Robot.shooter);
-    	addParallel(new ShooterFire());
-    	addParallel(new ShooterSpinFlywheel(-1.0));
-    	addParallel(new ShooterAgitate(1.0, RobotMap.TELEOP_AGITATOR_LOOP_COUNT));
-    	
-    	//addSequential(new ShooterSpinFlywheel(-1.0));
-    	
+        //Change this to sequential when a method to figure out if it's finished is implemented
+        requires(Robot.shooter);
+        addParallel(new ShooterFire());
+        addParallel(new ShooterSpinFlywheel(-1.0));
+        addParallel(new ShooterAgitate(1.0, RobotMap.TELEOP_AGITATOR_LOOP_COUNT));
+
+        //addSequential(new ShooterSpinFlywheel(-1.0));
+
         // Add Commands here:
         // e.g. addSequential(new Command1());
         //      addSequential(new Command2());

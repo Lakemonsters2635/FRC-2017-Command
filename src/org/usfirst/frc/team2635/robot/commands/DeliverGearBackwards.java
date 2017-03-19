@@ -10,13 +10,13 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 public class DeliverGearBackwards extends TimedCommand {
 
     public DeliverGearBackwards(double timeout) {
-    	super(timeout);
-    	requires(Robot.deliverer);
+        super(timeout);
+        requires(Robot.deliverer);
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	Robot.deliverer.setBackwards();
+        Robot.deliverer.setBackwards();
     }
 
 

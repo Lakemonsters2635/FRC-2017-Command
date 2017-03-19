@@ -9,23 +9,24 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public class DriveRotateNavx extends Command {
 
-	public boolean wasPressed;
-	public double heading;
-//	public boolean isDoneWithNavx;
+    public boolean wasPressed;
+    public double heading;
+
+    //	public boolean isDoneWithNavx;
     public DriveRotateNavx(double heading) {
         // Use requires() here to declare subsystem dependencies
-       
-       this.heading = heading;
-       Robot.drive.setAnglePID(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D);
-    	
+
+        this.heading = heading;
+        Robot.drive.setAnglePID(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D);
+
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	System.out.println("DriveRotateNavX init");
-      	//Robot.drive.updateMotionNavx(heading);
-    	//Robot.drive.errNavxDrive = 0;
-   
+        System.out.println("DriveRotateNavX init");
+        //Robot.drive.updateMotionNavx(heading);
+        //Robot.drive.errNavxDrive = 0;
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -36,21 +37,21 @@ public class DriveRotateNavx extends Command {
 //        	Robot.drive.updateMotionNavx(heading);
 //	    	wasPressed = true;
 //    	}
-    	
-    	System.out.println("DriveRotateNavx execute");
-    	Robot.drive.updateMotionNavx(heading);
+
+        System.out.println("DriveRotateNavx execute");
+        Robot.drive.updateMotionNavx(heading);
     }
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-    	//FHE TODO:
+        //FHE TODO:
 //    	boolean done = Robot.drive.angleOnTarget();
 //    	if (done){    		
 //    		Robot.drive.disableAnglePID();
 //    	}
 //    	System.out.print("DriveRotateNavx is " + (isDoneWithNavx?"done":"not done"));
 //    	return done;
-    	return Robot.drive.motionNavxFinished(heading);
+        return Robot.drive.motionNavxFinished(heading);
     }
 
     // Called once after isFinished returns true

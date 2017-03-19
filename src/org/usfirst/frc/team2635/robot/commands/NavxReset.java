@@ -1,8 +1,7 @@
 package org.usfirst.frc.team2635.robot.commands;
 
-import org.usfirst.frc.team2635.robot.Robot;
-
 import edu.wpi.first.wpilibj.command.Command;
+import org.usfirst.frc.team2635.robot.Robot;
 
 /**
  *
@@ -20,7 +19,7 @@ public class NavxReset extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-    	Robot.drive.getNavx().reset();
+        Robot.drive.getNavx().reset();
     }
 
     // Make this return true when this Command no longer needs to run execute()
