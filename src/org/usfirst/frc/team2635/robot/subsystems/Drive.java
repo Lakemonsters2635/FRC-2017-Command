@@ -193,11 +193,11 @@ public class Drive extends Subsystem {
 			leftFront.set(leftWheelRotations);
 		} else {
 			initVoltageDriveTankDrive();
-			tankDriveBasic(left, right);
+			tankDriveVoltage(left, right);
 		}
 	}
 
-	public void tankDriveBasic(double left, double right) {
+	public void tankDriveVoltage(double left, double right) {
 		rightFront.setMotionMagicCruiseVelocity(400);
 		leftFront.setMotionMagicCruiseVelocity(400);
 
