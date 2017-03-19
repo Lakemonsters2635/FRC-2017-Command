@@ -36,6 +36,9 @@ public class VisionSubsystem extends Subsystem {
     }
     
     public void gearAim() {
+
+    	//gearVision.camInit();
+
 		gearVision.createBox();
 		gearVision.confirmBox();
 		gearVision.viewShooter();
