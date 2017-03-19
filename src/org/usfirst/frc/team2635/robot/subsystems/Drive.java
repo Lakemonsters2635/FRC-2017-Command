@@ -25,6 +25,7 @@ public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
 	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
 	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
+	private final int FULL_SPEED_ROTATION_INCREMENT = 3000; // used in tank drive with encoders and scootch
 
 	public double leftWheelRotations;
 	public double rightWheelRotations;
@@ -185,7 +186,6 @@ public class Drive extends Subsystem {
 		}
 		if (tankDriveWithEncodersEnabled) {
 			initMotionMagicTankDrive();
-			final int FULL_SPEED_ROTATION_INCREMENT = 3000;
 			rightWheelRotations += left / FULL_SPEED_ROTATION_INCREMENT;
 			leftWheelRotations += right / FULL_SPEED_ROTATION_INCREMENT;
 			
@@ -208,12 +208,12 @@ public class Drive extends Subsystem {
 		leftFront.set(left);
 	}
 	
-	public void scootch(double throttle, double speed, double range) {
-		double currentRange = throttle * range;
-		if (currentRange > 0) {
-			rightFront.set(speed);
-			leftFront.set(speed);
-		}
+	public void scootch(double throttle) {
+		final double RANGE_IN_INCHES = 12;
+		initMotionMagicTankDrive();
+		rightWheelRotations = leftWheelRotations = throttle * RANGE_IN_INCHES;
+		rightFront.set(rightWheelRotations);
+		leftFront.set(leftWheelRotations);
 	}
 
 	/**
