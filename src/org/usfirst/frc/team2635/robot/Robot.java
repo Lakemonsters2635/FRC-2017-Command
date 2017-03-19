@@ -74,8 +74,10 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		System.out.println("robotInit");
 
+		final boolean ENABLE_TANK_DRIVE_WITH_ENCODERS_FIRST = true;
+
 		oi = new OI();
-		drive = new Drive();
+		drive = new Drive(ENABLE_TANK_DRIVE_WITH_ENCODERS_FIRST);
 		shooter = new Shooter();
 		pickup = new Pickup();
 		climber = new Climber();

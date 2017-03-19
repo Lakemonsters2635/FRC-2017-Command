@@ -26,12 +26,12 @@ public class Drive extends Subsystem {
 	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
 	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
 
-	public double maxAcceleration;
-	public double maxVelocity;
 	public double leftWheelRotations;
 	public double rightWheelRotations;
 
-	boolean enableTankDriveWithEncoders;
+	private boolean enableTankDriveWithEncodersFirst;
+	private boolean tankDriveMotionMagicInitialized = false;
+	private boolean tankDriveVoltageDriveInitialized = false;
 
 	public double currentHeadingOffset = 0;
 	// Put methods for controlling this subsystem
@@ -47,11 +47,13 @@ public class Drive extends Subsystem {
 	
 	Navx navx = new Navx();
 
-	public Drive(boolean enableTankDriveWithEncoders) {
+	public Drive(boolean enableTankDriveWithEncodersFirst) {
 		rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
 		leftFront = new CANTalon(RobotMap.DRIVE_LEFT_FRONT);
 		rightBack = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
 		leftBack = new CANTalon(RobotMap.DRIVE_LEFT_BACK);
+
+		this.enableTankDriveWithEncodersFirst = enableTankDriveWithEncodersFirst;
 
 		driveInit();
 
@@ -132,22 +134,11 @@ public class Drive extends Subsystem {
 	}
 
 	
-	public void driveInit() {
-		if (enableTankDriveWithEncoders) {
+	private void driveInit() {
+		if (enableTankDriveWithEncodersFirst) {
 			initMotionMagic();
 		} else {
-			rightFront.changeControlMode(TalonControlMode.PercentVbus);
-			rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-			rightFront.configEncoderCodesPerRev(250);
-
-			rightBack.changeControlMode(TalonControlMode.Follower);
-			rightBack.set(rightFront.getDeviceID());
-
-			leftFront.changeControlMode(TalonControlMode.PercentVbus);
-			leftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-			leftFront.configEncoderCodesPerRev(250);
-			leftBack.changeControlMode(TalonControlMode.Follower);
-			leftBack.set(leftFront.getDeviceID());
+			initVoltageDrive();
 		}
 	}
 
@@ -187,8 +178,13 @@ public class Drive extends Subsystem {
 	 * @param right
 	 *            Right side mag
 	 */
-	public void tankDrive(double left, double right) {
-		if (enableTankDriveWithEncoders) {
+	private boolean tankDriveWithEncodersEnabled = enableTankDriveWithEncodersFirst;
+	public void tankDrive(double left, double right, boolean toggle) {
+		if (toggle) {
+			tankDriveWithEncodersEnabled = !tankDriveWithEncodersEnabled;
+		}
+		if (tankDriveWithEncodersEnabled) {
+			initMotionMagicTankDrive();
 			final int FULL_SPEED_ROTATION_INCREMENT = 3000;
 			rightWheelRotations += left / FULL_SPEED_ROTATION_INCREMENT;
 			leftWheelRotations += right / FULL_SPEED_ROTATION_INCREMENT;
@@ -196,15 +192,20 @@ public class Drive extends Subsystem {
 			rightFront.set(rightWheelRotations);
 			leftFront.set(leftWheelRotations);
 		} else {
-			rightFront.setMotionMagicCruiseVelocity(400);
-			leftFront.setMotionMagicCruiseVelocity(400);
-			
-			rightFront.setMotionMagicAcceleration(400);
-			leftFront.setMotionMagicAcceleration(400);
-			
-			rightFront.set(-right);
-			leftFront.set(left);
+			initVoltageDriveTankDrive();
+			tankDriveBasic(left, right);
 		}
+	}
+
+	public void tankDriveBasic(double left, double right) {
+		rightFront.setMotionMagicCruiseVelocity(400);
+		leftFront.setMotionMagicCruiseVelocity(400);
+
+		rightFront.setMotionMagicAcceleration(400);
+		leftFront.setMotionMagicAcceleration(400);
+
+		rightFront.set(-right);
+		leftFront.set(left);
 	}
 	
 	public void scootch(double throttle, double speed, double range) {
@@ -275,46 +276,77 @@ public class Drive extends Subsystem {
 	/**
 	 * Stop driving and instruct the talons to run in motion magic mode
 	 */
-	public void initMotionMagic() {		
+	public void initMotionMagic() {
 		//drive.tankDrive(0.0, 0.0);
 		//drive.free();
 		//drive.setExpiration(0);
-		
+
 		//drive.setLeftRightMotorOutputs(0, 0);
 		//drive.stopMotor();
 		//_talon.SetFeedbackDevice(CTRE.TalonSrx.FeedbackDevice.CtreMagEncoder_Relative);
 		//SetSensorDirection ??
 
 		//status |= _talon.SetIzone(kSlotIdx, 0, kTimeoutMs);
-		
-		
-		
+
+
+
 		//rightFront.changeControlMode(TalonControlMode.MotionMagic);
 		//leftFront.changeControlMode(TalonControlMode.MotionMagic);
-		
-	
+
+
 		setDriveMode(TalonControlMode.MotionMagic);
-		
-//	    rightFront.setMotionMagicCruiseVelocity(200.0);
-//	    leftFront.setMotionMagicCruiseVelocity(200.0);
-//	    rightFront.setMotionMagicAcceleration(400.0);
-//	    leftFront.setMotionMagicAcceleration(400.0);
-	    //rightFront.setInverted(true);
-	    
-	    //FOR COMPETITION BOT DO THE FOLLOWING
-	    rightFront.reverseOutput(true);
-	    leftFront.reverseOutput(true);
-	    //END COMPETITION BOT
-	     
-	    //WE believe the following is the same as reverseOutput
-	    //rightFront.reverseSensor(true);
-	    //rightFront.reverseSensor(false);
-	     
+
+//			rightFront.setMotionMagicCruiseVelocity(200.0);
+//	    	leftFront.setMotionMagicCruiseVelocity(200.0);
+//	    	rightFront.setMotionMagicAcceleration(400.0);
+//	    	leftFront.setMotionMagicAcceleration(400.0);
+//			rightFront.setInverted(true);
+
+		//FOR COMPETITION BOT DO THE FOLLOWING
+		rightFront.reverseOutput(true);
+		leftFront.reverseOutput(true);
+		//END COMPETITION BOT
+
+		//WE believe the following is the same as reverseOutput
+		//rightFront.reverseSensor(true);
+		//rightFront.reverseSensor(false);
+
 		//rightFront.reverseOutput(true);
 		//leftFront.reverseOutput(true);
-	     
+
 		rightFront.setPosition(0.0);
 		leftFront.setPosition(0.0);
+	}
+
+	private void initMotionMagicTankDrive() {
+		if (!tankDriveMotionMagicInitialized) {
+			initMotionMagic();
+			tankDriveMotionMagicInitialized = true;
+			tankDriveVoltageDriveInitialized = false;
+		}
+	}
+
+	public void initVoltageDrive() {
+		rightFront.changeControlMode(TalonControlMode.PercentVbus);
+		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+		rightFront.configEncoderCodesPerRev(250);
+
+		rightBack.changeControlMode(TalonControlMode.Follower);
+		rightBack.set(rightFront.getDeviceID());
+
+		leftFront.changeControlMode(TalonControlMode.PercentVbus);
+		leftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+		leftFront.configEncoderCodesPerRev(250);
+		leftBack.changeControlMode(TalonControlMode.Follower);
+		leftBack.set(leftFront.getDeviceID());
+	}
+
+	private void initVoltageDriveTankDrive() {
+		if (!tankDriveVoltageDriveInitialized) {
+			initVoltageDrive();
+			tankDriveVoltageDriveInitialized = true;
+			tankDriveMotionMagicInitialized = false;
+		}
 	}
 
 	/**
