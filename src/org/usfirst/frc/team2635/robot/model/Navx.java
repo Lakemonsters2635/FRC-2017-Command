@@ -3,7 +3,6 @@ package org.usfirst.frc.team2635.robot.model;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
-import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
  * Navx hardware

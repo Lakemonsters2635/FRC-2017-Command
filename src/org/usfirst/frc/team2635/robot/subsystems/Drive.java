@@ -3,11 +3,8 @@ package org.usfirst.frc.team2635.robot.subsystems;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
-import org.usfirst.frc.team2635.robot.model.DriveParameters;
-import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.model.Navx;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
@@ -28,6 +25,14 @@ public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
 	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
 	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
+	private final int FULL_SPEED_ROTATION_INCREMENT = 3000; // used in tank drive with encoders and scootch
+
+	public double leftWheelRotations;
+	public double rightWheelRotations;
+
+	private boolean enableTankDriveWithEncodersFirst;
+	private boolean tankDriveMotionMagicInitialized = false;
+	private boolean tankDriveVoltageDriveInitialized = false;
 
 	public double currentHeadingOffset = 0;
 	// Put methods for controlling this subsystem
@@ -36,15 +41,30 @@ public class Drive extends Subsystem {
 	CANTalon rightBack;
 	CANTalon leftFront;
 	CANTalon leftBack;
-	RobotDrive drive;
 	
-	DriveTeleop teleopCommand; 
-	
-	DriveParameters driveParameters;
+	DriveTeleop teleopCommand;
 	
 	public double errNavxDrive;
 	
 	Navx navx = new Navx();
+
+	public Drive(boolean enableTankDriveWithEncodersFirst) {
+		rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
+		leftFront = new CANTalon(RobotMap.DRIVE_LEFT_FRONT);
+		rightBack = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
+		leftBack = new CANTalon(RobotMap.DRIVE_LEFT_BACK);
+
+		this.enableTankDriveWithEncodersFirst = enableTankDriveWithEncodersFirst;
+
+		driveInit();
+
+		//teleopCommand = new DriveTeleop();
+
+		//drive = new RobotDrive(leftFront, rightFront);
+//		angleController = new PIDController(RobotMap.AIM_D, RobotMap.AIM_I, RobotMap.AIM_D,
+//				new NavxUnwrappedAnglePIDSource(navx), new DrivePIDOutput(drive));
+
+	}
 
 	class NavxUnwrappedAnglePIDSource implements PIDSource {
 		Navx navx;
@@ -84,22 +104,6 @@ public class Drive extends Subsystem {
 	}
 
 	PIDController angleController;
-
-	public Drive() {
-		rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
-		leftFront = new CANTalon(RobotMap.DRIVE_LEFT_FRONT);
-		rightBack = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
-		leftBack = new CANTalon(RobotMap.DRIVE_LEFT_BACK);
-		
-		driveInit();
-		
-		//teleopCommand = new DriveTeleop();
-		
-		//drive = new RobotDrive(leftFront, rightFront);
-//		angleController = new PIDController(RobotMap.AIM_D, RobotMap.AIM_I, RobotMap.AIM_D,
-//				new NavxUnwrappedAnglePIDSource(navx), new DrivePIDOutput(drive));
-
-	}
 	
 	public void enableTeleop() {
 		if (!teleopCommand.isRunning()) {
@@ -131,25 +135,12 @@ public class Drive extends Subsystem {
 	}
 
 	
-	public void driveInit() {
-
-		driveParameters = new DriveParameters();
-		
-		rightFront.changeControlMode(TalonControlMode.PercentVbus);
-		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		rightFront.configEncoderCodesPerRev(250);
-		//rightFront.setInverted(true);
-		//leftFront.setInverted(true);
-
-		rightBack.changeControlMode(TalonControlMode.Follower);
-		rightBack.set(rightFront.getDeviceID());
-
-		leftFront.changeControlMode(TalonControlMode.PercentVbus);
-		leftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
-		leftFront.configEncoderCodesPerRev(250);
-		leftBack.changeControlMode(TalonControlMode.Follower);
-		leftBack.set(leftFront.getDeviceID());
-
+	private void driveInit() {
+		if (enableTankDriveWithEncodersFirst) {
+			initMotionMagic();
+		} else {
+			initVoltageDrive();
+		}
 	}
 
 	public void initDefaultCommand() {
@@ -178,7 +169,6 @@ public class Drive extends Subsystem {
 
 		leftBack.changeControlMode(TalonControlMode.Follower);
 		leftBack.set(leftFront.getDeviceID());
-
 	}
 
 	/**
@@ -189,33 +179,41 @@ public class Drive extends Subsystem {
 	 * @param right
 	 *            Right side mag
 	 */
-	public void tankDrive(double left, double right) {
-		//drive.tankDrive(left, right);
+	private boolean tankDriveWithEncodersEnabled = enableTankDriveWithEncodersFirst;
+	public void tankDrive(double left, double right, boolean toggle) {
+		if (toggle) {
+			tankDriveWithEncodersEnabled = !tankDriveWithEncodersEnabled;
+		}
+		if (tankDriveWithEncodersEnabled) {
+			initMotionMagicTankDrive();
+			rightWheelRotations += left / FULL_SPEED_ROTATION_INCREMENT;
+			leftWheelRotations += right / FULL_SPEED_ROTATION_INCREMENT;
+			
+			rightFront.set(rightWheelRotations);
+			leftFront.set(leftWheelRotations);
+		} else {
+			initVoltageDriveTankDrive();
+			tankDriveVoltage(left, right);
+		}
+	}
+
+	public void tankDriveVoltage(double left, double right) {
 		rightFront.setMotionMagicCruiseVelocity(400);
 		leftFront.setMotionMagicCruiseVelocity(400);
-		
+
 		rightFront.setMotionMagicAcceleration(400);
 		leftFront.setMotionMagicAcceleration(400);
-		
+
 		rightFront.set(-right);
-		leftFront.set(left);		
+		leftFront.set(left);
 	}
 	
-	public void tankDriveMagicMotion(double left, double right) {
-		final int FULL_SPEED_ROTATION_INCREMENT = 3000;
-		driveParameters.rightWheelRotations = left / FULL_SPEED_ROTATION_INCREMENT;
-		driveParameters.leftWheelRotations = right / FULL_SPEED_ROTATION_INCREMENT;
-		
-		rightFront.set(driveParameters.rightWheelRotations);
-		leftFront.set(driveParameters.leftWheelRotations);
-	}
-	
-	public void scootch(double throttle, double speed, double range) {
-		double currentRange = throttle * range;
-		if (currentRange > 0) {
-			rightFront.set(speed);
-			leftFront.set(speed);
-		}
+	public void scootch(double throttle) {
+		final double RANGE_IN_INCHES = 12;
+		initMotionMagicTankDrive();
+		rightWheelRotations = leftWheelRotations = throttle * RANGE_IN_INCHES;
+		rightFront.set(rightWheelRotations);
+		leftFront.set(leftWheelRotations);
 	}
 
 	/**
@@ -279,49 +277,76 @@ public class Drive extends Subsystem {
 	 * Stop driving and instruct the talons to run in motion magic mode
 	 */
 	public void initMotionMagic() {
-		
-		
-		
-		
 		//drive.tankDrive(0.0, 0.0);
 		//drive.free();
 		//drive.setExpiration(0);
-		
+
 		//drive.setLeftRightMotorOutputs(0, 0);
 		//drive.stopMotor();
 		//_talon.SetFeedbackDevice(CTRE.TalonSrx.FeedbackDevice.CtreMagEncoder_Relative);
 		//SetSensorDirection ??
 
 		//status |= _talon.SetIzone(kSlotIdx, 0, kTimeoutMs);
-		
-		
-		
+
+
+
 		//rightFront.changeControlMode(TalonControlMode.MotionMagic);
 		//leftFront.changeControlMode(TalonControlMode.MotionMagic);
-		
-	
+
+
 		setDriveMode(TalonControlMode.MotionMagic);
-		
-//	    rightFront.setMotionMagicCruiseVelocity(200.0);
-//	    leftFront.setMotionMagicCruiseVelocity(200.0);
-//	    rightFront.setMotionMagicAcceleration(400.0);
-//	    leftFront.setMotionMagicAcceleration(400.0);
-	    //rightFront.setInverted(true);
-	    
-	    //FOR COMPETITION BOT DO THE FOLLOWING
-	    rightFront.reverseOutput(true);
-	    leftFront.reverseOutput(true);
-	    //END COMPETITION BOT
-	     
-	     //WE believe the following is the same as reverseOutput
-	     //rightFront.reverseSensor(true);
-	     //rightFront.reverseSensor(false);
-	     
-		    //rightFront.reverseOutput(true);
-		    // leftFront.reverseOutput(true);
-	     
+
+//			rightFront.setMotionMagicCruiseVelocity(200.0);
+//	    	leftFront.setMotionMagicCruiseVelocity(200.0);
+//	    	rightFront.setMotionMagicAcceleration(400.0);
+//	    	leftFront.setMotionMagicAcceleration(400.0);
+//			rightFront.setInverted(true);
+
+		//FOR COMPETITION BOT DO THE FOLLOWING
+		rightFront.reverseOutput(true);
+		leftFront.reverseOutput(true);
+		//END COMPETITION BOT
+
+		//WE believe the following is the same as reverseOutput
+		//rightFront.reverseSensor(true);
+		//rightFront.reverseSensor(false);
+
+		//rightFront.reverseOutput(true);
+		//leftFront.reverseOutput(true);
+
 		rightFront.setPosition(0.0);
 		leftFront.setPosition(0.0);
+	}
+
+	private void initMotionMagicTankDrive() {
+		if (!tankDriveMotionMagicInitialized) {
+			initMotionMagic();
+			tankDriveMotionMagicInitialized = true;
+			tankDriveVoltageDriveInitialized = false;
+		}
+	}
+
+	public void initVoltageDrive() {
+		rightFront.changeControlMode(TalonControlMode.PercentVbus);
+		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+		rightFront.configEncoderCodesPerRev(250);
+
+		rightBack.changeControlMode(TalonControlMode.Follower);
+		rightBack.set(rightFront.getDeviceID());
+
+		leftFront.changeControlMode(TalonControlMode.PercentVbus);
+		leftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
+		leftFront.configEncoderCodesPerRev(250);
+		leftBack.changeControlMode(TalonControlMode.Follower);
+		leftBack.set(leftFront.getDeviceID());
+	}
+
+	private void initVoltageDriveTankDrive() {
+		if (!tankDriveVoltageDriveInitialized) {
+			initVoltageDrive();
+			tankDriveVoltageDriveInitialized = true;
+			tankDriveMotionMagicInitialized = false;
+		}
 	}
 
 	/**
@@ -352,16 +377,7 @@ public class Drive extends Subsystem {
 	/**
 	 * Update the talon's motion magic parameters based on given parameters
 	 * 
-	 * @param targetAngle
-	 *            Angle to go to
-	 * @param turnRadiusInches
-	 *            Turn radius
-	 * @param rpm
-	 *            Rpm to go to
-	 * @param clockwise
-	 *            Clockwise circle?
-	 * @param rotateCenter
-	 *            Rotate about center?
+	 * @param rotationParams
 	 */
 	public void rotateMotionMagic(MotionParameters rotationParams) {
 
@@ -431,9 +447,9 @@ public class Drive extends Subsystem {
 		
 		//if (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE)
 		//{
-			double p = 0.01;
-			double output = -errNavxDrive * p;
-			System.out.println("updateMotionNavx:output:" + output );
+		double p = 0.01;
+		double output = -errNavxDrive * p;
+		System.out.println("updateMotionNavx:output:" + output );
 
 			//drive.arcadeDrive(0.0, output);
 		//}
@@ -455,16 +471,9 @@ public class Drive extends Subsystem {
 	/**
 	 * Checks if motion magic routine is finished based on given parameters.
 	 * 
-	 * @param targetAngle
-	 *            Angle to go to
-	 * @param turnRadiusInches
-	 *            Turn radius
-	 * @param rpm
-	 *            Rpm to go to
-	 * @param clockwise
-	 *            Clockwise circle?
-	 * @param rotateCenter
-	 *            Rotate about center?
+	 * @param rotationParams
+	 * @param errorTolerance
+	 *
 	 * @return true if  false if not.
 	 */
 	public boolean motionMagicDone(MotionParameters rotationParams, double errorTolerance) {

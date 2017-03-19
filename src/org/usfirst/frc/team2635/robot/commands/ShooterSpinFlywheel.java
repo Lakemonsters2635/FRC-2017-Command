@@ -2,8 +2,6 @@ package org.usfirst.frc.team2635.robot.commands;
 
 import org.usfirst.frc.team2635.robot.Robot;
 
-import com.ctre.CANTalon;
-
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
