@@ -31,7 +31,6 @@ public class Vision {
     public Vision() {
     }
 
-
     public void camInit() {
         GripPipeline = new GripPipeline();
 
@@ -41,15 +40,12 @@ public class Vision {
         source = new Mat();
         cvSource = CameraServer.getInstance().putVideo("Vision", 640, 480);
 
-
         currentdate = new SimpleDateFormat("MM/dd/yyy").format(new java.util.Date());
-
     }
 
     public void createBox() {
         boundRect = new ArrayList<Rect>();
         //Get frame from camera
-
 
         cvSink.grabFrame(source);
 
@@ -64,7 +60,5 @@ public class Vision {
             //Rect rect = Imgproc.boundingRect(grip.get(i));
             //Imgproc.rectangle( source, rect.tl(), rect.br(), new Scalar(0,0,255), 2, 8, 0 );
         }
-
-
     }
 }

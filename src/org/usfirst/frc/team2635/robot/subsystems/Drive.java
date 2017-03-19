@@ -22,7 +22,6 @@ public class Drive extends Subsystem {
 
     public double leftWheelRotations;
     public double rightWheelRotations;
-    public double currentHeadingOffset = 0;
     public double errNavxDrive;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.

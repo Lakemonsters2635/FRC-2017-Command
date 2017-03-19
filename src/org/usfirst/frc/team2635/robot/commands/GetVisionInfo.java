@@ -32,8 +32,6 @@ public class GetVisionInfo extends TimedCommand {
 
         this.visionParameters = visionParams;
         this.targetName = targetName;
-
-
     }
 
     // Called just before this Command runs the first time
@@ -114,8 +112,6 @@ public class GetVisionInfo extends TimedCommand {
         Robot.light.lightOff();
 
         System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
-
-
     }
 
 
@@ -143,8 +139,6 @@ public class GetVisionInfo extends TimedCommand {
     }
 
     Double modeit(ArrayList<Double> samples) {
-
-
         // list of all the numbers 
         List<Double> list = new ArrayList<Double>();
 

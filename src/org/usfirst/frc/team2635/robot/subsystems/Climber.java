@@ -32,8 +32,6 @@ public class Climber extends Subsystem {
     }
 
     public void climb(double magnitude) {
-
-
         double climb1Amps = climb1.getOutputCurrent();
         double climb2Amps = climb2.getOutputCurrent();
         System.out.println("---------------------------------------");

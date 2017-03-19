@@ -116,7 +116,6 @@ public class Robot extends IterativeRobot {
         chooser.addObject("Vision Test", visionTest);
         chooser.addObject("Rotation Test", rotateTest);
 
-
         SmartDashboard.putData("Autonomous mode", chooser);
     }
 
@@ -135,8 +134,6 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void disabledPeriodic() {
-
-
         Scheduler.getInstance().run();
     }
 
@@ -153,19 +150,15 @@ public class Robot extends IterativeRobot {
      */
     @Override
     public void autonomousInit() {
-
-
         if (motionCommandGroup != null && motionCommandGroup.isRunning()) {
             motionCommandGroup.cancel();
         }
 
         InitializeChooser();
 
-
         if (drive.teleopIsRunning()) {
             drive.disableTeleop();
         }
-
 
 		/*
          * String autoSelected = SmartDashboard.getString("Auto Selector",

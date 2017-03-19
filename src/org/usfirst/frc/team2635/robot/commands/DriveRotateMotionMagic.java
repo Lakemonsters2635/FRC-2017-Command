@@ -21,9 +21,7 @@ public class DriveRotateMotionMagic extends Command {
     VisionParameters visionParams;
     public boolean hasExecuted;
 
-
     MotionParameters rotationParams;
-
 
     public DriveRotateMotionMagic(double rpm, double targetAngle) {
         // Use requires() here to declare subsystem dependencies
@@ -37,8 +35,6 @@ public class DriveRotateMotionMagic extends Command {
         this.visionParams = visionParams;
         this.rpm = rpm;
         this.targetAngle = 0;
-
-
     }
 
     // Called just before this Command runs the first time
@@ -64,7 +60,6 @@ public class DriveRotateMotionMagic extends Command {
                 RobotMap.MOTION_MAGIC_I,
                 RobotMap.MOTION_MAGIC_D,
                 RobotMap.MOTION_MAGIC_F);
-
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -82,7 +77,6 @@ public class DriveRotateMotionMagic extends Command {
                 visionParams.AngleToTarget = null;
                 visionParams.DistanceToTarget = null;
             }
-
         }
         return done;
     }
@@ -92,7 +86,6 @@ public class DriveRotateMotionMagic extends Command {
         System.out.println("DriveRotateMotionMagic ended at " + LocalDateTime.now());
         Robot.drive.initMotionMagic();
         Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
-
     }
 
     // Called when another command which requires one or more of the same

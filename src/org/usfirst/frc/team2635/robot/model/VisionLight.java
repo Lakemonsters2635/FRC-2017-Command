@@ -8,7 +8,6 @@ public class VisionLight {
 
     public VisionLight(int channel) {
         vlight = new Solenoid(channel);
-
     }
 
     public void lightOn() {

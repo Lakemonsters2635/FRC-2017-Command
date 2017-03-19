@@ -25,7 +25,6 @@ public class DriveCameraAnglePID extends Command {
     // Called just before this Command runs the first time
     protected void initialize() {
         Robot.drive.enableAnglePID();
-
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -47,7 +46,6 @@ public class DriveCameraAnglePID extends Command {
     protected boolean isFinished() {
         light.lightOff();
         return Robot.drive.angleOnTarget();
-
     }
 
     // Called once after isFinished returns true

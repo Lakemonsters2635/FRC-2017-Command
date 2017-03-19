@@ -25,7 +25,6 @@ public class Shooter extends Subsystem {
         agitator.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 
         fireControl = new DoubleSolenoid(RobotMap.SHOOTER_FIRE_CONTROL_FORWARD, RobotMap.SHOOTER_FIRE_CONTROL_BACKWARDS);
-
     }
 
     public void initDefaultCommand() {

@@ -29,8 +29,6 @@ public class SetDriveAimPIDSmartDashboard extends Command {
         double p = SmartDashboard.getNumber("Aim P", RobotMap.AIM_P);
         double i = SmartDashboard.getNumber("Aim I", RobotMap.AIM_I);
         double d = SmartDashboard.getNumber("Aim D", RobotMap.AIM_D);
-
-
         Robot.drive.setAnglePID(p, i, d);
     }
 

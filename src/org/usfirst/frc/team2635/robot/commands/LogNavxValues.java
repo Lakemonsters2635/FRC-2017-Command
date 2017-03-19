@@ -8,7 +8,7 @@ import org.usfirst.frc.team2635.robot.Robot;
  */
 public class LogNavxValues extends Command {
 
-    public boolean wasPressed;
+    private boolean wasPressed;
 
     public LogNavxValues() {
         // Use requires() here to declare subsystem dependencies
@@ -32,8 +32,6 @@ public class LogNavxValues extends Command {
             System.out.println("-----------------------------");
             wasPressed = true;
         }
-
-
     }
 
     // Make this return true when this Command no longer needs to run execute()

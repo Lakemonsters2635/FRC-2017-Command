@@ -15,10 +15,8 @@ public class DriveRotateNavx extends Command {
     //	public boolean isDoneWithNavx;
     public DriveRotateNavx(double heading) {
         // Use requires() here to declare subsystem dependencies
-
         this.heading = heading;
         Robot.drive.setAnglePID(RobotMap.AIM_P, RobotMap.AIM_I, RobotMap.AIM_D);
-
     }
 
     // Called just before this Command runs the first time
@@ -26,7 +24,6 @@ public class DriveRotateNavx extends Command {
         System.out.println("DriveRotateNavX init");
         //Robot.drive.updateMotionNavx(heading);
         //Robot.drive.errNavxDrive = 0;
-
     }
 
     // Called repeatedly when this Command is scheduled to run

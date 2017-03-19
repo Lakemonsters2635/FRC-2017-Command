@@ -43,7 +43,6 @@ public class DriveStraightMotionMagic extends Command {
     protected void initialize() {
         System.out.println("DrivesStraightMotionMagic initialized at " + LocalDateTime.now());
 
-
         if (ultraSonicParams != null && ultraSonicParams.rightInches != null) {
 
             //targetAngle = visionParams.AngleToTarget;
@@ -54,7 +53,6 @@ public class DriveStraightMotionMagic extends Command {
             System.out.println("Get Drive Params by fixed distance:" + driveDistance);
             driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, driveDistance, rpm, reverse);
         }
-
 
         Robot.drive.initMotionMagic();
         Robot.drive.setMotionMagicPIDF(
@@ -68,10 +66,7 @@ public class DriveStraightMotionMagic extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-
         Robot.drive.driveStraightMotionMagic(driveParams);
-
-
     }
 
     // Make this return true when this Command no longer needs to run execute()

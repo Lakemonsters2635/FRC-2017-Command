@@ -13,7 +13,6 @@ public class ClimberClimb extends Command {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
         requires(Robot.climber);
-
     }
 
     // Called just before this Command runs the first time
@@ -28,7 +27,6 @@ public class ClimberClimb extends Command {
         System.out.println("-- ClimberClimb execute --");
         System.out.println("climbspeed is: " + climbspeed);
         Robot.climber.climb(climbspeed);
-
     }
 
     // Make this return true when this Command no longer needs to run execute()
