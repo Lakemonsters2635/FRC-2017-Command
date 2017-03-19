@@ -18,7 +18,6 @@ public class DriveRotateMotionMagic extends Command {
 	double rpm;
 	double targetAngle;
 	VisionParameters visionParams;
-	double turnRadiusInches;
 	public boolean hasExecuted;
 
 
@@ -38,7 +37,6 @@ public class DriveRotateMotionMagic extends Command {
     	this.visionParams = visionParams;
     	this.rpm = rpm;
     	this.targetAngle = 0;
-    	this.turnRadiusInches = 0;
 
     	
     }
