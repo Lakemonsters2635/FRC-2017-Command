@@ -49,7 +49,7 @@ public class RobotMap {
 	public static final int BUTTON_CLIMB_DOWN = 3;
 	public static final int BUTTON_DELIVER = 5;
 	public static final int BUTTON_AIM_CAMERA = 9;
-	public static final int BUTTON_MOTION_MAGIC = 8;
+	public static final int BUTTON_MOTION_MAGIC = 6;
 	public static final int BUTTON_NAVX_ROTATE = 8;
 	public static final int BUTTON_AIM = 7;
 	public static final int BUTTON_NAVX_GET_ANGLE = 10;
