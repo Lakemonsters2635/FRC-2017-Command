@@ -210,8 +210,9 @@ public class Drive extends Subsystem {
 	
 	public void scootch(double throttle) {
 		final double RANGE_IN_INCHES = 12;
+		final double MAXIMUM_ROTATIONS = RANGE_IN_INCHES * RobotMap.WHEEL_RADIUS_INCHES * 2;
 		initMotionMagicTankDrive();
-		rightWheelRotations = leftWheelRotations = throttle * RANGE_IN_INCHES;
+		rightWheelRotations = leftWheelRotations = throttle * MAXIMUM_ROTATIONS;
 		rightFront.set(rightWheelRotations);
 		leftFront.set(leftWheelRotations);
 	}
