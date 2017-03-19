@@ -209,6 +209,7 @@ public class Drive extends Subsystem {
 	}
 	
 	public void scootch(double throttle) {
+		System.out.println("scootch called");
 		final double RANGE_IN_INCHES = 12;
 		final double MAXIMUM_ROTATIONS = RANGE_IN_INCHES * RobotMap.WHEEL_RADIUS_INCHES * 2;
 		initMotionMagicTankDrive();
@@ -278,6 +279,7 @@ public class Drive extends Subsystem {
 	 * Stop driving and instruct the talons to run in motion magic mode
 	 */
 	public void initMotionMagic() {
+		System.out.println("initMotionMagic called");
 		//drive.tankDrive(0.0, 0.0);
 		//drive.free();
 		//drive.setExpiration(0);
@@ -320,6 +322,7 @@ public class Drive extends Subsystem {
 	}
 
 	private void initMotionMagicTankDrive() {
+		System.out.println("initMotionMagicTankDrive called");
 		if (!tankDriveMotionMagicInitialized) {
 			initMotionMagic();
 			tankDriveMotionMagicInitialized = true;
@@ -328,6 +331,8 @@ public class Drive extends Subsystem {
 	}
 
 	public void initVoltageDrive() {
+		System.out.println("initVoltageDrive called");
+		
 		rightFront.changeControlMode(TalonControlMode.PercentVbus);
 		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		rightFront.configEncoderCodesPerRev(250);
@@ -343,6 +348,7 @@ public class Drive extends Subsystem {
 	}
 
 	private void initVoltageDriveTankDrive() {
+		System.out.println("initVoltageTankDrive called");
 		if (!tankDriveVoltageDriveInitialized) {
 			initVoltageDrive();
 			tankDriveVoltageDriveInitialized = true;
