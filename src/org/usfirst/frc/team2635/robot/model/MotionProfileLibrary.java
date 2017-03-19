@@ -287,9 +287,9 @@ public class MotionProfileLibrary
 		
 		
 
-		double straightVelocity = 250;
+		double straightVelocity = 300;
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(straightVelocity, drive1Distance, false);
-		double rpm = 250;
+		double rpm = 300;
 		double targetAngle = 60;
 		
 		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle);
@@ -301,7 +301,7 @@ public class MotionProfileLibrary
 		UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 0.25);
 		
 		
-		straightVelocity = 75; //slow down for final approach
+		straightVelocity = 100; //slow down for final approach
 		DriveStraightMotionMagic driveOnSonar = new DriveStraightMotionMagic(straightVelocity, ultrasonicParams);
 
 		
@@ -510,14 +510,14 @@ public class MotionProfileLibrary
 		UltrasonicParameters ultrasonicParams = new UltrasonicParameters(null, null);
 		double velocity = 350;
 		String targetName = "Gear";
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,2); //FHE: Is two seconds for vision right?
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,1); //FHE: Is two seconds for vision right?
 		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(velocity,  visionParams);	
 			UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 1);
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, ultrasonicParams);
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 
 		resultGroup.addSequential(visionCmd1);
-		resultGroup.addSequential(rotateBasedOnVision);
+		//resultGroup.addSequential(rotateBasedOnVision);
 		resultGroup.addSequential(ultrasonicCmd1);
 		//resultGroup.addSequential(drive1);
 		return resultGroup;

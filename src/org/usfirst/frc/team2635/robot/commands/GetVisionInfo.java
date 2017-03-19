@@ -50,7 +50,11 @@ public class GetVisionInfo extends TimedCommand {
      	Robot.light.lightOn();    
     	angleSamples = new ArrayList<Double>();
     	distanceSamples = new ArrayList<Double>();
-    	
+    	if (visionParameters != null)
+    	{
+    		visionParameters.AngleToTarget = null;
+    		visionParameters.DistanceToTarget = null;
+    	}
     	System.out.println("Vision Initialized at "+ LocalDateTime.now());
 
     }
@@ -123,6 +127,7 @@ public class GetVisionInfo extends TimedCommand {
 	
 	    	angleSamples.clear();
 	    	distanceSamples.clear();
+
 	    	 System.out.println("Vision Ended at "+ LocalDateTime.now());
 	    	Robot.light.lightOff();
 		 
@@ -139,7 +144,7 @@ public class GetVisionInfo extends TimedCommand {
     protected void interrupted() {
     	Robot.light.lightOff();
     	angleSamples.clear();
-    	distanceSamples.clear();  	
+    	distanceSamples.clear();  
     	System.out.println("Vision Interrupted at "+ LocalDateTime.now());
     }
     
