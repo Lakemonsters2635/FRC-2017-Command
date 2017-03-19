@@ -25,7 +25,6 @@ public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
 	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
 	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
-	private final int FULL_SPEED_ROTATION_INCREMENT = 3000; // used in tank drive with encoders and scootch
 
 	public double leftWheelRotations;
 	public double rightWheelRotations;
@@ -172,6 +171,7 @@ public class Drive extends Subsystem {
 	 */
 	private boolean tankDriveWithEncodersEnabled = enableTankDriveWithEncodersFirst;
 	public void tankDrive(double left, double right, boolean toggle) {
+		final int FULL_SPEED_ROTATION_INCREMENT = 3000;
 		if (toggle) {
 			tankDriveWithEncodersEnabled = !tankDriveWithEncodersEnabled;
 		}
