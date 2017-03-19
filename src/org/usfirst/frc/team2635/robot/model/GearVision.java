@@ -209,9 +209,12 @@ public class GearVision extends Vision {
 		}
 		double fullYFOV = 41.8;
 		double pixelHeight = 480;
-		double halfFOV = fullYFOV / 2;
+		double halfYFOV = fullYFOV / 2;
 		double distanceFromZero = 10.25;
 		double cameraInclination = 6.8;
+		//double cameraInclination = 7.8;
+		//double cameraInclination = 8.5;
+		//double cameraInclination = 8.8;
 		
 		
 		//get y of middle of rect
@@ -225,28 +228,29 @@ public class GearVision extends Vision {
 		half = Math.abs(half);
 		double pixelRatioVerticle = centerhalf / (pixelHeight/2);
 		double angle = halfFOV * pixelRatioVerticle;*/
-		Point left = confRectRight.br();
-		Point right = confRectRight.tl();
+		Point right = confRectRight.br();
+		Point left  = confRectRight.tl();
 		
 		//get y of middle of rect 
-		double parthalf = left.y-right.y;
-		parthalf = parthalf/2;
-		double half = right.y + parthalf;
+		double rectangleHeight = Math.abs(left.y-right.y);
+		double halfRectangleHeight = rectangleHeight/2;
+		double RectangleCenterY = right.y + halfRectangleHeight;
 		
-		double centerhalf =  half-(pixelHeight/2);
-		double pixelRatioHorizontal = centerhalf / (pixelHeight/2);
-		double angle = halfFOV * pixelRatioHorizontal;
-		double angle_Abs = Math.abs(angle);
+		double verticalPixelsFromCameraCenterToRectangleCenter =  (pixelHeight/2) - RectangleCenterY;
+		double pixelRatioVerticle = verticalPixelsFromCameraCenterToRectangleCenter / (pixelHeight/2);
+		double angleFromCenterOfCameraToCenterOfTarget = halfYFOV * pixelRatioVerticle;
+		double angle_Abs = Math.abs(angleFromCenterOfCameraToCenterOfTarget) - cameraInclination;
 		//System.out.println("angle_Abs: " + angle_Abs);
+		
 		double angle_Radians = angle_Abs*Math.PI*2/360;
 		
-		double distance = distanceFromZero/Math.tan(angle_Radians - cameraInclination);
+		double distance = distanceFromZero/Math.tan(angle_Radians);
 		
-		return new Double(-distance);
+		return new Double(distance);
 	}
 	
 	public Double getAngle(){
-		if(confRectRight == null||confRectLeft == null)
+		if(confRectRight == null || confRectLeft == null)
 		{
 			return  null;
 		}
