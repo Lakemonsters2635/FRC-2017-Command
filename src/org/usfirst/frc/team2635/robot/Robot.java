@@ -71,7 +71,7 @@ public class Robot extends IterativeRobot {
         light = new LightSubsystem(RobotMap.VISION_LIGHT_CHANNEL);
         teleopCommands = new TeleopCommand();
 
-        InitializeChooser();
+        initializeChooser();
 
         oi.fireButton.whileHeld(new ShooterRevUp());
         oi.fireButton.whenReleased(new ShooterReverseFire());
@@ -98,7 +98,7 @@ public class Robot extends IterativeRobot {
 
     }
 
-    public void InitializeChooser() {
+    public void initializeChooser() {
         doNothingCmd = MotionProfileLibrary.doNothing();
         centerGear = MotionProfileLibrary.getCenterGearPlacementSequence();
         leftGear = MotionProfileLibrary.getLeftGearPlacementSequence();
@@ -154,7 +154,7 @@ public class Robot extends IterativeRobot {
             motionCommandGroup.cancel();
         }
 
-        InitializeChooser();
+        initializeChooser();
 
         if (drive.teleopIsRunning()) {
             drive.disableTeleop();
