@@ -9,6 +9,8 @@ import org.opencv.core.Scalar;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class ShooterVision extends Vision {
 	Rect confRectTop;

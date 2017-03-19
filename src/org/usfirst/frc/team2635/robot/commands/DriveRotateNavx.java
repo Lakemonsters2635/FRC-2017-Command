@@ -2,6 +2,9 @@ package org.usfirst.frc.team2635.robot.commands;
 
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
+import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
+import org.usfirst.frc.team2635.robot.model.MotionParameters;
+
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
