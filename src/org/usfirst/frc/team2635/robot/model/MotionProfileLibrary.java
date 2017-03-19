@@ -360,30 +360,29 @@ public class MotionProfileLibrary
 		//DriveForward
 		//public ConfigurationInfo = new ConfigurationInfo();
 		double drive1Distance = 75.385;
-		double distanceAfter60degreeRotation = 31.177;
+		double driveDistanceAfter60degreeRotation = 31.177;
 		
 		VisionParameters visionParams = new VisionParameters(null,null);
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		
 		
-		double straightVelocity = 100;
-		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(straightVelocity, drive1Distance, false);
+		double velocity = 250;
+		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, drive1Distance, false);
 		
 		
-		double rpm = 250;
+	
 		double targetAngle = 60;
 
-		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle);
+		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(velocity, targetAngle);
 		
 		//drive after rotate.
 		//Actual distance is 31.177, but we want to stop for sonar reading.
 		
-		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity,31.177, false);
-		straightVelocity = 250; //slow down for final approach
+		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(velocity,driveDistanceAfter60degreeRotation, false);
 		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
 		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
 		
-		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);		
+		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(velocity, driveDistanceAfter60degreeRotation, true);		
 		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
 			
@@ -505,20 +504,23 @@ public class MotionProfileLibrary
 	public static MotionCommandGroup visionTestSequence()
 	{
 
+		DriveRotateMotionMagic rotate1 = new DriveRotateMotionMagic(250, 0);
+		
 		
 		VisionParameters visionParams = new VisionParameters(null,null);
 		UltrasonicParameters ultrasonicParams = new UltrasonicParameters(null, null);
-		double velocity = 350;
+		double velocity = 250;
 		String targetName = "Gear";
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,1); //FHE: Is two seconds for vision right?
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,2); //FHE: Is two seconds for vision right?
 		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(velocity,  visionParams);	
-			UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 1);
+		//	UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 1);
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, ultrasonicParams);
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 
+		resultGroup.addSequential(rotate1);
 		resultGroup.addSequential(visionCmd1);
-		//resultGroup.addSequential(rotateBasedOnVision);
-		resultGroup.addSequential(ultrasonicCmd1);
+		resultGroup.addSequential(rotateBasedOnVision);
+		//resultGroup.addSequential(ultrasonicCmd1);
 		//resultGroup.addSequential(drive1);
 		return resultGroup;
 		

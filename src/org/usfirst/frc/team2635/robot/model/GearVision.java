@@ -122,7 +122,7 @@ public class GearVision extends Vision {
 					
 					SmartDashboard.putDouble("comp3", comp3);
 					SmartDashboard.putDouble("comp4", comp4);
-					if (rect1.height>20&&rect2.height>20&&.7<comp1&&1.3>comp1&&.7<comp2&&1.3>comp2&&.7<comp3&&1.3>comp3&&.7<comp4&&1.3>comp4){
+					if (rect1.height >20 && rect2.height > 20 && .7 < comp1 && 1.3 > comp1 && .7 < comp2&&1.3>comp2&&.7<comp3&&1.3>comp3&&.7<comp4&&1.3>comp4){
 						Double done = 1 - (1 * Math.abs(4 - (comp1+comp2+comp3+comp4)));
 						for(int i=0;i<999;i++){
 							if(poss[i]==null){
@@ -184,7 +184,7 @@ public class GearVision extends Vision {
 		}
 	}
 	 
-	public void viewShooter(){
+	public void viewShooter(Double angle){
    		//Draw Crosshairs
 		Point line11 = new Point(0,240);
 		Point line12 = new Point(620,240);
@@ -192,7 +192,13 @@ public class GearVision extends Vision {
 		Point line22 = new Point(320,480);
 		Imgproc.line(source, line11, line12, new Scalar(255,255,255));
 		Imgproc.line(source, line21, line22, new Scalar(255,255,255));
-		
+		Scalar scl = new Scalar(255,255,255);
+		String message = "no angle found.";
+		if (angle != null)
+		{
+			message = angle.toString();
+		}
+		Imgproc.putText(source, message, new Point(320,300), 2, 1, scl);
 		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
@@ -256,20 +262,36 @@ public class GearVision extends Vision {
 		}
 		double fullXFOV = 53.14;
 		double pixelWidth = 640;
+		double centerPixelX = 320;
 		double halfFOV = fullXFOV / 2;
 		
-		Point left = confRectRight.br();
-		Point right = confRectRight.tl();
+		Point rightRectBottomRight = confRectRight.br();
+		Point rightRectangleTopLeft = confRectRight.tl();
 		
-		//get x of middle of rect 
-		double parthalf = left.x-right.x;
-		parthalf = parthalf/2;
-		double half = right.x + parthalf;
+		Point leftRectBottomRight = confRectLeft.br();
+		Point leftRectangleTopLeft = confRectLeft.tl();
 		
-		double centerhalf =  half-(pixelWidth/2);
-		double pixelRatioHorizontal = centerhalf / (pixelWidth/2);
-		double angle = halfFOV * pixelRatioHorizontal;
+		//Point left = confRectRight.br();
+		//Point right = confRectRight.tl();
+		//Distance between leftRectangle.TopLeft, and rightRectangleBottomRight.
+		
+		double targetWidth = Math.abs(leftRectangleTopLeft.x - rightRectBottomRight.x);
+		double targetXCenter = leftRectangleTopLeft.x + targetWidth/2;
+		
+		//double resultAngle = (targetXCenter - centerPixelX)/pixelWidth * fullXFOV;
+		double angle = ((targetXCenter/pixelWidth)  - 0.5) * fullXFOV;
 		
 		return  new Double(angle);
+				
+		//get x of middle of rect 
+//		double parthalf = rightRectBottomRight.x-rightRectangleTopLeft.x;
+//		parthalf = parthalf/2;
+//		double half = rightRectangleTopLeft.x + parthalf;
+//		
+//		double centerhalf =  half-(pixelWidth/2);
+//		double pixelRatioHorizontal = centerhalf / (pixelWidth/2);
+//		double angle = halfFOV * pixelRatioHorizontal;
+//		
+//		return  new Double(angle);
 	}
 }

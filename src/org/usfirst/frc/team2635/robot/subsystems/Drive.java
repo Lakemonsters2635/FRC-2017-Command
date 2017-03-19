@@ -26,7 +26,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
-	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
+	public static final double ROTATE_ERROR_TOLERANCE = 0.02;
 	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
 
 	public double currentHeadingOffset = 0;
@@ -149,6 +149,16 @@ public class Drive extends Subsystem {
 		leftFront.configEncoderCodesPerRev(250);
 		leftBack.changeControlMode(TalonControlMode.Follower);
 		leftBack.set(leftFront.getDeviceID());
+		
+		leftFront.configNominalOutputVoltage(0, 0);
+		rightFront.configNominalOutputVoltage(0, 0);
+		leftBack.configNominalOutputVoltage(0, 0);
+		rightBack.configNominalOutputVoltage(0, 0);
+		
+		leftFront.configPeakOutputVoltage(12, -12);
+		rightFront.configPeakOutputVoltage(12, -12);
+		leftBack.configPeakOutputVoltage(12, -12);
+		rightBack.configPeakOutputVoltage(12, -12);		
 
 	}
 

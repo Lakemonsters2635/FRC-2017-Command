@@ -108,7 +108,7 @@ public class Robot extends IterativeRobot {
 
 		oi.climbUpButton.whileHeld(new ClimberClimb());
 
-		oi.aimCameraButton.whileHeld(MotionProfileLibrary.visionTestSequence());
+		oi.aimCameraButton.whenPressed(MotionProfileLibrary.visionTestSequence());
 		
 		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
 		//oi.navxResetButton.whenReleased(new NavxReset());

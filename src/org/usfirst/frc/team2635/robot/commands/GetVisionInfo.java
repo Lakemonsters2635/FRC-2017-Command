@@ -70,15 +70,23 @@ public class GetVisionInfo extends TimedCommand {
     		angle = Robot.vision.getAngleToGear();
     		distance = Robot.vision.getDistanceToGear();
     		if (angle!= null) {
-    		     roundedAngle = roundit(angle, 2);
+    		    roundedAngle = angle * 100;
+    			roundedAngle = (double) Math.round(roundedAngle);
+    			roundedAngle = roundedAngle/100;
+    			
+    		     //roundedAngle = roundit(angle, 2);
     		     //System.out.println("roundedAngle: " + roundedAngle);
-   				angleSamples.add(angle);
+   				angleSamples.add(roundedAngle);
     		} else {
     			System.out.println("angle is NULL");
     		}
     		
     		if (distance!= null){
-    			distanceSamples.add(distance);
+    			roundedDistance = distance * 100;
+    			roundedDistance = (double) Math.round(roundedDistance);
+    			roundedDistance = roundedDistance/100;
+    			
+    			distanceSamples.add(roundedDistance);
     		}
     	} else if (targetName == "Boiler") {
     		Robot.vision.aim();
@@ -174,6 +182,8 @@ public class GetVisionInfo extends TimedCommand {
         for (int i = 0; i < samples.size(); i++) {
            list.add(samples.get(i));
            tree.add(samples.get(i));
+           
+           System.out.println("samples[" + i + "]:" + samples.get(i) );
         }     
    
         // Contains all the modes
