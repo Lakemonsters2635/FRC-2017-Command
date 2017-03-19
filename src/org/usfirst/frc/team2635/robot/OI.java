@@ -40,6 +40,9 @@ public class OI {
 	public final double getLeftZ() {
 		return leftJoystick.getRawAxis(RobotMap.LEFT_DRIVE_Z);
 	}
+	public final double getLeftThrottle() {
+		return leftJoystick.getThrottle();
+	}
 	
 //	
 	//// CREATING BUTTONS

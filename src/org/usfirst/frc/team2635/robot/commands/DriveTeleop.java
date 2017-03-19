@@ -23,6 +23,7 @@ public class DriveTeleop extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	Robot.drive.tankDriveVoltage(Robot.oi.getLeftY(), Robot.oi.getRightY());
+    	Robot.drive.scootch(Robot.oi.getLeftThrottle());
     }
 
     // Make this return true when this Command no longer needs to run execute()
