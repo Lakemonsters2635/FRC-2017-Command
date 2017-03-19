@@ -112,17 +112,8 @@ public class Drive extends Subsystem {
 	}
 	
 
-	public boolean teleopIsRunning()
-	{
-		if (teleopCommand != null)
-		{
-			return teleopCommand.isRunning();
-		}
-		else
-		{
-			return false;
-		}
-	
+	public boolean teleopIsRunning() {
+		return teleopCommand != null && teleopCommand.isRunning();
 	}
 	
 	
