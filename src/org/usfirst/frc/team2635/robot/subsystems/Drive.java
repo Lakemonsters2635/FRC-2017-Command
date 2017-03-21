@@ -193,11 +193,12 @@ public class Drive extends Subsystem {
     }
 
     public void scootch(double throttle) {
-        System.out.println("scootch called");
+        //System.out.println("scootch called");
         final double RANGE_IN_INCHES = 12;
-        final double MAXIMUM_ROTATIONS = RANGE_IN_INCHES * RobotMap.WHEEL_RADIUS_INCHES * 2;
+        final double MAXIMUM_ROTATIONS = RANGE_IN_INCHES / (RobotMap.WHEEL_RADIUS_INCHES * 2);
         initMotionMagicTankDrive();
         rightWheelRotations = leftWheelRotations = throttle * MAXIMUM_ROTATIONS;
+        System.out.printf("Scootch rotations: %f \n", rightWheelRotations);
         rightFront.set(-rightWheelRotations);
         leftFront.set(leftWheelRotations);
     }
@@ -263,7 +264,7 @@ public class Drive extends Subsystem {
      * Stop driving and instruct the talons to run in motion magic mode
      */
     public void initMotionMagic() {
-        System.out.println("initMotionMagic called");
+        //System.out.println("initMotionMagic called");
         //drive.tankDrive(0.0, 0.0);
         //drive.free();
         //drive.setExpiration(0);
@@ -315,8 +316,8 @@ public class Drive extends Subsystem {
     }
 
     private void initMotionMagicTankDrive() {
-        System.out.println("initMotionMagicTankDrive called");
-        System.out.println("tankDriveMotionMagicInitialized " + tankDriveMotionMagicInitialized);
+//        System.out.println("initMotionMagicTankDrive called");
+//        System.out.println("tankDriveMotionMagicInitialized " + tankDriveMotionMagicInitialized);
         if (!tankDriveMotionMagicInitialized) {
             initMotionMagic();
             tankDriveMotionMagicInitialized = true;
