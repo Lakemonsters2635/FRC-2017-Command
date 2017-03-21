@@ -1,23 +1,8 @@
 package org.usfirst.frc.team2635.robot.subsystems;
 
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import org.usfirst.frc.team2635.robot.Robot;
-import org.usfirst.frc.team2635.robot.RobotMap;
-import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
-import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
-import org.usfirst.frc.team2635.robot.model.Navx;
-import org.usfirst.frc.team2635.robot.model.MotionParameters;
-
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
-
-import edu.wpi.first.wpilibj.PIDController;
-import edu.wpi.first.wpilibj.PIDOutput;
-import edu.wpi.first.wpilibj.PIDSource;
-import edu.wpi.first.wpilibj.PIDSourceType;
-import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
