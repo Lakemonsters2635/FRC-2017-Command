@@ -37,9 +37,9 @@ public class VisionSubsystem extends Subsystem {
 
         //gearVision.camInit();
 
-        gearVision.createBox();
-        gearVision.confirmBox();
-        gearVision.viewShooter();
+		gearVision.createBox();
+		gearVision.confirmBox();
+		//gearVision.viewShooter(null);
     }
 
     public Double getAngleToBoiler() {
@@ -53,9 +53,9 @@ public class VisionSubsystem extends Subsystem {
     }
 
     public Double getAngleToGear() {
-        Double angle = gearVision.getAngle();
-        gearVision.viewShooter();
-        return angle;
+    	Double angle = gearVision.getAngle();
+    	gearVision.viewShooter(angle);
+    	return angle;
     }
 
     public Double getDistanceToGear() {

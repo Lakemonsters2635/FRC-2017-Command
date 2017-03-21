@@ -1,8 +1,23 @@
 package org.usfirst.frc.team2635.robot.subsystems;
 
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+import org.usfirst.frc.team2635.robot.Robot;
+import org.usfirst.frc.team2635.robot.RobotMap;
+import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
+import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
+import org.usfirst.frc.team2635.robot.model.Navx;
+import org.usfirst.frc.team2635.robot.model.MotionParameters;
+
 import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
-import edu.wpi.first.wpilibj.*;
+
+import edu.wpi.first.wpilibj.PIDController;
+import edu.wpi.first.wpilibj.PIDOutput;
+import edu.wpi.first.wpilibj.PIDSource;
+import edu.wpi.first.wpilibj.PIDSourceType;
+import edu.wpi.first.wpilibj.RobotDrive;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
@@ -22,28 +37,23 @@ public class Drive extends Subsystem {
 
     public double leftWheelRotations;
     public double rightWheelRotations;
-    public double errNavxDrive;
+
+    public double currentHeadingOffset = 0;
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
     CANTalon rightFront;
     CANTalon rightBack;
     CANTalon leftFront;
     CANTalon leftBack;
+
     DriveTeleop teleopCommand;
+
+    public double errNavxDrive;
+
     Navx navx = new Navx();
-    PIDController angleController;
     private boolean enableTankDriveWithEncodersFirst;
     private boolean tankDriveMotionMagicInitialized = false;
     private boolean tankDriveVoltageDriveInitialized = false;
-    /**
-     * Drive using tank drive style controls
-     *
-     * @param left
-     * Left side mag
-     * @param right
-     * Right side mag
-     */
-    private boolean tankDriveWithEncodersEnabled = enableTankDriveWithEncodersFirst;
 
     public Drive(boolean enableTankDriveWithEncodersFirst) {
         rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
@@ -63,21 +73,74 @@ public class Drive extends Subsystem {
 
     }
 
+    class NavxUnwrappedAnglePIDSource implements PIDSource {
+        Navx navx;
+
+        public NavxUnwrappedAnglePIDSource(Navx navx) {
+            this.navx = navx;
+        }
+
+        @Override
+        public void setPIDSourceType(PIDSourceType pidSource) {
+            // TODO Auto-generated method stub
+        }
+
+        @Override
+        public PIDSourceType getPIDSourceType() {
+            return PIDSourceType.kDisplacement;
+        }
+
+        @Override
+        public double pidGet() {
+            return navx.getAngle();
+        }
+    }
+
+    class DrivePIDOutput implements PIDOutput {
+        public DrivePIDOutput(RobotDrive drive) {
+            this.drive = drive;
+        }
+
+        RobotDrive drive;
+
+        @Override
+        public void pidWrite(double output) {
+            drive.arcadeDrive(0.0, output);
+        }
+
+    }
+
+    PIDController angleController;
+
     public void enableTeleop() {
         if (!teleopCommand.isRunning()) {
             teleopCommand.start();
         }
     }
 
-    public boolean teleopIsRunning() {
-        return teleopCommand != null && teleopCommand.isRunning();
-    }
 
-    public void disableTeleop() {
-        if (teleopCommand.isRunning()) {
+	public boolean teleopIsRunning()
+	{
+		if (teleopCommand != null)
+		{
+			return teleopCommand.isRunning();
+    }
+		else
+		{
+			return false;
+		}
+	
+	}
+
+
+    public void disableTeleop()
+    {
+        if (teleopCommand.isRunning())
+        {
             teleopCommand.cancel();
         }
     }
+
 
     private void driveInit() {
         if (enableTankDriveWithEncodersFirst) {
@@ -100,7 +163,8 @@ public class Drive extends Subsystem {
      * Set the drive mode of the front talons and set the back talons to
      * follower mode
      *
-     * @param mode The mode to set to
+     * @param mode
+     *            The mode to set to
      */
     public void setDriveMode(TalonControlMode mode) {
         rightFront.changeControlMode(mode);
@@ -114,6 +178,15 @@ public class Drive extends Subsystem {
         leftBack.set(leftFront.getDeviceID());
     }
 
+    /**
+     * Drive using tank drive style controls
+     *
+     * @param left
+     *            Left side mag
+     * @param right
+     *            Right side mag
+     */
+    private boolean tankDriveWithEncodersEnabled = enableTankDriveWithEncodersFirst;
     public void tankDrive(double left, double right, boolean toggle) {
         final int FULL_SPEED_ROTATION_INCREMENT = 3000;
         if (toggle) {
@@ -154,6 +227,18 @@ public class Drive extends Subsystem {
     }
 
     /**
+     * Drive using arcade drive style controls
+     *
+     * @param move
+     *            Forward mag
+     * @param rotate
+     *            Rotate mag
+     */
+//	public void arcadeDrive(double move, double rotate) {
+//		drive.arcadeDrive(move, rotate);
+//	}
+
+    /**
      * Enable control using the navx
      */
     public void enableAnglePID() {
@@ -166,18 +251,6 @@ public class Drive extends Subsystem {
     public void disableAnglePID() {
         angleController.disable();
     }
-
-    /**
-     * Drive using arcade drive style controls
-     *
-     * @param move
-     *            Forward mag
-     * @param rotate
-     *            Rotate mag
-     */
-//	public void arcadeDrive(double move, double rotate) {
-//		drive.arcadeDrive(move, rotate);
-//	}
 
     /**
      * Set the setpoint of the navx
@@ -225,6 +298,7 @@ public class Drive extends Subsystem {
         //SetSensorDirection ??
 
         //status |= _talon.SetIzone(kSlotIdx, 0, kTimeoutMs);
+
 
 
         //rightFront.changeControlMode(TalonControlMode.MotionMagic);
@@ -341,7 +415,7 @@ public class Drive extends Subsystem {
 
     }
 
-    public void driveStraightMotionMagic(MotionParameters driveParams) {
+    public void driveStraightMotionMagic(MotionParameters  driveParams) {
         rightFront.setMotionMagicCruiseVelocity(driveParams.rightVelocity);
         leftFront.setMotionMagicCruiseVelocity(driveParams.leftVelocity);
 
@@ -364,6 +438,7 @@ public class Drive extends Subsystem {
 
     }
 
+
     public void navxSetPoint(double heading) {
 
     }
@@ -372,7 +447,7 @@ public class Drive extends Subsystem {
         double currentHeading = navx.getAngle();
         errNavxDrive = targetHeading - currentHeading;
 
-        System.out.println("motionNavxFinished:targetHeading:" + targetHeading + "\tcurrentHeading: " + currentHeading + "\terrNavxDrive: " + errNavxDrive);
+        System.out.println("motionNavxFinished:targetHeading:" + targetHeading   + "\tcurrentHeading: " + currentHeading + "\terrNavxDrive: " + errNavxDrive);
 
         return (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE);
     }
@@ -389,10 +464,13 @@ public class Drive extends Subsystem {
         //{
         double p = 0.01;
         double output = -errNavxDrive * p;
-        System.out.println("updateMotionNavx:output:" + output);
+        System.out.println("updateMotionNavx:output:" + output );
 
         //drive.arcadeDrive(0.0, output);
         //}
+
+
+
 
 
         //angleController.setSetpoint(heading);
@@ -402,11 +480,15 @@ public class Drive extends Subsystem {
 
     }
 
+
+
+
     /**
      * Checks if motion magic routine is finished based on given parameters.
      *
      * @param rotationParams
      * @param errorTolerance
+     *
      * @return true if  false if not.
      */
     public boolean motionMagicDone(MotionParameters rotationParams, double errorTolerance) {
@@ -436,29 +518,32 @@ public class Drive extends Subsystem {
 
     }
 
+//	public boolean motionNavxRoutineDone(RotationParameters rotationParams){
+//
+//	}
+
     public Navx getNavx() {
         return navx;
     }
 
+
     /**
      * Modify the talon based on the consumer
      *
-     * @param modifier A consumer that takes the given talon and performs a
-     *                 modification on its parameters.
+     * @param modifier
+     *            A consumer that takes the given talon and performs a
+     *            modification on its parameters.
      */
     public void modRightFrontTalon(Consumer<CANTalon> modifier) {
         modifier.accept(rightFront);
     }
 
-//	public boolean motionNavxRoutineDone(RotationParameters rotationParams){
-//		
-//	}
-
     /**
      * Modify the talon based on the consumer
      *
-     * @param modifier A consumer that takes the given talon and performs a
-     *                 modification on its parameters.
+     * @param modifier
+     *            A consumer that takes the given talon and performs a
+     *            modification on its parameters.
      */
     public void modLeftFrontTalon(Consumer<CANTalon> modifier) {
         modifier.accept(leftFront);
@@ -467,8 +552,9 @@ public class Drive extends Subsystem {
     /**
      * Modify the talon based on the consumer
      *
-     * @param modifier A consumer that takes the given talon and performs a
-     *                 modification on its parameters.
+     * @param modifier
+     *            A consumer that takes the given talon and performs a
+     *            modification on its parameters.
      */
     public void modRightBackTalon(Consumer<CANTalon> modifier) {
         modifier.accept(rightBack);
@@ -477,8 +563,9 @@ public class Drive extends Subsystem {
     /**
      * Modify the talon based on the consumer
      *
-     * @param modifier A consumer that takes the given talon and performs a
-     *                 modification on its parameters.
+     * @param modifier
+     *            A consumer that takes the given talon and performs a
+     *            modification on its parameters.
      */
     public void modLeftRearTalon(Consumer<CANTalon> modifier) {
         modifier.accept(leftBack);
@@ -487,8 +574,9 @@ public class Drive extends Subsystem {
     /**
      * Get a value based on the given talon
      *
-     * @param getter A function that performs an operation on the talon that gets
-     *               its information and returns it
+     * @param getter
+     *            A function that performs an operation on the talon that gets
+     *            its information and returns it
      * @return The value gotten from the getter
      */
     public <Type> Type getRightFrontTalon(Function<CANTalon, Type> getter) {
@@ -498,8 +586,9 @@ public class Drive extends Subsystem {
     /**
      * Get a value based on the given talon
      *
-     * @param getter A function that performs an operation on the talon that gets
-     *               its information and returns it
+     * @param getter
+     *            A function that performs an operation on the talon that gets
+     *            its information and returns it
      * @return The value gotten from the getter
      */
     public <Type> Type getRightBackTalon(Function<CANTalon, Type> getter) {
@@ -509,8 +598,9 @@ public class Drive extends Subsystem {
     /**
      * Get a value based on the given talon
      *
-     * @param getter A function that performs an operation on the talon that gets
-     *               its information and returns it
+     * @param getter
+     *            A function that performs an operation on the talon that gets
+     *            its information and returns it
      * @return The value gotten from the getter
      */
     public <Type> Type getLeftFrontTalon(Function<CANTalon, Type> getter) {
@@ -520,49 +610,13 @@ public class Drive extends Subsystem {
     /**
      * Get a value based on the given talon
      *
-     * @param getter A function that performs an operation on the talon that gets
-     *               its information and returns it
+     * @param getter
+     *            A function that performs an operation on the talon that gets
+     *            its information and returns it
      * @return The value gotten from the getter
      */
     public <Type> Type getleftBackTalon(Function<CANTalon, Type> getter) {
         return getter.apply(leftBack);
-    }
-
-    class NavxUnwrappedAnglePIDSource implements PIDSource {
-        Navx navx;
-
-        public NavxUnwrappedAnglePIDSource(Navx navx) {
-            this.navx = navx;
-        }
-
-        @Override
-        public PIDSourceType getPIDSourceType() {
-            return PIDSourceType.kDisplacement;
-        }
-
-        @Override
-        public void setPIDSourceType(PIDSourceType pidSource) {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public double pidGet() {
-            return navx.getAngle();
-        }
-    }
-
-    class DrivePIDOutput implements PIDOutput {
-        RobotDrive drive;
-
-        public DrivePIDOutput(RobotDrive drive) {
-            this.drive = drive;
-        }
-
-        @Override
-        public void pidWrite(double output) {
-            drive.arcadeDrive(0.0, output);
-        }
-
     }
 
 }

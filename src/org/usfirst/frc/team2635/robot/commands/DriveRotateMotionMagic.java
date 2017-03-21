@@ -39,33 +39,49 @@ public class DriveRotateMotionMagic extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-        System.out.println("DriveRotateMotionMagic initialized at " + LocalDateTime.now());
+    	
+    	System.out.println("DriveRotateMotionMagic initialize started at " + LocalDateTime.now());
+    	hasExecuted = false;
+    	if (visionParams != null && visionParams.AngleToTarget != null)
+    	{
+    		
+    		//targetAngle = visionParams.AngleToTarget;
+    		System.out.println("Get Rotation by VisionParams.AngleToTarget:" + visionParams.AngleToTarget);
+    	   	rotationParams = MotionProfileLibrary.getRotationParameters(visionParams.AngleToTarget,
+    				RobotMap.WHEEL_RADIUS_INCHES, RobotMap.WHEEL_SEPARATION_INCHES, rpm);
 
-        if (visionParams != null && visionParams.AngleToTarget != null) {
-
-            //targetAngle = visionParams.AngleToTarget;
-            System.out.println("Get Rotation by VisionParams.AngleToTarget:" + visionParams.AngleToTarget);
-            rotationParams = MotionProfileLibrary.getRotationParameters(visionParams.AngleToTarget,
-                    RobotMap.WHEEL_RADIUS_INCHES, RobotMap.WHEEL_SEPARATION_INCHES, rpm);
-
-        } else {
-            System.out.println("Get Rotation by fixed:" + targetAngle);
-            rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
-                    RobotMap.WHEEL_RADIUS_INCHES, RobotMap.WHEEL_SEPARATION_INCHES, rpm);
-        }
-
-        Robot.drive.initMotionMagic();
-        Robot.drive.setMotionMagicPIDF(
-                RobotMap.MOTION_MAGIC_P,
-                RobotMap.MOTION_MAGIC_I,
-                RobotMap.MOTION_MAGIC_D,
-                RobotMap.MOTION_MAGIC_F);
+    	}
+    	else
+    	{
+    		System.out.println("Get Rotation by fixed:" + targetAngle);
+    		rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
+    				RobotMap.WHEEL_RADIUS_INCHES, RobotMap.WHEEL_SEPARATION_INCHES, rpm);
+    	}
+    	
+    	Robot.drive.initMotionMagic();
+    	Robot.drive.setMotionMagicPIDF(
+    			RobotMap.MOTION_MAGIC_P,
+    			RobotMap.MOTION_MAGIC_I,
+    			RobotMap.MOTION_MAGIC_D,
+    			RobotMap.MOTION_MAGIC_F);
+    	
+    	Robot.drive.rotateMotionMagic(rotationParams);   
+    	System.out.println("DriveRotateMotionMagic initialize ended at " + LocalDateTime.now());
+    	
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        //System.out.println("DriveRotateMotionMagic execute");
-        Robot.drive.rotateMotionMagic(rotationParams);
+    	if (hasExecuted)
+    	{
+    		System.out.println("DriveRotateMotionMagic execution started at " + LocalDateTime.now());
+    		hasExecuted = true;
+    	}
+    	//Robot.drive.rotateMotionMagic(rotationParams);   
+       
+        	
+
+
     }
 
     // Make this return true when this Command no longer needs to run execute()

@@ -49,37 +49,47 @@ public class GetVisionInfo extends TimedCommand {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        Double angle = null;
-        Double distance = null;
-        Double roundedAngle = null;
-        Double roundedDistance = null;
-        if (targetName == "Gear") {
-            Robot.vision.gearAim();
-            angle = Robot.vision.getAngleToGear();
-            distance = Robot.vision.getDistanceToGear();
-            if (angle != null) {
-                roundedAngle = roundit(angle, 2);
-                //System.out.println("roundedAngle: " + roundedAngle);
-                angleSamples.add(angle);
-            } else {
-                System.out.println("angle is NULL");
-            }
+    	Double angle = null;
+    	Double distance = null;
+    	Double roundedAngle = null;
+    	Double roundedDistance = null;
+    	if (targetName == "Gear") {    	
+    		Robot.vision.gearAim();
+    		angle = Robot.vision.getAngleToGear();
+    		distance = Robot.vision.getDistanceToGear();
+    		if (angle!= null) {
+    		    roundedAngle = angle * 100;
+    			roundedAngle = (double) Math.round(roundedAngle);
+    			roundedAngle = roundedAngle/100;
+    			
+    		     //roundedAngle = roundit(angle, 2);
+    		     //System.out.println("roundedAngle: " + roundedAngle);
+   				angleSamples.add(roundedAngle);
+    		} else {
+    			System.out.println("angle is NULL");
+    		}
+    		
+    		if (distance!= null){
+    			roundedDistance = distance * 100;
+    			roundedDistance = (double) Math.round(roundedDistance);
+    			roundedDistance = roundedDistance/100;
+    			
+    			distanceSamples.add(roundedDistance);
+    		}
+    	} else if (targetName == "Boiler") {
+    		Robot.vision.aim();
+    		angle = Robot.vision.getAngleToBoiler();
+    		distance = Robot.vision.getDistanceToBoiler();
+    		
+    		if (angle!= null) {
+    			angleSamples.add(angle);
+    		}
+    		if (distance!= null) {
+    			distanceSamples.add(distance);
+    		}
+    	}
 
-            if (distance != null) {
-                distanceSamples.add(distance);
-            }
-        } else if (targetName == "Boiler") {
-            Robot.vision.aim();
-            angle = Robot.vision.getAngleToBoiler();
-            distance = Robot.vision.getDistanceToBoiler();
 
-            if (angle != null) {
-                angleSamples.add(angle);
-            }
-            if (distance != null) {
-                distanceSamples.add(distance);
-            }
-        }
 
 
     }
@@ -146,10 +156,12 @@ public class GetVisionInfo extends TimedCommand {
         TreeSet<Double> tree = new TreeSet<Double>();
 
         for (int i = 0; i < samples.size(); i++) {
-            list.add(samples.get(i));
-            tree.add(samples.get(i));
-        }
-
+           list.add(samples.get(i));
+           tree.add(samples.get(i));
+           
+           System.out.println("samples[" + i + "]:" + samples.get(i) );
+        }     
+   
         // Contains all the modes
         List<Double> modes = new ArrayList<Double>();
 
