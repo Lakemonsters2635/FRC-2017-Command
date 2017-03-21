@@ -120,7 +120,7 @@ public class GearVision extends Vision {
 					
 					SmartDashboard.putDouble("comp3", comp3);
 					SmartDashboard.putDouble("comp4", comp4);
-					if (rect1.height >20 && rect2.height > 20 && .7 < comp1 && 1.3 > comp1 && .7 < comp2&&1.3>comp2&&.7<comp3&&1.3>comp3&&.7<comp4&&1.3>comp4){
+					if (rect1.height >20 && rect2.height > 20 && .7 < comp1 && 1.3 > comp1 && .7 < comp2&&1.3>comp2&&.7<comp3&&1.3>comp3&&.7<comp4&&1.3>comp4&&rect1.y>320&&rect2.y>320){
 						Double done = 1 - (1 * Math.abs(4 - (comp1+comp2+comp3+comp4)));
 						for(int i=0;i<999;i++){
 							if(poss[i]==null){
@@ -250,7 +250,11 @@ public class GearVision extends Vision {
 		
 		double distance = distanceFromZero/Math.tan(angle_Radians);
 		
-		return new Double(distance);
+		System.out.println("Gear Vision RectangeCenterY: " + RectangleCenterY);
+		
+		Double distanceDouble = new Double(distance);
+		Double correctDistance = new Double(distanceDouble*1.219 + 6.193);
+		return correctDistance;
 	}
 	
 	public Double getAngle(){
