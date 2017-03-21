@@ -291,8 +291,9 @@ public class Drive extends Subsystem {
 //			rightFront.setInverted(true);
 
         //FOR COMPETITION BOT DO THE FOLLOWING
-        rightFront.reverseOutput(true);
-        leftFront.reverseOutput(true);
+        final boolean ENCODERS_REVERSED = false;
+        rightFront.reverseOutput(ENCODERS_REVERSED);
+        leftFront.reverseOutput(ENCODERS_REVERSED);
         //END COMPETITION BOT
 
         //WE believe the following is the same as reverseOutput
