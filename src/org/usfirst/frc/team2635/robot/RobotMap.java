@@ -32,7 +32,6 @@ public class RobotMap {
     public static final int ULTRASONIC_LEFT = 1;
     public static final int ULTRASONIC_RIGHT = 2;
 
-
     public static final int JOYSTICK_LEFT = 0;
     public static final int JOYSTICK_RIGHT = 1;
 
@@ -64,12 +63,12 @@ public class RobotMap {
     public static final double AIM_I = 0.0;
     public static final double AIM_D = 0.0;
 
-    public static final int TELEOP_AGITATOR_LOOP_COUNT = 2;
-
     public static final double MOTION_MAGIC_F = 1.5345;
     public static final double MOTION_MAGIC_P = 10;
     public static final double MOTION_MAGIC_I = 0.0004;
     public static final double MOTION_MAGIC_D = 0;
+
+    public static final int TELEOP_AGITATOR_LOOP_COUNT = 2;
 
     public static final double DRIVE_STRAIGHT_MOTION_MAGIC_F = 1.5;
     //public static double DRIVE_STRAIGHT_MOTION_MAGIC_P = .5;
