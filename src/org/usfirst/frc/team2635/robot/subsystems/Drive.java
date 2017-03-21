@@ -198,7 +198,7 @@ public class Drive extends Subsystem {
         final double MAXIMUM_ROTATIONS = RANGE_IN_INCHES * RobotMap.WHEEL_RADIUS_INCHES * 2;
         initMotionMagicTankDrive();
         rightWheelRotations = leftWheelRotations = throttle * MAXIMUM_ROTATIONS;
-        rightFront.set(rightWheelRotations);
+        rightFront.set(-rightWheelRotations);
         leftFront.set(leftWheelRotations);
     }
 
@@ -316,6 +316,7 @@ public class Drive extends Subsystem {
 
     private void initMotionMagicTankDrive() {
         System.out.println("initMotionMagicTankDrive called");
+        System.out.println("tankDriveMotionMagicInitialized " + tankDriveMotionMagicInitialized);
         if (!tankDriveMotionMagicInitialized) {
             initMotionMagic();
             tankDriveMotionMagicInitialized = true;

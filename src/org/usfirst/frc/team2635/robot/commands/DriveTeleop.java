@@ -22,6 +22,8 @@ public class DriveTeleop extends Command {
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
+        //System.out.printf("Joystick left: %f, Joystick right: %f \n", Robot.oi.getLeftY(), Robot.oi.getRightY());
+        System.out.printf("Left throttle: %f \n", Robot.oi.getLeftThrottle());
         //Robot.drive.tankDriveVoltage(Robot.oi.getLeftY(), Robot.oi.getRightY());
         Robot.drive.scootch(Robot.oi.getLeftThrottle());
     }
