@@ -7,6 +7,7 @@ import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.DriveParameters;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
+import org.usfirst.frc.team2635.robot.model.SensorParameters;
 import org.usfirst.frc.team2635.robot.model.UltrasonicParameters;
 
 import com.ctre.CANTalon.TalonControlMode;
@@ -21,7 +22,7 @@ public class DriveStraightMotionMagic extends Command {
 	public boolean reverse;
 	double rpm;
 	public int cycleCtr;
-	UltrasonicParameters ultraSonicParams;
+	SensorParameters sensorParams;
 	
 	MotionParameters driveParams; 
 	
@@ -32,8 +33,8 @@ public class DriveStraightMotionMagic extends Command {
     	this.reverse = reverse;
     }
 
-    public DriveStraightMotionMagic(double rpm, UltrasonicParameters ultrasonicParams) {
-    	this.ultraSonicParams = ultrasonicParams;
+    public DriveStraightMotionMagic(double rpm, SensorParameters sensorParams) {
+    	this.sensorParams = sensorParams;
     	this.rpm = rpm;
     	this.driveDistance = 0;
     	this.reverse = false;
@@ -46,12 +47,14 @@ public class DriveStraightMotionMagic extends Command {
        	
 
     	
-    	if (ultraSonicParams != null && ultraSonicParams.rightInches != null)
+    	if (sensorParams != null && sensorParams.DistanceToTarget != null)
     	{
     		
     		//targetAngle = visionParams.AngleToTarget;
-    		System.out.println("Get Drive Params by UltraSonicParams.rightInches:" + ultraSonicParams.rightInches);
-    		driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, ultraSonicParams.rightInches, rpm, reverse);
+    		
+    		System.out.println("Get Drive Params by SensorParameters:" + sensorParams.DistanceToTarget + sensorParams.DistanceAdjustment);
+    		
+    		driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, sensorParams.DistanceToTarget + sensorParams.DistanceAdjustment, rpm, reverse);
    
     	}
     	else
@@ -69,13 +72,13 @@ public class DriveStraightMotionMagic extends Command {
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_D,
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_F);
     	
-    	//Robot.drive.driveStraightMotionMagic(driveParams);
+    	Robot.drive.driveStraightMotionMagic(driveParams);
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
 
-    	Robot.drive.driveStraightMotionMagic(driveParams);
+    	
 
     	
     }
@@ -86,11 +89,14 @@ public class DriveStraightMotionMagic extends Command {
     	if (done) {
     		System.out.println("DriveStraightMotionMagic is done");
 
-    		if (ultraSonicParams != null)
+    		if (sensorParams != null)
     		{
-	    		ultraSonicParams.leftInches = null;
-	    		ultraSonicParams.rightInches = null;
+    			sensorParams.DistanceToTarget = null;
+	    		//sensorParams.AngleToTarget = null;
+	    		//DONT NULL OUT ANGLE IN DRIVE IN ROTATE COMMAND
     		}
+    		
+
 
     	}
     	return done;

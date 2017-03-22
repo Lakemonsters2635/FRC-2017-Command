@@ -14,7 +14,7 @@ import java.util.TreeSet;
 
 import org.usfirst.frc.team2635.robot.Robot;
 
-import org.usfirst.frc.team2635.robot.model.VisionParameters;
+import org.usfirst.frc.team2635.robot.model.SensorParameters;
 
 
 
@@ -27,12 +27,12 @@ public class GetVisionInfo extends TimedCommand {
 
 	ArrayList<Double>  angleSamples;
 	ArrayList<Double>  distanceSamples;
-	public VisionParameters visionParameters; 
+	public SensorParameters visionParameters; 
 	public String targetName;
 	
 
 	
-    public GetVisionInfo(VisionParameters visionParams, String targetName, double timeout) {
+    public GetVisionInfo(SensorParameters visionParams, String targetName, double timeout) {
         // Use requires() here to declare subsystem dependencies
     	super(timeout);
     	requires(Robot.light);

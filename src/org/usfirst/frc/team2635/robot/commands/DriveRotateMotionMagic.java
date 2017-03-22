@@ -8,7 +8,7 @@ import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.model.VisionLight;
-import org.usfirst.frc.team2635.robot.model.VisionParameters;
+import org.usfirst.frc.team2635.robot.model.SensorParameters;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
 import com.ctre.CANTalon;
@@ -22,7 +22,7 @@ import edu.wpi.first.wpilibj.command.Command;
 public class DriveRotateMotionMagic extends Command {
 	double rpm;
 	double targetAngle;
-	VisionParameters visionParams;
+	SensorParameters visionParams;
 	public boolean hasExecuted;
 
 
@@ -38,7 +38,7 @@ public class DriveRotateMotionMagic extends Command {
     	this.targetAngle = targetAngle;
    }
     
-    public DriveRotateMotionMagic(double rpm, VisionParameters visionParams) {
+    public DriveRotateMotionMagic(double rpm, SensorParameters visionParams) {
     	this.visionParams = visionParams;
     	this.rpm = rpm;
     	this.targetAngle = 0;
@@ -101,7 +101,8 @@ public class DriveRotateMotionMagic extends Command {
         	if (visionParams != null)
         	{
 	    		visionParams.AngleToTarget = null;
-	    		visionParams.DistanceToTarget = null;
+	    		//visionParams.DistanceToTarget = null;
+	    		//DONT NULL OUT DISTANCE IN DRIVE IN ROTATE COMMAND
         	}
 
     	}
