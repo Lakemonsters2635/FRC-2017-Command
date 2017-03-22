@@ -1,46 +1,61 @@
 package org.usfirst.frc.team2635.robot.commands;
 
-import edu.wpi.first.wpilibj.command.TimedCommand;
 import org.usfirst.frc.team2635.robot.Robot;
+import org.usfirst.frc.team2635.robot.model.SensorParameters;
 import org.usfirst.frc.team2635.robot.model.UltrasonicParameters;
+
+import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.command.TimedCommand;
 
 /**
  *
  */
 public class UltrasonicCommand extends TimedCommand {
-    public UltrasonicParameters ultrasonicParameters;
-
-    public UltrasonicCommand(UltrasonicParameters params, double timeout) {
+	public SensorParameters sensorParameters;
+	
+    public UltrasonicCommand(SensorParameters params, double timeout) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        super(timeout);
-        this.ultrasonicParameters = params;
+    	super(timeout);
+    	this.sensorParameters = params;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	if (sensorParameters != null)
+    	{
+    		sensorParameters.DistanceToTarget = null;
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
-        //ultrasonicParameters.leftInches =  Robot.ultrasonic.getLeftDistanceInches();
-        ultrasonicParameters.rightInches = Robot.ultrasonic.getRightDistanceInches();
+    	//ultrasonicParameters.leftInches =  Robot.ultrasonic.getLeftDistanceInches();
+    	sensorParameters.DistanceToTarget = Robot.ultrasonic.getRightDistanceInches();
 
+    	
 
-        if (ultrasonicParameters.rightInches == null) {
-            ultrasonicParameters.rightInches = new Double(0.0);
-        } else if (ultrasonicParameters.rightInches <= 11) {
-            ultrasonicParameters.rightInches = 0.0;
-        }
-
-
+		if (sensorParameters.DistanceToTarget == null)
+		{
+			sensorParameters.DistanceToTarget = new Double(0.0);	
+		}
+		else if (sensorParameters.DistanceToTarget <= 11)
+		{
+			sensorParameters.DistanceToTarget = 0.0;
+		}
+    	
+  
     }
+
+
+
+
 
 
     // Called once after timeout
     protected void end() {
-
-        System.out.println("rightInches:" + ultrasonicParameters.rightInches);
+    	
+		System.out.println("Ultrasonic:DistanceToTarget:" + sensorParameters.DistanceToTarget);
     }
 
     // Called when another command which requires one or more of the same

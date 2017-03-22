@@ -1,13 +1,17 @@
 package org.usfirst.frc.team2635.robot.commands;
 
 import java.time.LocalDateTime;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
-import org.usfirst.frc.team2635.robot.model.VisionParameters;
+import org.usfirst.frc.team2635.robot.model.VisionLight;
+import org.usfirst.frc.team2635.robot.model.SensorParameters;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 
+import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
@@ -16,25 +20,30 @@ import edu.wpi.first.wpilibj.command.Command;
  * Rotate using motion magic
  */
 public class DriveRotateMotionMagic extends Command {
-    double rpm;
-    double targetAngle;
-    VisionParameters visionParams;
-    public boolean hasExecuted;
+	double rpm;
+	double targetAngle;
+	SensorParameters visionParams;
+	public boolean hasExecuted;
 
-    MotionParameters rotationParams;
+
+	
+	MotionParameters rotationParams; 
+	
 
     public DriveRotateMotionMagic(double rpm, double targetAngle) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
-        requires(Robot.drive);
-        this.rpm = rpm;
-        this.targetAngle = targetAngle;
-    }
+    	requires(Robot.drive);
+    	this.rpm = rpm;
+    	this.targetAngle = targetAngle;
+   }
+    
+    public DriveRotateMotionMagic(double rpm, SensorParameters visionParams) {
+    	this.visionParams = visionParams;
+    	this.rpm = rpm;
+    	this.targetAngle = 0;
 
-    public DriveRotateMotionMagic(double rpm, VisionParameters visionParams) {
-        this.visionParams = visionParams;
-        this.rpm = rpm;
-        this.targetAngle = 0;
+    	
     }
 
     // Called just before this Command runs the first time
@@ -86,32 +95,37 @@ public class DriveRotateMotionMagic extends Command {
 
     // Make this return true when this Command no longer needs to run execute()
     protected boolean isFinished() {
-        boolean done = Robot.drive.motionMagicDone(rotationParams, Robot.drive.ROTATE_ERROR_TOLERANCE);
-        if (done) {
-            System.out.println("DriveRotateMotionMagic is done at " + LocalDateTime.now());
-            if (visionParams != null) {
-                visionParams.AngleToTarget = null;
-                visionParams.DistanceToTarget = null;
-            }
-        }
-        return done;
+    	boolean done = Robot.drive.motionMagicDone(rotationParams, Robot.drive.ROTATE_ERROR_TOLERANCE);
+    	if (done) {
+    		System.out.println("DriveRotateMotionMagic is done at " + LocalDateTime.now());
+        	if (visionParams != null)
+        	{
+	    		visionParams.AngleToTarget = null;
+	    		//visionParams.DistanceToTarget = null;
+	    		//DONT NULL OUT DISTANCE IN DRIVE IN ROTATE COMMAND
+        	}
+
+    	}
+    	return done;
     }
 
     // Called once after isFinished returns true
     protected void end() {
-        System.out.println("DriveRotateMotionMagic ended at " + LocalDateTime.now());
-        Robot.drive.initMotionMagic();
-        Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
+    	System.out.println("DriveRotateMotionMagic ended at " + LocalDateTime.now());
+    	Robot.drive.initMotionMagic();
+    	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
+  
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-        System.out.println("DriveRotateMotionMagic interrupted at " + LocalDateTime.now());
-        if (visionParams != null) {
-            visionParams.AngleToTarget = null;
-            visionParams.DistanceToTarget = null;
-        }
-        Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
+    	System.out.println("DriveRotateMotionMagic interrupted at " + LocalDateTime.now());
+    	if (visionParams != null)
+    	{
+    		visionParams.AngleToTarget = null;
+    		visionParams.DistanceToTarget = null;
+    	}
+    	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
     }
 }
