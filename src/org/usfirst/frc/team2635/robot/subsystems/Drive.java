@@ -307,13 +307,7 @@ public class Drive extends Subsystem {
         leftFront.setPosition(0.0);
 
         // PID setup
-        rightFront.setP(RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_P);
-        rightFront.setI(RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_I);
-        rightFront.setD(RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_D);
-
-        leftFront.setP(RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_P);
-        leftFront.setI(RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_I);
-        leftFront.setD(RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_D);
+        setMotionMagicPIDF(RobotMap.MOTION_MAGIC_P, RobotMap.MOTION_MAGIC_I, RobotMap.MOTION_MAGIC_D, RobotMap.MOTION_MAGIC_F);
     }
 
     private void initMotionMagicTankDrive() {
