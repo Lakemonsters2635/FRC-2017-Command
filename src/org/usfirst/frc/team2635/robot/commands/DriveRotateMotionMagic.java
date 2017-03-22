@@ -1,20 +1,14 @@
 package org.usfirst.frc.team2635.robot.commands;
 
-import java.time.LocalDateTime;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
+import com.ctre.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
-import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
-import org.usfirst.frc.team2635.robot.model.VisionLight;
-import org.usfirst.frc.team2635.robot.model.SensorParameters;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
+import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
+import org.usfirst.frc.team2635.robot.model.SensorParameters;
 
-import com.ctre.CANTalon;
-import com.ctre.CANTalon.TalonControlMode;
-
-import edu.wpi.first.wpilibj.command.Command;
+import java.time.LocalDateTime;
 
 /**
  * Rotate using motion magic

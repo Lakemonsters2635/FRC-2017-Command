@@ -1,18 +1,15 @@
 package org.usfirst.frc.team2635.robot.commands;
 
-import java.time.LocalDateTime;
-
+import com.ctre.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.command.Command;
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
-import org.usfirst.frc.team2635.robot.model.DriveParameters;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.model.SensorParameters;
-import org.usfirst.frc.team2635.robot.model.UltrasonicParameters;
+import org.usfirst.frc.team2635.robot.subsystems.Drive;
 
-import com.ctre.CANTalon.TalonControlMode;
-
-import edu.wpi.first.wpilibj.command.Command;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -83,10 +80,10 @@ public class DriveStraightMotionMagic extends Command {
     	
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	boolean done = Robot.drive.motionMagicDone(driveParams, Robot.drive.DRIVE_ERROR_TOLERANCE);
-    	if (done) {
+	// Make this return true when this Command no longer needs to run execute()
+	protected boolean isFinished() {
+		boolean done = Robot.drive.motionMagicDone(driveParams, Drive.DRIVE_ERROR_TOLERANCE);
+		if (done) {
     		System.out.println("DriveStraightMotionMagic is done");
 
     		if (sensorParams != null)

@@ -1,21 +1,14 @@
 package org.usfirst.frc.team2635.robot.commands;
+
 import edu.wpi.first.wpilibj.command.TimedCommand;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeSet;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.TreeSet;
-
 import org.usfirst.frc.team2635.robot.Robot;
-
 import org.usfirst.frc.team2635.robot.model.SensorParameters;
 
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
 
 
 /**
