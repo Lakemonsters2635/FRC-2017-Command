@@ -159,6 +159,9 @@ public class Drive extends Subsystem {
         VOLTAGE, MOTION_MAGIC, SCOOTCH
     }
     private TankDriveMode tankDriveMode;
+    public void setTankDriveMode(TankDriveMode tankDriveMode) {
+        this.tankDriveMode = tankDriveMode;
+    }
     /**
      * Drive using tank drive style controls
      *
@@ -182,10 +185,6 @@ public class Drive extends Subsystem {
         } else if (tankDriveMode == TankDriveMode.SCOOTCH) {
             scootch(throttle);
         }
-    }
-
-    public void setTankDriveMode(TankDriveMode tankDriveMode) {
-        this.tankDriveMode = tankDriveMode;
     }
 
     public void tankDriveVoltage(double left, double right) {
