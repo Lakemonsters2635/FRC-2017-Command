@@ -89,16 +89,9 @@ public class Robot extends IterativeRobot {
 
 		oi.aimCameraButton.whenPressed(MotionProfileLibrary.visionTestSequence());
 		
-		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
-		//oi.navxResetButton.whenReleased(new NavxReset());
-			
-			
-			
-		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
-		//oi.motionMagicButton.whenPressed(motionCommandGroup);
-		//double targetAngle = 90;
-		//oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
-
+		oi.motionMagicButton.whenPressed(new TankDriveSwitchMode(Drive.TankDriveMode.MOTION_MAGIC));
+		oi.voltageDriveButton.whenPressed(new TankDriveSwitchMode(Drive.TankDriveMode.VOLTAGE));
+		oi.scootchDriveButton.whenPressed(new TankDriveSwitchMode(Drive.TankDriveMode.SCOOTCH));
 	}
 
 	public void initializeChooser()

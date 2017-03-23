@@ -48,11 +48,16 @@ public class RobotMap {
     public static final int BUTTON_CLIMB_DOWN = 3;
     public static final int BUTTON_DELIVER = 5;
     public static final int BUTTON_AIM_CAMERA = 9;
-    public static final int BUTTON_MOTION_MAGIC = 6;
     public static final int BUTTON_NAVX_ROTATE = 8;
     public static final int BUTTON_AIM = 7;
     public static final int BUTTON_NAVX_GET_ANGLE = 10;
     public static final int BUTTON_NAVX_RESET = 11;
+
+    // teleop drive modes
+    // TODO verify that these values are useful and convenient for the drivers
+    public static final int BUTTON_MOTION_MAGIC = 6;
+    public static final int BUTTON_SCOOTCH = 4;
+    public static final int BUTTON_VOLTAGE_DRIVE = 12;
 
     public static final double WHEEL_RADIUS_INCHES = 3.0 * 1.0;
     public static final double WHEEL_SEPARATION_INCHES = 23.5;

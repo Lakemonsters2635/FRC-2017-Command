@@ -22,7 +22,11 @@ public class OI {
     //public final Button climbDownButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_CLIMB_DOWN);
     public final Button deliverButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_DELIVER);
     public final Button aimCameraButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_AIM_CAMERA);
+
+    // teleop drive mode buttons
     public final Button motionMagicButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_MOTION_MAGIC);
+    public final Button voltageDriveButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_VOLTAGE_DRIVE);
+    public final Button scootchDriveButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_SCOOTCH);
 
     public final Button navxRotateButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_NAVX_ROTATE);
     public final Button navxGetAngleButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_GET_ANGLE);
