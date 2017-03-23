@@ -154,6 +154,11 @@ public class Drive extends Subsystem {
         leftBack.set(leftFront.getDeviceID());
     }
 
+
+    public enum TankDriveMode {
+        VOLTAGE, MOTION_MAGIC, SCOOTCH
+    }
+    private TankDriveMode tankDriveMode;
     /**
      * Drive using tank drive style controls
      *
@@ -161,25 +166,26 @@ public class Drive extends Subsystem {
      *            Left side mag
      * @param right
      *            Right side mag
+     * @param throttle
+     *
      */
-    public enum TankDriveMode {
-        VOLTAGE, MOTION_MAGIC, SCOOTCH
-    }
-    public void tankDrive(double left, double right, double throttle, TankDriveMode tankDriveMode) {
+    public void tankDrive(double left, double right, double throttle) {
         if (tankDriveMode == TankDriveMode.MOTION_MAGIC) {
             final int FULL_SPEED_ROTATION_INCREMENT = 3000;
-            initMotionMagicTankDrive();
             rightWheelRotations += left / FULL_SPEED_ROTATION_INCREMENT;
             leftWheelRotations += right / FULL_SPEED_ROTATION_INCREMENT;
 
             rightFront.set(rightWheelRotations);
             leftFront.set(leftWheelRotations);
         } else if (tankDriveMode == TankDriveMode.VOLTAGE) {
-            initVoltageDriveTankDrive();
             tankDriveVoltage(left, right);
         } else if (tankDriveMode == TankDriveMode.SCOOTCH) {
             scootch(throttle);
         }
+    }
+
+    public void setTankDriveMode(TankDriveMode tankDriveMode) {
+        this.tankDriveMode = tankDriveMode;
     }
 
     public void tankDriveVoltage(double left, double right) {
@@ -196,7 +202,6 @@ public class Drive extends Subsystem {
     public void scootch(double throttle) {
         final double RANGE_IN_INCHES = 12;
         final double MAXIMUM_ROTATIONS = RANGE_IN_INCHES / (RobotMap.WHEEL_RADIUS_INCHES * 2 * Math.PI);
-        initMotionMagicTankDrive();
         double rotationsToTravel = throttle * MAXIMUM_ROTATIONS;
         System.out.printf("Scootch rotations: %f, Throttle: %f, rightFront enc pos: %d, leftFront enc pos: %d \n", rotationsToTravel, throttle, rightFront.getEncPosition(), leftFront.getEncPosition());
         rightFront.set(-rotationsToTravel);
@@ -308,21 +313,6 @@ public class Drive extends Subsystem {
         setMotionMagicPIDF(RobotMap.MOTION_MAGIC_P, RobotMap.MOTION_MAGIC_I, RobotMap.MOTION_MAGIC_D, RobotMap.MOTION_MAGIC_F);
     }
 
-    private void initMotionMagicTankDrive() {
-//        System.out.println("initMotionMagicTankDrive called");
-//        System.out.println("tankDriveMotionMagicInitialized " + tankDriveMotionMagicInitialized);
-        if (!tankDriveMotionMagicInitialized) {
-            // run initialization for switching to motion magic mode
-            initMotionMagic();
-            // zeros encoders to make subsequent movement relative to current position
-            leftFront.setPosition(0);
-            rightFront.setPosition(0);
-            // sets variable values for allowing for running initialization for voltage mode if invoked, but not consecutive initialization of motion magic
-            tankDriveMotionMagicInitialized = true;
-            tankDriveVoltageDriveInitialized = false;
-        }
-    }
-
     public void initVoltageDrive() {
         System.out.println("initVoltageDrive called");
 
@@ -338,15 +328,6 @@ public class Drive extends Subsystem {
         leftFront.configEncoderCodesPerRev(250);
         leftBack.changeControlMode(TalonControlMode.Follower);
         leftBack.set(leftFront.getDeviceID());
-    }
-
-    private void initVoltageDriveTankDrive() {
-        System.out.println("initVoltageTankDrive called");
-        if (!tankDriveVoltageDriveInitialized) {
-            initVoltageDrive();
-            tankDriveVoltageDriveInitialized = true;
-            tankDriveMotionMagicInitialized = false;
-        }
     }
 
     /**

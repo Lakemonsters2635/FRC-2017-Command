@@ -26,7 +26,7 @@ public class DriveTeleop extends Command {
         /*System.out.printf("Joystick left: %f, Joystick right: %f \n", Robot.oi.getLeftY(), Robot.oi.getRightY());
         Robot.drive.tankDriveVoltage(Robot.oi.getLeftY(), Robot.oi.getRightY());
         Robot.drive.scootch(Robot.oi.getLeftThrottle());*/
-        Robot.drive.tankDrive(Robot.oi.getLeftY(), Robot.oi.getRightY(), Robot.oi.getLeftThrottle(), Drive.TankDriveMode.SCOOTCH);
+        Robot.drive.tankDrive(Robot.oi.getLeftY(), Robot.oi.getRightY(), Robot.oi.getLeftThrottle());
     }
 
     // Make this return true when this Command no longer needs to run execute()
