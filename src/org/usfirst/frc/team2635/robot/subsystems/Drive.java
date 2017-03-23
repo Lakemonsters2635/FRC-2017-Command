@@ -195,10 +195,10 @@ public class Drive extends Subsystem {
     public void scootch(double throttle) {
         //System.out.println("scootch called");
         final double RANGE_IN_INCHES = 12;
-        final double MAXIMUM_ROTATIONS = RANGE_IN_INCHES / (RobotMap.WHEEL_RADIUS_INCHES * 2);
+        final double MAXIMUM_ROTATIONS = RANGE_IN_INCHES / (RobotMap.WHEEL_RADIUS_INCHES * 2 * Math.PI);
         initMotionMagicTankDrive();
         rightWheelRotations = leftWheelRotations = throttle * MAXIMUM_ROTATIONS;
-        System.out.printf("Scootch rotations: %f \n", rightWheelRotations);
+        System.out.printf("Scootch rotations: %f, rightFront enc pos: %d, leftFront enc pos: %d \n", rightWheelRotations, rightFront.getEncPosition(), leftFront.getEncPosition());
         rightFront.set(-rightWheelRotations);
         leftFront.set(leftWheelRotations);
     }
@@ -291,7 +291,7 @@ public class Drive extends Subsystem {
 //			rightFront.setInverted(true);
 
         //FOR COMPETITION BOT DO THE FOLLOWING
-        final boolean ENCODERS_REVERSED = false;
+        final boolean ENCODERS_REVERSED = true;
         rightFront.reverseOutput(ENCODERS_REVERSED);
         leftFront.reverseOutput(ENCODERS_REVERSED);
         //END COMPETITION BOT
