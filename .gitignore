@@ -167,3 +167,6 @@ fabric.properties
 # IntelliJ exclusions
 .idea
 *.iml
+!/src/org/usfirst/frc/team2635/robot/commands/TankDriveSwitchMode.java
+build/
+dist/
