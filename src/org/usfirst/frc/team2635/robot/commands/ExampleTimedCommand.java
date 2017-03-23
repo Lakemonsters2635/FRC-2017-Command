@@ -5,9 +5,9 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 /**
  *
  */
-public class exampleTimedCommand extends TimedCommand {
+public class ExampleTimedCommand extends TimedCommand {
 
-    public exampleTimedCommand(double timeout) {
+    public ExampleTimedCommand(double timeout) {
         super(timeout);
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
