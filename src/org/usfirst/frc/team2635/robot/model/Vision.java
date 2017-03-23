@@ -48,6 +48,7 @@ public class Vision {
 	
 	public void createBox(){
 		boundRect = new ArrayList<Rect>();
+		GripPipeline = new GripPipeline();
 		//Get frame from camera
 		
 		
