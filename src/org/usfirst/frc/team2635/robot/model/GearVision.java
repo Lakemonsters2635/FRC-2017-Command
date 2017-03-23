@@ -32,6 +32,9 @@ public class GearVision extends Vision {
 		reck1 = new ArrayList<Rect>();
 		reck2 = new ArrayList<Rect>();
 		reck3 = new ArrayList<Rect>();
+		confRectRight = null;
+		confRectLeft = null;
+		confRectFull = null;
 		for( Integer b = 0; b < boundRect.size(); b++ ){
 			for (Integer j = 1; j< boundRect.size(); j++){
 				//Integer j = b;
