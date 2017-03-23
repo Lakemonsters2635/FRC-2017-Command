@@ -73,19 +73,17 @@ public class Robot extends IterativeRobot {
 		
 		initializeChooser();
 
-		
+
 		oi.fireButton.whileHeld(new ShooterRevUp());
 		oi.fireButton.whenReleased(new ShooterReverseFire());
 		//oi.fireButton.whenPressed(new ShooterRevUp());
 		//oi.fireButton.whenReleased(new ShooterReverseFire());
-	
+
 		oi.feedInButton.whileHeld(new PickupBall(-1.0));
 		oi.feedOutButton.whileHeld(new PickupBall(1.0));
-			
-			oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
-			oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
 
-			
+		oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
+		oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
 
 		oi.climbUpButton.whileHeld(new ClimberClimb());
 

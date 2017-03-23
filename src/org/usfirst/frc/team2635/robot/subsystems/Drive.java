@@ -162,22 +162,23 @@ public class Drive extends Subsystem {
      * @param right
      *            Right side mag
      */
-    private boolean tankDriveWithEncodersEnabled = enableTankDriveWithEncodersFirst;
-    public void tankDrive(double left, double right, boolean toggle) {
-        final int FULL_SPEED_ROTATION_INCREMENT = 3000;
-        if (toggle) {
-            tankDriveWithEncodersEnabled = !tankDriveWithEncodersEnabled;
-        }
-        if (tankDriveWithEncodersEnabled) {
+    public enum TankDriveMode {
+        VOLTAGE, MOTION_MAGIC, SCOOTCH
+    }
+    public void tankDrive(double left, double right, double throttle, TankDriveMode tankDriveMode) {
+        if (tankDriveMode == TankDriveMode.MOTION_MAGIC) {
+            final int FULL_SPEED_ROTATION_INCREMENT = 3000;
             initMotionMagicTankDrive();
             rightWheelRotations += left / FULL_SPEED_ROTATION_INCREMENT;
             leftWheelRotations += right / FULL_SPEED_ROTATION_INCREMENT;
 
             rightFront.set(rightWheelRotations);
             leftFront.set(leftWheelRotations);
-        } else {
+        } else if (tankDriveMode == TankDriveMode.VOLTAGE) {
             initVoltageDriveTankDrive();
             tankDriveVoltage(left, right);
+        } else if (tankDriveMode == TankDriveMode.SCOOTCH) {
+            scootch(throttle);
         }
     }
 
@@ -193,14 +194,13 @@ public class Drive extends Subsystem {
     }
 
     public void scootch(double throttle) {
-        //System.out.println("scootch called");
         final double RANGE_IN_INCHES = 12;
         final double MAXIMUM_ROTATIONS = RANGE_IN_INCHES / (RobotMap.WHEEL_RADIUS_INCHES * 2 * Math.PI);
         initMotionMagicTankDrive();
-        rightWheelRotations = leftWheelRotations = throttle * MAXIMUM_ROTATIONS;
-        System.out.printf("Scootch rotations: %f, rightFront enc pos: %d, leftFront enc pos: %d \n", rightWheelRotations, rightFront.getEncPosition(), leftFront.getEncPosition());
-        rightFront.set(-rightWheelRotations);
-        leftFront.set(leftWheelRotations);
+        double rotationsToTravel = throttle * MAXIMUM_ROTATIONS;
+        System.out.printf("Scootch rotations: %f, Throttle: %f, rightFront enc pos: %d, leftFront enc pos: %d \n", rotationsToTravel, throttle, rightFront.getEncPosition(), leftFront.getEncPosition());
+        rightFront.set(-rotationsToTravel);
+        leftFront.set(rotationsToTravel);
     }
 
     /**
@@ -290,11 +290,9 @@ public class Drive extends Subsystem {
 //	    	leftFront.setMotionMagicAcceleration(400.0);
 //			rightFront.setInverted(true);
 
-        //FOR COMPETITION BOT DO THE FOLLOWING
-        final boolean ENCODERS_REVERSED = true;
+        final boolean ENCODERS_REVERSED = false;
         rightFront.reverseOutput(ENCODERS_REVERSED);
         leftFront.reverseOutput(ENCODERS_REVERSED);
-        //END COMPETITION BOT
 
         //WE believe the following is the same as reverseOutput
         //rightFront.reverseSensor(true);
@@ -314,7 +312,12 @@ public class Drive extends Subsystem {
 //        System.out.println("initMotionMagicTankDrive called");
 //        System.out.println("tankDriveMotionMagicInitialized " + tankDriveMotionMagicInitialized);
         if (!tankDriveMotionMagicInitialized) {
+            // run initialization for switching to motion magic mode
             initMotionMagic();
+            // zeros encoders to make subsequent movement relative to current position
+            leftFront.setPosition(0);
+            rightFront.setPosition(0);
+            // sets variable values for allowing for running initialization for voltage mode if invoked, but not consecutive initialization of motion magic
             tankDriveMotionMagicInitialized = true;
             tankDriveVoltageDriveInitialized = false;
         }
