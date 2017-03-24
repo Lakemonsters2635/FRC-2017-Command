@@ -6,7 +6,7 @@ import org.usfirst.frc.team2635.robot.subsystems.Drive;
 
 /**
  * Created by Ethan on 3/22/2017.
- * Receives a parameter of when it is called upon a particular button press and sends it to setTankDriveMode
+ * Receives a parameter for when it is called upon a particular button press and sends it to setTankDriveMode
  * to change current teleop drive operation as well as conduct proper initialization for said drive mode.
  */
 public class TankDriveSwitchMode extends Command {
