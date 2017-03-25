@@ -145,14 +145,16 @@ public class Drive extends Subsystem {
         leftBack.set(leftFront.getDeviceID());
     }
 
-
     public enum TankDriveMode {
         VOLTAGE, MOTION_MAGIC, SCOOTCH
     }
+
     private TankDriveMode tankDriveMode;
+
     public void setTankDriveMode(TankDriveMode tankDriveMode) {
         this.tankDriveMode = tankDriveMode;
     }
+
     public TankDriveMode getTankDriveMode() {
         return tankDriveMode;
     }
