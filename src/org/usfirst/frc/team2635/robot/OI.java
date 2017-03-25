@@ -48,10 +48,6 @@ public class OI {
         return leftJoystick.getRawAxis(RobotMap.LEFT_DRIVE_Z);
     }
 
-    public final double getLeftThrottle() {
-        return leftJoystick.getThrottle();
-    }
-
 //	
     //// CREATING BUTTONS
     // One type of button is a joystick button which is any button on a
