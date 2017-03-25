@@ -40,19 +40,18 @@ public class RobotMap {
     public static final int RIGHT_DRIVE_Y = 1;
     public static final int RIGHT_DRIVE_Z = 2;
 
-    public static final int BUTTON_REV_UP = 1;
-    public static final int BUTTON_FIRE = 1;
-    public static final int BUTTON_FEED_IN = 2;
-    public static final int BUTTON_FEED_OUT = 3;
-    public static final int BUTTON_CLIMB_UP = 2;
+    public static final int BUTTON_REV_UP = 1; // left
+    public static final int BUTTON_FIRE = 1; // right
+    public static final int BUTTON_FEED_IN = 2; // right
+    public static final int BUTTON_FEED_OUT = 3; // right
+    public static final int BUTTON_CLIMB_UP = 2; // left
     public static final int BUTTON_CLIMB_DOWN = 3;
-    public static final int BUTTON_DELIVER = 5;
-    public static final int BUTTON_AIM_CAMERA = 9;
-    public static final int BUTTON_NAVX_ROTATE = 8;
+    public static final int BUTTON_DELIVER = 5; // right
+    public static final int BUTTON_AIM_CAMERA = 9; // right
+    public static final int BUTTON_NAVX_ROTATE = 8; // left
     public static final int BUTTON_AIM = 7;
-    public static final int BUTTON_NAVX_GET_ANGLE = 10;
-    public static final int BUTTON_NAVX_RESET = 11;
-
+    public static final int BUTTON_NAVX_GET_ANGLE = 10; // right
+    public static final int BUTTON_NAVX_RESET = 11; // right
     // teleop drive modes
     // TODO verify that these values are useful and convenient for the drivers
     public static final int BUTTON_MOTION_MAGIC = 6;
