@@ -22,7 +22,7 @@ public class TankDriveSwitchMode extends Command {
         } else if (tankDriveMode == Drive.TankDriveMode.VOLTAGE) {
             Robot.drive.initVoltageDrive();
         }
-//        System.out.println("Current tank drive mode: " + Robot.drive.getTankDriveMode());
+        System.out.println("Changing drive mode to " + tankDriveMode.toString());
     }
 
     protected void execute() {
@@ -30,6 +30,8 @@ public class TankDriveSwitchMode extends Command {
     }
 
     protected boolean isFinished() {
-        return false;
+        boolean driveModeSwitchFinished = Robot.drive.getTankDriveMode() == tankDriveMode;
+        System.out.println("Finished switching drive modeL " + driveModeSwitchFinished);
+        return driveModeSwitchFinished;
     }
 }

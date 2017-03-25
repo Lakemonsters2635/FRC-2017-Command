@@ -263,7 +263,7 @@ public class Drive extends Subsystem {
      * Stop driving and instruct the talons to run in motion magic mode
      */
     public void initMotionMagic() {
-        //System.out.println("initMotionMagic called");
+        System.out.println("initMotionMagic called");
         //drive.tankDrive(0.0, 0.0);
         //drive.free();
         //drive.setExpiration(0);
