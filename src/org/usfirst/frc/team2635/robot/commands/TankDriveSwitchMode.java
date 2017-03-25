@@ -31,7 +31,7 @@ public class TankDriveSwitchMode extends Command {
 
     protected boolean isFinished() {
         boolean driveModeSwitchFinished = Robot.drive.getTankDriveMode() == tankDriveMode;
-        System.out.println("Finished switching drive modeL " + driveModeSwitchFinished);
+        System.out.println("Finished switching drive mode: " + driveModeSwitchFinished);
         return driveModeSwitchFinished;
     }
 }
