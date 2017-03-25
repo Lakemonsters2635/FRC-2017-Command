@@ -60,7 +60,8 @@ public class Robot extends IterativeRobot {
 		System.out.println("robotInit");
 		
 		oi = new OI();
-		drive = new Drive(false);
+		drive = new Drive();
+		Robot.drive.setTankDriveMode(Drive.TankDriveMode.VOLTAGE);
 		shooter = new Shooter();
 		pickup = new Pickup();
 		climber = new Climber();

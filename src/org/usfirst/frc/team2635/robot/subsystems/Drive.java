@@ -5,7 +5,6 @@ import com.ctre.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team2635.robot.RobotMap;
-import org.usfirst.frc.team2635.robot.commands.DriveStraightMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 import org.usfirst.frc.team2635.robot.model.Navx;
@@ -41,13 +40,11 @@ public class Drive extends Subsystem {
     private boolean tankDriveMotionMagicInitialized = false;
     private boolean tankDriveVoltageDriveInitialized = false;
 
-    public Drive(boolean enableTankDriveWithEncodersFirst) {
+    public Drive() {
         rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
         leftFront = new CANTalon(RobotMap.DRIVE_LEFT_FRONT);
         rightBack = new CANTalon(RobotMap.DRIVE_RIGHT_BACK);
         leftBack = new CANTalon(RobotMap.DRIVE_LEFT_BACK);
-
-        this.enableTankDriveWithEncodersFirst = enableTankDriveWithEncodersFirst;
 
         driveInit();
 
@@ -189,6 +186,7 @@ public class Drive extends Subsystem {
         } else if (tankDriveMode == TankDriveMode.SCOOTCH) {
             scootch(throttle);
         }
+        System.out.println("Current tank drive mode: " + tankDriveMode.toString());
     }
 
     public void tankDriveVoltage(double left, double right) {
