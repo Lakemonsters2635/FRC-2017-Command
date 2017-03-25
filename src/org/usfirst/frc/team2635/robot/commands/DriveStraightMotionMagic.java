@@ -35,7 +35,6 @@ public class DriveStraightMotionMagic extends Command {
     	this.rpm = rpm;
     	this.driveDistance = 0;
     	this.reverse = false;
-    	
     }
    
     // Called just before this Command runs the first time

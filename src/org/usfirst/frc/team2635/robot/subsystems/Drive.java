@@ -5,6 +5,7 @@ import com.ctre.CANTalon.TalonControlMode;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.command.Subsystem;
 import org.usfirst.frc.team2635.robot.RobotMap;
+import org.usfirst.frc.team2635.robot.commands.DriveStraightMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.DriveTeleop;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 import org.usfirst.frc.team2635.robot.model.Navx;
@@ -161,6 +162,9 @@ public class Drive extends Subsystem {
     private TankDriveMode tankDriveMode;
     public void setTankDriveMode(TankDriveMode tankDriveMode) {
         this.tankDriveMode = tankDriveMode;
+    }
+    public TankDriveMode getTankDriveMode() {
+        return tankDriveMode;
     }
     /**
      * Drive using tank drive style controls
