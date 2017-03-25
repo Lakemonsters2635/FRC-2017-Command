@@ -36,9 +36,6 @@ public class Drive extends Subsystem {
     public double errNavxDrive;
 
     Navx navx = new Navx();
-    private boolean enableTankDriveWithEncodersFirst;
-    private boolean tankDriveMotionMagicInitialized = false;
-    private boolean tankDriveVoltageDriveInitialized = false;
 
     public Drive() {
         rightFront = new CANTalon(RobotMap.DRIVE_RIGHT_FRONT);
@@ -117,11 +114,7 @@ public class Drive extends Subsystem {
 
 
     private void driveInit() {
-        if (enableTankDriveWithEncodersFirst) {
-            initMotionMagic();
-        } else {
-            initVoltageDrive();
-        }
+        initVoltageDrive();
     }
 
     public void initDefaultCommand() {
