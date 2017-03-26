@@ -61,7 +61,7 @@ public class VisionSubsystem extends Subsystem {
     }
     
     public Double getDistanceToGear() {
-    	return gearVision.getDistance();
+    	return gearVision.getDistanceFHE();
     }
     
 	@Override

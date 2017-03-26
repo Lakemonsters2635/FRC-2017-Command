@@ -17,6 +17,7 @@ import org.usfirst.frc.team2635.robot.model.SensorParameters;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.command.WaitCommand;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 
@@ -268,9 +269,11 @@ public class MotionProfileLibrary
 		double drive1Distance = 75.385;
 		double distanceAfter60degreeRotation = 31.177;
 		
-		SensorParameters visionParams = new SensorParameters(null,null);
+
 		SensorParameters ultrasonicParams = new SensorParameters(null, null);
-		
+
+		ultrasonicParams.SensorFailedDriveDistance = 0.0;
+		ultrasonicParams.DistanceAdjustment = 0;
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		
 		
@@ -285,12 +288,15 @@ public class MotionProfileLibrary
 		//drive after rotate.
 		//Actual distance should be 31.177, but we want to stop for sonar reading.
 		//Stop 20 inches short and use sonar
-		visionParams.DistanceAdjustment = -20;
-		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity,visionParams);
+		//
+		SensorParameters visionParams = new SensorParameters(null,null);
+		visionParams.DistanceAdjustment = -9;
+		visionParams.SensorFailedDriveDistance = 31.177;
+		DriveStraightMotionMagic driveAfterRotate = new DriveStraightMotionMagic(straightVelocity,visionParams);
 		UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 0.25);
 		
 		
-		straightVelocity = 100; //slow down for final approach
+		straightVelocity = 250; //slow down for final approach
 		DriveStraightMotionMagic driveOnSonar = new DriveStraightMotionMagic(straightVelocity, ultrasonicParams);
 
 		
@@ -313,9 +319,9 @@ public class MotionProfileLibrary
 		resultGroup.addSequential(rotateCmd);
 		resultGroup.addSequential(visionCmd1);
 		resultGroup.addSequential(rotateBasedOnVision);
-		resultGroup.addSequential(drive2);
+		resultGroup.addSequential(driveAfterRotate);
 		resultGroup.addSequential(ultrasonicCmd1);
-		resultGroup.addSequential(driveOnSonar);
+		//resultGroup.addSequential(driveOnSonar);
 		resultGroup.addSequential(gearForward);
 		resultGroup.addSequential(gearBackward);
 		resultGroup.addSequential(gearForward2);
@@ -495,7 +501,9 @@ public class MotionProfileLibrary
 	
 	public static MotionCommandGroup visionTestSequence()
 	{
-
+		
+		//double rotate = SmartDashboard.getNumber("Test Angle");
+		//System.out.println("Test Angle: " + rotate);
 		DriveRotateMotionMagic rotate1 = new DriveRotateMotionMagic(250, 0);
 		
 		
@@ -503,15 +511,15 @@ public class MotionProfileLibrary
 		SensorParameters ultrasonicParams = new SensorParameters(null, null);
 		double velocity = 250;
 		String targetName = "Gear";
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,2); //FHE: Is two seconds for vision right?
-		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(velocity,  visionParams);	
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,4); //FHE: Is two seconds for vision right?
+		//DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(velocity,  visionParams);	
 		//	UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 1);
-		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, ultrasonicParams);
+		//DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, ultrasonicParams);
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 
-		resultGroup.addSequential(rotate1);
+		//resultGroup.addSequential(rotate1);
 		resultGroup.addSequential(visionCmd1);
-		resultGroup.addSequential(rotateBasedOnVision);
+		//resultGroup.addSequential(rotateBasedOnVision);
 		//resultGroup.addSequential(ultrasonicCmd1);
 		//resultGroup.addSequential(drive1);
 		return resultGroup;

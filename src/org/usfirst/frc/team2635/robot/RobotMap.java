@@ -56,7 +56,7 @@ public class RobotMap {
 	public static final int BUTTON_NAVX_RESET = 11;
 	
 	public static final double WHEEL_RADIUS_INCHES = 3.0  * 1.0; 
-	public static final double WHEEL_SEPARATION_INCHES = 23.5;
+	public static final double WHEEL_SEPARATION_INCHES = 24.5;
 	
 	public static final double BUMPER_TO_SONAR_DISTANCE = 4.0; //Distance from Outside of bumper to front-face of sonar.
 	
@@ -86,6 +86,7 @@ public class RobotMap {
     
     public static final int VISION_LIGHT_CHANNEL = 7;
 
+    public static final boolean DEBUG_DETAIL = false;
     
  
     public static final double GEAR_DELIVERY_TIMEOUT = 0.5;  // units are seconds
