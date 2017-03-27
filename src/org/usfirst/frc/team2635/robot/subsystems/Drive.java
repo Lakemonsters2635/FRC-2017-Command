@@ -16,22 +16,61 @@ import java.util.function.Function;
  * The drive chassis
  */
 public class Drive extends Subsystem {
-    public static final double ANGLE_ERROR_TOLERANCE = 1;
-    public static final double ROTATE_ERROR_TOLERANCE = 0.01;
-    public static final double DRIVE_ERROR_TOLERANCE = 0.03;
+	public static final double ANGLE_ERROR_TOLERANCE = 1;
+	public static final double ROTATE_ERROR_TOLERANCE = 0.008;
+	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
 
-    public double leftWheelRotations;
+    public double RotationInitialHeading = 0;
     public double rightWheelRotations;
+    public double leftWheelRotations;
 
-    public double currentHeadingOffset = 0;
-    // Put methods for controlling this subsystem
-    // here. Call these from Commands.
-    CANTalon rightFront;
-    CANTalon rightBack;
-    CANTalon leftFront;
-    CANTalon leftBack;
+	public double currentHeadingOffset = 0;
+	// Put methods for controlling this subsystem
+	// here. Call these from Commands.
+	CANTalon rightFront;
+	CANTalon rightBack;
+	CANTalon leftFront;
+	CANTalon leftBack;
+	RobotDrive drive;
+	
+	DriveTeleop teleopCommand;
 
-    DriveTeleop teleopCommand;
+	class NavxUnwrappedAnglePIDSource implements PIDSource {
+		Navx navx;
+
+		public NavxUnwrappedAnglePIDSource(Navx navx) {
+			this.navx = navx;
+		}
+
+		@Override
+		public void setPIDSourceType(PIDSourceType pidSource) {
+			// TODO Auto-generated method stub
+		}
+
+		@Override
+		public PIDSourceType getPIDSourceType() {
+			return PIDSourceType.kDisplacement;
+		}
+
+		@Override
+		public double pidGet() {
+			return navx.getAngle();
+		}
+	}
+
+	class DrivePIDOutput implements PIDOutput {
+		public DrivePIDOutput(RobotDrive drive) {
+			this.drive = drive;
+		}
+
+		RobotDrive drive;
+
+		@Override
+		public void pidWrite(double output) {
+			drive.arcadeDrive(0.0, output);
+		}
+
+	}
 
     public double errNavxDrive;
 
@@ -50,43 +89,6 @@ public class Drive extends Subsystem {
         //drive = new RobotDrive(leftFront, rightFront);
 //		angleController = new PIDController(RobotMap.AIM_D, RobotMap.AIM_I, RobotMap.AIM_D,
 //				new NavxUnwrappedAnglePIDSource(navx), new DrivePIDOutput(drive));
-
-    }
-
-    class NavxUnwrappedAnglePIDSource implements PIDSource {
-        Navx navx;
-
-        public NavxUnwrappedAnglePIDSource(Navx navx) {
-            this.navx = navx;
-        }
-
-        @Override
-        public void setPIDSourceType(PIDSourceType pidSource) {
-            // TODO Auto-generated method stub
-        }
-
-        @Override
-        public PIDSourceType getPIDSourceType() {
-            return PIDSourceType.kDisplacement;
-        }
-
-        @Override
-        public double pidGet() {
-            return navx.getAngle();
-        }
-    }
-
-    class DrivePIDOutput implements PIDOutput {
-        public DrivePIDOutput(RobotDrive drive) {
-            this.drive = drive;
-        }
-
-        RobotDrive drive;
-
-        @Override
-        public void pidWrite(double output) {
-            drive.arcadeDrive(0.0, output);
-        }
 
     }
 
@@ -366,15 +368,6 @@ public class Drive extends Subsystem {
 
         rightFront.set(rotationParams.rightWheelRotations);
         leftFront.set(rotationParams.leftWheelRotations);
-
-//		System.out.println("Right wheel rotations: " + rotationParams.rightWheelRotations +
-//				"\tLeft wheel rotations: " + rotationParams.leftWheelRotations +
-//				"\tRight acceleration: " + rotationParams.rightAcceleration +
-//				"\tLeft acceleration: " + rotationParams.leftAcceleration +
-//				"\tRight velocity: " + rotationParams.rightVelocity +
-//				"\tOuter velocity: " + rotationParams.leftVelocity
-//				);
-
     }
 
     public void driveStraightMotionMagic(MotionParameters  driveParams) {
@@ -398,107 +391,137 @@ public class Drive extends Subsystem {
 //				"\tLeft velocity: " + driveParams.leftVelocity
 //				);
 
-    }
+	}
+	
+	
+	public void navxSetPoint(double heading) {
+		
+	}
+	
+	public boolean motionNavxFinished(double targetHeading) {
+		double currentHeading = navx.getAngle();
+		errNavxDrive = targetHeading - currentHeading;
+		
+		System.out.println("motionNavxFinished:targetHeading:" + targetHeading   + "\tcurrentHeading: " + currentHeading + "\terrNavxDrive: " + errNavxDrive);		
+		
+		return (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE);
+	}
+	
+	public void updateMotionNavx(double heading) {
+		//this.navx.getHeading()
+		//rightFront.set(rotationParams.innerWheelRotations);
+		//leftFront.set(rotationParams.outerWheelRotations);
+		double currentHeading = this.navx.getAngle();
+		
+		errNavxDrive = heading - currentHeading;
+		
+		//if (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE)
+		//{
+			double p = 0.01;
+			double output = -errNavxDrive * p;
+			System.out.println("updateMotionNavx:output:" + output );
+
+			//drive.arcadeDrive(0.0, output);
+		//}
+		
+
+		
+		
+		
+		//angleController.setSetpoint(heading);
+		//angleController.enable();
+		 
+		//driveAnglePID(heading)
+		
+	}
+	
+
+	public  void SetNavxAngle()
+	{
+		navx.reset();
+		RotationInitialHeading = navx.getAngle();
+	}
 
 
-    public void navxSetPoint(double heading) {
+	/**
+	 * Checks if motion magic routine is finished based on given parameters.
+	 * 
+	 * @param targetAngle
+	 *            Angle to go to
+	 * @param turnRadiusInches
+	 *            Turn radius
+	 * @param rpm
+	 *            Rpm to go to
+	 * @param clockwise
+	 *            Clockwise circle?
+	 * @param rotateCenter
+	 *            Rotate about center?
+	 * @return true if  false if not.
+	 */
+	public boolean motionMagicDone(MotionParameters rotationParams, double errorTolerance) {
 
-    }
-
-    public boolean motionNavxFinished(double targetHeading) {
-        double currentHeading = navx.getAngle();
-        errNavxDrive = targetHeading - currentHeading;
-
-        System.out.println("motionNavxFinished:targetHeading:" + targetHeading   + "\tcurrentHeading: " + currentHeading + "\terrNavxDrive: " + errNavxDrive);
-
-        return (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE);
-    }
-
-    public void updateMotionNavx(double heading) {
-        //this.navx.getHeading()
-        //rightFront.set(rotationParams.innerWheelRotations);
-        //leftFront.set(rotationParams.outerWheelRotations);
-        double currentHeading = this.navx.getAngle();
-
-        errNavxDrive = heading - currentHeading;
-
-        //if (Math.abs(errNavxDrive) < ANGLE_ERROR_TOLERANCE)
-        //{
-        double p = 0.01;
-        double output = -errNavxDrive * p;
-        System.out.println("updateMotionNavx:output:" + output );
-
-        //drive.arcadeDrive(0.0, output);
-        //}
-
+		double rightFrontPosition = rightFront.getPosition();
+		double leftFrontPosition = leftFront.getPosition();
+		
+		
+		//double encRightFrontPosition = rightFront.getEncPosition()*10;
+		//double encLeftFrontPosition = leftFront.getEncPosition()*10;
+		
+		//double rightDelta = rightFrontPosition - encRightFrontPosition;
+		//double leftDelta =  leftFrontPosition - encLeftFrontPosition;
+		//double rightError = rightFront.getError();
+		//double leftError = leftFront.getError();
 
 
+		double rightFrontError = Math.abs(rotationParams.rightWheelRotations - rightFrontPosition);
+		double leftFrontError = Math.abs(rotationParams.leftWheelRotations - leftFrontPosition);
+		
+		
 
-
-        //angleController.setSetpoint(heading);
-        //angleController.enable();
-
-        //driveAnglePID(heading)
-
-    }
-
-
-
-
-    /**
-     * Checks if motion magic routine is finished based on given parameters.
-     *
-     * @param rotationParams
-     * @param errorTolerance
-     *
-     * @return true if  false if not.
-     */
-    public boolean motionMagicDone(MotionParameters rotationParams, double errorTolerance) {
-
-        double rightFrontPosition = rightFront.getPosition();
-        double leftFrontPosition = leftFront.getPosition();
-
-        //double encRightFrontPosition = rightFront.getEncPosition()*10;
-        //double encLeftFrontPosition = leftFront.getEncPosition()*10;
-
-        //double rightDelta = rightFrontPosition - encRightFrontPosition;
-        //double leftDelta =  leftFrontPosition - encLeftFrontPosition;
-        //double rightError = rightFront.getError();
-        //double leftError = leftFront.getError();
-
-
-        double rightFrontError = Math.abs(rotationParams.rightWheelRotations - rightFrontPosition);
-        double leftFrontError = Math.abs(rotationParams.leftWheelRotations - leftFrontPosition);
-
-
-        //System.out.println("rightError:" + rightError + "\tleftError:" + leftError + "\trightFrontError:" + rightFrontError + "\t leftFrontError:" + leftFrontError + "\t rightFrontPosition:" + rightFrontPosition + "\t leftFrontPosition:" + leftFrontPosition);
-
-        return (rightFrontError < errorTolerance && leftFrontError < errorTolerance);
-        //return (leftFrontError < MOTION_MAGIC_ERROR_TOLERANCE);
-        //talon1Error = Math.abs(rotationParams.innerWheelRotations - _talon.getPosition());
-        //talon2Error = Math.abs(rotationParams.outerWheelRotations - _talon2.getPosition());
-
-    }
-
+		boolean isDone = (rightFrontError < errorTolerance && leftFrontError < errorTolerance);
+		if (isDone)
+		{
+			if (errorTolerance == this.ROTATE_ERROR_TOLERANCE )
+			{
+				double currentAngle = navx.getAngle();
+				double navxAngleDifference = Math.abs(currentAngle - RotationInitialHeading);
+				System.out.println("navxAngleDifference:" + navxAngleDifference + "\trightError:" + rightFrontError + "\tleftError:" + leftFrontError);
+			}
+			else
+			{
+				System.out.println("rightError:" + rightFrontError + "\tleftError:" + leftFrontError);
+			
+			}
+			
+			
+			
+		}
+		return isDone;
+		//return (leftFrontError < MOTION_MAGIC_ERROR_TOLERANCE);
+		//talon1Error = Math.abs(rotationParams.innerWheelRotations - _talon.getPosition());
+		//talon2Error = Math.abs(rotationParams.outerWheelRotations - _talon2.getPosition());
+		
+	}
+	
 //	public boolean motionNavxRoutineDone(RotationParameters rotationParams){
-//
+//		
 //	}
+	
+	public Navx getNavx() {
+		return navx;
+	}
+	
 
-    public Navx getNavx() {
-        return navx;
-    }
-
-
-    /**
-     * Modify the talon based on the consumer
-     *
-     * @param modifier
-     *            A consumer that takes the given talon and performs a
-     *            modification on its parameters.
-     */
-    public void modRightFrontTalon(Consumer<CANTalon> modifier) {
-        modifier.accept(rightFront);
-    }
+	/**
+	 * Modify the talon based on the consumer
+	 * 
+	 * @param modifier
+	 *            A consumer that takes the given talon and performs a
+	 *            modification on its parameters.
+	 */
+	public void modRightFrontTalon(Consumer<CANTalon> modifier) {
+		modifier.accept(rightFront);
+	}
 
     /**
      * Modify the talon based on the consumer

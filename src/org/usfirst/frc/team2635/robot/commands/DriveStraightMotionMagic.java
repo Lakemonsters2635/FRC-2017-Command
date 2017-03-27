@@ -1,15 +1,15 @@
 package org.usfirst.frc.team2635.robot.commands;
 
-import com.ctre.CANTalon.TalonControlMode;
-import edu.wpi.first.wpilibj.command.Command;
+import java.time.LocalDateTime;
+
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
+import org.usfirst.frc.team2635.robot.model.DriveParameters;
 import org.usfirst.frc.team2635.robot.model.MotionParameters;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.model.SensorParameters;
-import org.usfirst.frc.team2635.robot.subsystems.Drive;
-
-import java.time.LocalDateTime;
+import com.ctre.CANTalon.TalonControlMode;
+import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
@@ -35,6 +35,7 @@ public class DriveStraightMotionMagic extends Command {
     	this.rpm = rpm;
     	this.driveDistance = 0;
     	this.reverse = false;
+    	
     }
    
     // Called just before this Command runs the first time
@@ -50,7 +51,25 @@ public class DriveStraightMotionMagic extends Command {
     		
     		System.out.println("Get Drive Params by SensorParameters:" + sensorParams.DistanceToTarget + sensorParams.DistanceAdjustment);
     		
-    		driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, sensorParams.DistanceToTarget + sensorParams.DistanceAdjustment, rpm, reverse);
+    		double computedDriveDistance = sensorParams.DistanceToTarget;
+    		if (!sensorParams.TargetAcquired && sensorParams.SensorFailedDriveDistance != null)
+    		{
+    			computedDriveDistance = sensorParams.SensorFailedDriveDistance;
+    			System.out.println("Sensor Failed. Reverting to SensorFailedDriveDistance:" + sensorParams.SensorFailedDriveDistance);
+    		}
+    		else if (sensorParams.TargetAcquired)
+    		{
+    			//Only apply the distance Adjustment if we obtained a drive Distance from Vision.
+    			computedDriveDistance = sensorParams.DistanceToTarget +  sensorParams.DistanceAdjustment;
+    			if (computedDriveDistance < 0)
+    			{
+    				//If the adjusted distance < 0, something has gone wrong.
+    				System.out.println("Vision says it succeeded, but the value is too low. Reverting to SensorFailedDriveDistance:" + sensorParams.SensorFailedDriveDistance);
+    				computedDriveDistance = sensorParams.SensorFailedDriveDistance;
+    			}
+    		}
+    		
+    		driveParams = MotionProfileLibrary.getDriveParameters(RobotMap.WHEEL_RADIUS_INCHES, computedDriveDistance, rpm, reverse);
    
     	}
     	else
@@ -68,22 +87,25 @@ public class DriveStraightMotionMagic extends Command {
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_D,
     			RobotMap.DRIVE_STRAIGHT_MOTION_MAGIC_F);
     	
-    	Robot.drive.driveStraightMotionMagic(driveParams);
+
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
 
     	
-
+    	Robot.drive.driveStraightMotionMagic(driveParams);
     	
     }
 
-	// Make this return true when this Command no longer needs to run execute()
-	protected boolean isFinished() {
-		boolean done = Robot.drive.motionMagicDone(driveParams, Drive.DRIVE_ERROR_TOLERANCE);
-		if (done) {
-    		System.out.println("DriveStraightMotionMagic is done");
+    // Make this return true when this Command no longer needs to run execute()
+    protected boolean isFinished() {
+    	boolean done = Robot.drive.motionMagicDone(driveParams, Robot.drive.DRIVE_ERROR_TOLERANCE);
+    	if (done) {
+    		if (RobotMap.DEBUG_DETAIL)
+    		{
+    			System.out.println("DriveStraightMotionMagic is done");
+    		}
 
     		if (sensorParams != null)
     		{
@@ -101,7 +123,10 @@ public class DriveStraightMotionMagic extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("DriveStraightMotionMagic end");
+		if (RobotMap.DEBUG_DETAIL)
+		{
+			System.out.println("DriveStraightMotionMagic end");
+		}
     	Robot.drive.initMotionMagic();
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
     }
@@ -109,7 +134,7 @@ public class DriveStraightMotionMagic extends Command {
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
-    	//System.out.println("DriveStraightMotionMagic interrupted");
+    	System.out.println("DriveStraightMotionMagic interrupted");
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
     }
 }

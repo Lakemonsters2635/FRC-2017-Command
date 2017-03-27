@@ -5,6 +5,8 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+import edu.wpi.first.wpilibj.networktables.NetworkTablesJNI;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team2635.robot.commands.*;
@@ -48,7 +50,6 @@ public class Robot extends IterativeRobot {
 	MotionCommandGroup doNothingCmd;
 	MotionCommandGroup rotateTest;
 
-	
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
 	/**
@@ -58,6 +59,8 @@ public class Robot extends IterativeRobot {
 	@Override
 	public void robotInit() {
 		System.out.println("robotInit");
+		
+		SmartDashboard.putNumber("Test Angle", 0);
 		
 		oi = new OI();
 		drive = new Drive();
@@ -88,6 +91,7 @@ public class Robot extends IterativeRobot {
 
 		oi.climbUpButton.whileHeld(new ClimberClimb());
 
+		
 		oi.aimCameraButton.whenPressed(MotionProfileLibrary.visionTestSequence());
 		
 		oi.motionMagicButton.whenPressed(new TankDriveSwitchMode(Drive.TankDriveMode.MOTION_MAGIC));
@@ -105,17 +109,55 @@ public class Robot extends IterativeRobot {
 		visionTest = MotionProfileLibrary.visionTestSequence();
 		rotateTest = MotionProfileLibrary.rotateTestSequence();
 		
-		chooser.initTable(null);
-		chooser.addDefault("Do Nothing", doNothingCmd);
-		chooser.addObject("Center Gear", centerGear);
-		chooser.addObject("Left Gear", leftGear);
-		chooser.addObject("Left Gear Simple", leftGearSimple);
-		chooser.addObject("Right Gear", rightGear);
-		chooser.addObject("Vision Test", visionTest);
-		chooser.addObject("Rotation Test", rotateTest);
-
+//		chooser.initTable(null);
+//		chooser.addDefault("Do Nothing", doNothingCmd);
+//		chooser.addObject("Center Gear", centerGear);
+//		chooser.addObject("Left Gear", leftGear);
+//		chooser.addObject("Left Gear Simple", leftGearSimple);
+//		chooser.addObject("Right Gear", rightGear);
+//		chooser.addObject("Vision Test", visionTest);
+//		chooser.addObject("Rotation Test", rotateTest);
+//
+//		
+//		SmartDashboard.putData("Auto List", chooser);
 		
-		SmartDashboard.putData("Autonomous mode", chooser);
+		String[] autoValues = {"Do Nothing", "Center Gear", "Left Gear", "Left Gear Simple", "Right Gear", "Vision Test", "Rotation Test"};
+		NetworkTable.getTable("SmartDashboard").putStringArray("Auto List", autoValues);
+		
+	}
+	
+	public void chooserSetSelected() {
+		String selectedAuto = SmartDashboard.getString("Auto Selector", "Do Nothing");
+		switch(selectedAuto) {
+		case("Do Nothing"):
+			motionCommandGroup = doNothingCmd;
+		break;
+		
+		case("Center Gear"):
+			motionCommandGroup = centerGear;
+		break;
+		
+		case("Left Gear"):
+			motionCommandGroup = leftGear;
+		break;
+		
+		case("Left Gear Simple"):
+			motionCommandGroup = leftGearSimple;
+		break;
+		
+		case("Right Gear"):
+			motionCommandGroup = rightGear;
+		break;
+		
+		case("Vision Test"):
+			motionCommandGroup = visionTest;
+		break;
+		
+		case("Rotation Test"):
+			motionCommandGroup = rotateTest;
+		break;
+		
+		}
 	}
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
@@ -176,9 +218,12 @@ public class Robot extends IterativeRobot {
 		 * = new MyAutoCommand(); break; case "Default Auto": default:
 		 * autonomousCommand = new ExampleCommand(); break; }
 		 */
-        System.out.println("-------------------------------Started Autonomous-------------------------");
-        motionCommandGroup = (MotionCommandGroup) chooser.getSelected();
-        motionCommandGroup.start();
+		System.out.println("-------------------------------Started Autonomous-------------------------");
+//		motionCommandGroup = (MotionCommandGroup) chooser.getSelected();
+		
+		chooserSetSelected();
+		
+		motionCommandGroup.start();
 
         // schedule the autonomous command (example)
 //		if (autonomousCommand != null)

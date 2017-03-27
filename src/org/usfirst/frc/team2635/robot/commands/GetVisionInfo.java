@@ -1,14 +1,21 @@
 package org.usfirst.frc.team2635.robot.commands;
-
 import edu.wpi.first.wpilibj.command.TimedCommand;
-import org.usfirst.frc.team2635.robot.Robot;
-import org.usfirst.frc.team2635.robot.model.SensorParameters;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
+
+import org.usfirst.frc.team2635.robot.Robot;
+import org.usfirst.frc.team2635.robot.RobotMap;
+import org.usfirst.frc.team2635.robot.model.SensorParameters;
+
 
 
 /**
@@ -47,6 +54,7 @@ public class GetVisionInfo extends TimedCommand {
     	{
     		visionParameters.AngleToTarget = null;
     		visionParameters.DistanceToTarget = null;
+    		visionParameters.TargetAcquired = false;
     	}
     	System.out.println("Vision Initialized at "+ LocalDateTime.now());
 
@@ -103,27 +111,29 @@ public class GetVisionInfo extends TimedCommand {
     // Called once after isFinished returns true
     protected void end() {
     	
-		 Double modeAngle = modeit(angleSamples);
-		 System.out.println("modeAngle: " + modeAngle);
+
 		 
 		 if (angleSamples.size() > 0)
 		 {
-			 visionParameters.AngleToTarget = modeit(angleSamples);
+			 visionParameters.AngleToTarget = modeit(angleSamples, "Angle");
+			 visionParameters.TargetAcquired = true;
 		 }
 		 else
 		 {
 			 visionParameters.AngleToTarget = 0.0;
+			 visionParameters.TargetAcquired = false;
 			 System.out.println("WARNING:Setting visionParameters.AngleToTarget to 0.0");
 		 }
 		 
 		 if (distanceSamples.size() > 0)
 		 {
-			 visionParameters.DistanceToTarget = modeit(distanceSamples);
+			 visionParameters.DistanceToTarget = modeit(distanceSamples, "Distance");
 		 }
 		 else
 		 {
 			 visionParameters.DistanceToTarget = 0.0;
-			 System.out.println("ARNING:Setting visionParameters.DistanceToTarget to 0.0");
+			 visionParameters.TargetAcquired = false;
+			 System.out.println("WARNING:Setting visionParameters.DistanceToTarget to 0.0");
 		 }	 
 	
 	    	angleSamples.clear();
@@ -149,21 +159,8 @@ public class GetVisionInfo extends TimedCommand {
     	System.out.println("Vision Interrupted at "+ LocalDateTime.now());
     }
     
-    double roundit(double num, double N) {
-        double d = Math.log10(num);
-        double power;
-        if (num > 0) {
-            d = Math.ceil(d);
-            power = -(d-N);
-        } else {
-            d = Math.floor(d); 
-            power = -(d-N);
-        }
-
-        return (double)(num * Math.pow(10.0, power) + 0.5) * Math.pow(10.0, -power);
-    }
     
-    Double modeit(ArrayList<Double> samples){
+    Double modeit(ArrayList<Double> samples, String collectionName){
     	
     	 
         // list of all the numbers 
@@ -176,7 +173,13 @@ public class GetVisionInfo extends TimedCommand {
            list.add(samples.get(i));
            tree.add(samples.get(i));
            
-           System.out.println("samples[" + i + "]:" + samples.get(i) );
+   			if (RobotMap.DEBUG_DETAIL)
+   			{
+   				System.out.println(collectionName + " samples[" + i + "]:" + samples.get(i) );
+   			}
+           
+           
+           
         }     
    
         // Contains all the modes
