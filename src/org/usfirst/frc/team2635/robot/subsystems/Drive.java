@@ -26,8 +26,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
-	public static final double ROTATE_ERROR_TOLERANCE = 0.008;
-	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
+	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
+	public static final double DRIVE_ERROR_TOLERANCE = 0.01;
     public double RotationInitialHeading = 0;
 	public double currentHeadingOffset = 0;
 	// Put methods for controlling this subsystem

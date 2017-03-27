@@ -47,17 +47,25 @@ public class GetVisionInfo extends TimedCommand {
 
     // Called just before this Command runs the first time
     protected void initialize() {
-     	Robot.light.lightOn();    
-    	angleSamples = new ArrayList<Double>();
-    	distanceSamples = new ArrayList<Double>();
-    	if (visionParameters != null)
-    	{
-    		visionParameters.AngleToTarget = null;
-    		visionParameters.DistanceToTarget = null;
-    		visionParameters.TargetAcquired = false;
-    	}
-    	System.out.println("Vision Initialized at "+ LocalDateTime.now());
-
+    	
+//    	if (!Robot.vision.cameraIsConnected)
+//    	{
+//    		this.cancel();   	
+//    		System.out.println("No Camera Detected. Vision Cancelled at "+ LocalDateTime.now());
+//    	}
+//    	else
+//    	{
+	     	Robot.light.lightOn();    
+	    	angleSamples = new ArrayList<Double>();
+	    	distanceSamples = new ArrayList<Double>();
+	    	if (visionParameters != null)
+	    	{
+	    		visionParameters.AngleToTarget = null;
+	    		visionParameters.DistanceToTarget = null;
+	    		visionParameters.TargetAcquired = false;
+	    	}
+	    	System.out.println("Vision Initialized at "+ LocalDateTime.now());
+    	//}
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -111,12 +119,14 @@ public class GetVisionInfo extends TimedCommand {
     // Called once after isFinished returns true
     protected void end() {
     	
-
+    	
+    	String message = "";
 		 
 		 if (angleSamples.size() > 0)
 		 {
 			 visionParameters.AngleToTarget = modeit(angleSamples, "Angle");
 			 visionParameters.TargetAcquired = true;
+			 message = "Angle:" + visionParameters.AngleToTarget;
 		 }
 		 else
 		 {
@@ -128,6 +138,7 @@ public class GetVisionInfo extends TimedCommand {
 		 if (distanceSamples.size() > 0)
 		 {
 			 visionParameters.DistanceToTarget = modeit(distanceSamples, "Distance");
+			 message += "  Distance:" + visionParameters.DistanceToTarget;
 		 }
 		 else
 		 {
@@ -136,6 +147,11 @@ public class GetVisionInfo extends TimedCommand {
 			 System.out.println("WARNING:Setting visionParameters.DistanceToTarget to 0.0");
 		 }	 
 	
+		 if (!visionParameters.TargetAcquired) {
+			 message = "Target not found.";
+		 }
+		 Robot.vision.ViewShooter(message);
+		 
 	    	angleSamples.clear();
 	    	distanceSamples.clear();
 
@@ -156,6 +172,13 @@ public class GetVisionInfo extends TimedCommand {
     	Robot.light.lightOff();
     	angleSamples.clear();
     	distanceSamples.clear();  
+    	
+    	if (visionParameters != null)
+    	{
+    		visionParameters.AngleToTarget = null;
+    		visionParameters.DistanceToTarget = null;
+    		visionParameters.TargetAcquired = false;
+    	}
     	System.out.println("Vision Interrupted at "+ LocalDateTime.now());
     }
     

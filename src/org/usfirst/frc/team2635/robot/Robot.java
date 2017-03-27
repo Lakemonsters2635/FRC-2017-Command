@@ -14,6 +14,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team2635.robot.commands.ClimberClimb;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearBackwards;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
+import org.usfirst.frc.team2635.robot.commands.DriveStraightTeleop;
 import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
 import org.usfirst.frc.team2635.robot.commands.PickupBall;
 import org.usfirst.frc.team2635.robot.commands.ShooterRevUp;
@@ -89,7 +90,7 @@ public class Robot extends IterativeRobot {
 		ultrasonic = new UltrasonicSensors();
 		vision = new VisionSubsystem();
 		light = new LightSubsystem(RobotMap.VISION_LIGHT_CHANNEL);
-		teleopCommands = new TeleopCommand();
+		//teleopCommands = new TeleopCommand();
 		
 		InitializeChooser();
 
@@ -102,8 +103,8 @@ public class Robot extends IterativeRobot {
 		oi.feedInButton.whileHeld(new PickupBall(-1.0));
 		oi.feedOutButton.whileHeld(new PickupBall(1.0));
 			
-			oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
-			oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
+		oi.deliverButton.whenPressed(new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT));
+		oi.deliverButton.whenReleased(new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT));
 
 			
 
@@ -112,8 +113,10 @@ public class Robot extends IterativeRobot {
 		
 		oi.aimCameraButton.whenPressed(MotionProfileLibrary.visionTestSequence());
 		
-		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
-		//oi.navxResetButton.whenReleased(new NavxReset());
+
+		oi.gearAutoDockButton.whileHeld(MotionProfileLibrary.TeleopGearAutoDock());
+		oi.driveStraightButton.whileHeld(new DriveStraightTeleop());
+		
 			
 			
 			
@@ -234,6 +237,7 @@ public class Robot extends IterativeRobot {
 		if (drive.teleopIsRunning())
 		{
 			drive.disableTeleop();
+			
 		}
 		
 

@@ -142,11 +142,12 @@ public class DriveRotateMotionMagic extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	System.out.println("DriveRotateMotionMagic interrupted at " + LocalDateTime.now());
-    	if (visionParams != null)
-    	{
-    		visionParams.AngleToTarget = null;
-    		visionParams.DistanceToTarget = null;
-    	}
+//    	if (visionParams != null)
+//    	{
+//    		visionParams.AngleToTarget = null;
+//    		visionParams.DistanceToTarget = null;
+//    	}
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
+    	//Robot.drive.enableTeleop();
     }
 }

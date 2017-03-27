@@ -189,7 +189,7 @@ public class GearVision extends Vision {
 		}
 	}
 	 
-	public void viewShooter(Double angle){
+	public void viewShooter(String message){
    		//Draw Crosshairs
 		Point line11 = new Point(0,240);
 		Point line12 = new Point(620,240);
@@ -198,12 +198,7 @@ public class GearVision extends Vision {
 		Imgproc.line(source, line11, line12, new Scalar(255,255,255));
 		Imgproc.line(source, line21, line22, new Scalar(255,255,255));
 		Scalar scl = new Scalar(255,255,255);
-		String message = "no angle found.";
-		if (angle != null)
-		{
-			message = angle.toString();
-		}
-		Imgproc.putText(source, message, new Point(320,300), 2, 1, scl);
+			Imgproc.putText(source, message, new Point(10,300), 2, 1, scl);
 		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
@@ -213,7 +208,7 @@ public class GearVision extends Vision {
 		//Imgcodecs.imwrite("C:\\Users\\Robbie Robot\\Vision Log\\"+currentdatehour+".jpg", source);
 	}
 	
-	public Double getDistance(){
+	public Double getDistanceBackup(){
 		if(confRectRight == null)
 		{
 			return  null;
@@ -269,7 +264,7 @@ public class GearVision extends Vision {
 		return correctDistance;
 	}
 	
-	public Double getDistanceFHE(){
+	public Double getDistance(){
 		if(confRectRight == null || confRectLeft == null)
 		{
 			return  null;
