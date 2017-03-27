@@ -20,6 +20,15 @@ public class RobotMap {
 	public static final int SHOOTER_AGITATOR = 6;
 	public static final int SHOOTER_FIRE_CONTROL_FORWARD = 3;
 	public static final int SHOOTER_FIRE_CONTROL_BACKWARDS = 2;
+
+	public static final int SHOOTER_AGITATE_FORWARD = 0;
+	public static final int SHOOTER_AGITATE_REVERSE = 0;
+	
+//	public static final int HOPPER_FEED_SHOOTER_FORWARD = 0;
+//	public static final int HOPPER_FEED_SHOOTER_REVERSE = 0;
+	public static final double SHOOTER_AGITATE_TIME = 0.25;
+//	public static final double HOPPER_FEED_SHOOTER_TIME = 0.25;
+
 	
 	public static final int PICKUP_BALL = 7;
 	
@@ -87,4 +96,5 @@ public class RobotMap {
     public static final int VISION_LIGHT_CHANNEL = 7;
     
     public static final double GEAR_DELIVERY_TIMEOUT = 1.0;  // units are seconds
+
 }

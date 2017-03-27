@@ -15,7 +15,7 @@ public class ShooterRevUp extends CommandGroup {
     	requires(Robot.shooter);
     	addParallel(new ShooterFire());
     	addParallel(new ShooterSpinFlywheel(-1.0));
-    	addParallel(new ShooterAgitate(1.0, RobotMap.TELEOP_AGITATOR_LOOP_COUNT));
+    	addParallel(new ShooterAgitate(RobotMap.SHOOTER_AGITATE_TIME));
     	
     	//addSequential(new ShooterSpinFlywheel(-1.0));
     	

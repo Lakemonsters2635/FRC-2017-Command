@@ -21,6 +21,7 @@ import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.subsystems.Climber;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
 import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
+import org.usfirst.frc.team2635.robot.subsystems.Hopper;
 import org.usfirst.frc.team2635.robot.subsystems.LightSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.Pickup;
 import org.usfirst.frc.team2635.robot.subsystems.Shooter;
@@ -48,7 +49,7 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static UltrasonicSensors ultrasonic;
 	public static LightSubsystem light;
-	
+	public static Hopper hopper;
 
 	Command autonomousCommand;
 	Command driveCommand;
@@ -84,6 +85,7 @@ public class Robot extends IterativeRobot {
 		pickup = new Pickup();
 		climber = new Climber();
 		deliverer = new GearDeliver();
+		hopper = new Hopper();
 		
 		ultrasonic = new UltrasonicSensors();
 		vision = new VisionSubsystem();
