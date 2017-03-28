@@ -125,7 +125,7 @@ public class GearVision extends Vision {
 					
 					SmartDashboard.putDouble("comp3", comp3);
 					//SmartDashboard.putDouble("comp4", comp4);
-					if (rect1.height >20 && rect2.height > 20 &&rect1.width>5&&rect2.width>5&& .7 < comp1 && 1.3 > comp1 && .7 < comp2&&1.3>comp2&&.7<comp3/*&&1.3>comp3*/&&rect1.y>310&&rect2.y>310){
+					if (rect1.height >15 && rect2.height > 15 &&rect1.width>5&&rect2.width>5&& .7 < comp1 && 1.3 > comp1 && .7 < comp2&&1.3>comp2&&.7<comp3&&1.3>comp3/*&&rect1.y>290&&rect2.y>290*/){
 						Double done = 1 - (1 * Math.abs(3 - (comp1+comp2+comp3)));
 						if(rect1.y+10>rect2.y&&rect1.y-10<rect2.y){
 						for(int i=0;i<999;i++){

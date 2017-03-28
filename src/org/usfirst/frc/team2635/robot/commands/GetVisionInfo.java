@@ -111,6 +111,21 @@ public class GetVisionInfo extends TimedCommand {
     	}
 
 
+    	 String message = "";
+    	 if (roundedAngle != null)
+    	 {
+    		 message += "Angle:" + roundedAngle;
+    	 }
+    	 if (roundedDistance != null)
+    	 {
+    		 message += "    Distance:" + roundedDistance;
+    	 }
+    	 if (message == "")
+    	 {
+    		 message = "Target not found";
+    	 }
+    	 
+		 Robot.vision.ViewShooter(message);
     	
     }
 

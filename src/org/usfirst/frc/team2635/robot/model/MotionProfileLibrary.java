@@ -278,6 +278,7 @@ public class MotionProfileLibrary
 	{
 		
 		double drive1Distance = 75.385;
+		//double drive1Distance = 84.385;
 		double distanceAfter60degreeRotation = 31.177;
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		

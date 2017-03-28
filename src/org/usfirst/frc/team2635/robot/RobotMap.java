@@ -21,6 +21,12 @@ public class RobotMap {
 	public static final int SHOOTER_FIRE_CONTROL_FORWARD = 3;
 	public static final int SHOOTER_FIRE_CONTROL_BACKWARDS = 2;
 	
+	//TODO: Change these to valid channel numbers
+	public static final int SHOOTER_AGITATE_FORWARD = 4;
+	public static final int SHOOTER_AGITATE_REVERSE = 5;
+
+	public static final double SHOOTER_AGITATE_TIME = 1.00;
+	
 	public static final int PICKUP_BALL = 7;
 	
 	public static final int ROPE_CLIMBER_1 = 8;
@@ -93,7 +99,7 @@ public class RobotMap {
     
     public static final int VISION_LIGHT_CHANNEL = 7;
 
-    public static final boolean DEBUG_DETAIL = false;
+    public static final boolean DEBUG_DETAIL = true;
     
  
     public static final double GEAR_DELIVERY_TIMEOUT = 0.5;  // units are seconds

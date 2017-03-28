@@ -17,14 +17,14 @@ public class Shooter extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
 	CANTalon flywheel;
-	CANTalon agitator;
+	DoubleSolenoid agitator;
 	DoubleSolenoid fireControl;
 	public Shooter() {
 		flywheel = new CANTalon(RobotMap.SHOOTER_BALL_FLYWHEEL);
 		flywheel.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
 		
-		agitator = new CANTalon(RobotMap.SHOOTER_AGITATOR);
-		agitator.changeControlMode(CANTalon.TalonControlMode.PercentVbus);
+		agitator = new DoubleSolenoid(RobotMap.SHOOTER_AGITATE_FORWARD, RobotMap.SHOOTER_AGITATE_REVERSE);
+	
 		
 		fireControl = new DoubleSolenoid(RobotMap.SHOOTER_FIRE_CONTROL_FORWARD, RobotMap.SHOOTER_FIRE_CONTROL_BACKWARDS);
 		
@@ -37,8 +37,8 @@ public class Shooter extends Subsystem {
     	flywheel.set(magnitude);
     }
     
-    public void setAgitator(double magnitude) {
-    	agitator.set(magnitude);
+    public void setAgitator(Value value) {
+    	agitator.set(value);
     }
     
     public void fireControlForward() {
