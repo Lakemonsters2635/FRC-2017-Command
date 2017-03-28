@@ -40,8 +40,10 @@ public class OI {
 	
 	
 	
-	public final Button navxGetAngleButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_GET_ANGLE);
-	public final Button navxResetButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_RESET);
+	//public final Button navxGetAngleButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_GET_ANGLE);
+	public final Button gearAutoDockButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_GEAR_AUTODOC);
+	public final Button driveStraightButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_DRIVE_STRAIGHT);
+	
 	
 //	
 	//// CREATING BUTTONS

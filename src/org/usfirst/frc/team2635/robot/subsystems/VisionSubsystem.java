@@ -14,15 +14,22 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public class VisionSubsystem extends Subsystem {
     // Put methods for controlling this subsystem
     // here. Call these from Commands.
+	public double MaxSensorDriveDistance = 120;
+	
 	Vision vision;
 	ShooterVision shooterVision;
 	GearVision gearVision;
 	UsbCamera camera;
+	public boolean cameraIsConnected = false;
 	public VisionSubsystem() {
 		camera = CameraServer.getInstance().startAutomaticCapture();
+		cameraIsConnected = camera.isConnected();
+
+			
+		
 		//vision = new Vision(camera);
 		
-		shooterVision = new ShooterVision(camera);
+		//shooterVision = new ShooterVision(camera);
 		//shooterVision.camInit();
 		gearVision = new GearVision(camera);
 		gearVision.camInit();
@@ -35,10 +42,17 @@ public class VisionSubsystem extends Subsystem {
 		shooterVision.viewShooter();
     }
     
+    public void ViewShooter(String message)
+    {
+    	gearVision.viewShooter(message);
+    }
     public void gearAim() {
+
+    	//gearVision.camInit();
+
 		gearVision.createBox();
 		gearVision.confirmBox();
-		gearVision.viewShooter();
+		//gearVision.viewShooter(null);
     }
     
     public Double getAngleToBoiler() {
@@ -53,12 +67,21 @@ public class VisionSubsystem extends Subsystem {
     
     public Double getAngleToGear() {
     	Double angle = gearVision.getAngle();
-    	gearVision.viewShooter();
+    	
     	return angle;
     }
     
     public Double getDistanceToGear() {
-    	return gearVision.getDistance();
+    	
+    	Double distance = gearVision.getDistance();
+    	if (distance != null && Math.abs(distance) > MaxSensorDriveDistance)
+		{
+			System.out.println("distance: " + distance);
+			System.out.println("DISTANCE FROM SENSOR DATA EXCEEDS SAFTETY LIMIT. SETTING TO ZERO:" + distance);
+			distance = null;
+		}
+    	
+    	return distance;
     }
     
 	@Override

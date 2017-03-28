@@ -26,9 +26,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
-	public static final double ROTATE_ERROR_TOLERANCE = 0.03;
-	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
-
+	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
+	public static final double DRIVE_ERROR_TOLERANCE = 0.01;
+    public double RotationInitialHeading = 0;
 	public double currentHeadingOffset = 0;
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -107,9 +107,29 @@ public class Drive extends Subsystem {
 		}
 	}
 	
-	public void disableTeleop() {
-		teleopCommand.cancel();
+
+	public boolean teleopIsRunning()
+	{
+		if (teleopCommand != null)
+		{
+			return teleopCommand.isRunning();
+		}
+		else
+		{
+			return false;
+		}
+	
 	}
+	
+	
+	public void disableTeleop()
+	{
+		if (teleopCommand.isRunning())
+		{
+			teleopCommand.cancel();
+		}
+	}
+
 	
 	public void driveInit() {
 
@@ -119,30 +139,17 @@ public class Drive extends Subsystem {
 		rightFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		rightFront.configEncoderCodesPerRev(250);
 		//rightFront.setInverted(true);
-		
-
-		
-		//status |= _talon.ConfigNominalOutputVoltage(0f, 0f, kTimeoutMs);
-		//status |= _talon.ConfigPeakOutputVoltage(+12f, -12f, kTimeoutMs);
-		
+		//leftFront.setInverted(true);
 
 		rightBack.changeControlMode(TalonControlMode.Follower);
-		
-
 		rightBack.set(rightFront.getDeviceID());
-
 
 		leftFront.changeControlMode(TalonControlMode.PercentVbus);
 		leftFront.setFeedbackDevice(CANTalon.FeedbackDevice.QuadEncoder);
 		leftFront.configEncoderCodesPerRev(250);
-		
-	
-		//leftFront.setInverted(true);
-
-
 		leftBack.changeControlMode(TalonControlMode.Follower);
 		leftBack.set(leftFront.getDeviceID());
-
+		
 		leftFront.configNominalOutputVoltage(0, 0);
 		rightFront.configNominalOutputVoltage(0, 0);
 		leftBack.configNominalOutputVoltage(0, 0);
@@ -151,7 +158,8 @@ public class Drive extends Subsystem {
 		leftFront.configPeakOutputVoltage(12, -12);
 		rightFront.configPeakOutputVoltage(12, -12);
 		leftBack.configPeakOutputVoltage(12, -12);
-		rightBack.configPeakOutputVoltage(12, -12);
+		rightBack.configPeakOutputVoltage(12, -12);		
+
 	}
 
 	public void initDefaultCommand() {
@@ -304,10 +312,10 @@ public class Drive extends Subsystem {
 	
 		setDriveMode(TalonControlMode.MotionMagic);
 		
-	    rightFront.setMotionMagicCruiseVelocity(200.0);
-	    leftFront.setMotionMagicCruiseVelocity(200.0);
-	    rightFront.setMotionMagicAcceleration(400.0);
-	    leftFront.setMotionMagicAcceleration(400.0);
+//	    rightFront.setMotionMagicCruiseVelocity(200.0);
+//	    leftFront.setMotionMagicCruiseVelocity(200.0);
+//	    rightFront.setMotionMagicAcceleration(400.0);
+//	    leftFront.setMotionMagicAcceleration(400.0);
 	    //rightFront.setInverted(true);
 	    
 	    //FOR COMPETITION BOT DO THE FOLLOWING
@@ -375,6 +383,8 @@ public class Drive extends Subsystem {
 
 		rightFront.set(rotationParams.rightWheelRotations);
 		leftFront.set(rotationParams.leftWheelRotations);
+	
+		
 //		System.out.println("Right wheel rotations: " + rotationParams.rightWheelRotations +
 //				"\tLeft wheel rotations: " + rotationParams.leftWheelRotations +
 //				"\tRight acceleration: " + rotationParams.rightAcceleration +
@@ -451,6 +461,11 @@ public class Drive extends Subsystem {
 	}
 	
 
+	public  void SetNavxAngle()
+	{
+		navx.reset();
+		RotationInitialHeading = navx.getAngle();
+	}
 
 
 	/**
@@ -473,6 +488,7 @@ public class Drive extends Subsystem {
 		double rightFrontPosition = rightFront.getPosition();
 		double leftFrontPosition = leftFront.getPosition();
 		
+		
 		//double encRightFrontPosition = rightFront.getEncPosition()*10;
 		//double encLeftFrontPosition = leftFront.getEncPosition()*10;
 		
@@ -480,15 +496,32 @@ public class Drive extends Subsystem {
 		//double leftDelta =  leftFrontPosition - encLeftFrontPosition;
 		//double rightError = rightFront.getError();
 		//double leftError = leftFront.getError();
-		
-		
+
+
 		double rightFrontError = Math.abs(rotationParams.rightWheelRotations - rightFrontPosition);
 		double leftFrontError = Math.abs(rotationParams.leftWheelRotations - leftFrontPosition);
 		
 		
-		//System.out.println("rightError:" + rightError + "\tleftError:" + leftError + "\trightFrontError:" + rightFrontError + "\t leftFrontError:" + leftFrontError + "\t rightFrontPosition:" + rightFrontPosition + "\t leftFrontPosition:" + leftFrontPosition);
-		
-		return (rightFrontError < errorTolerance && leftFrontError < errorTolerance);
+
+		boolean isDone = (rightFrontError < errorTolerance && leftFrontError < errorTolerance);
+		if (isDone)
+		{
+			if (errorTolerance == this.ROTATE_ERROR_TOLERANCE )
+			{
+				double currentAngle = navx.getAngle();
+				double navxAngleDifference = Math.abs(currentAngle - RotationInitialHeading);
+				System.out.println("navxAngleDifference:" + navxAngleDifference + "\trightError:" + rightFrontError + "\tleftError:" + leftFrontError);
+			}
+			else
+			{
+				System.out.println("rightError:" + rightFrontError + "\tleftError:" + leftFrontError);
+			
+			}
+			
+			
+			
+		}
+		return isDone;
 		//return (leftFrontError < MOTION_MAGIC_ERROR_TOLERANCE);
 		//talon1Error = Math.abs(rotationParams.innerWheelRotations - _talon.getPosition());
 		//talon2Error = Math.abs(rotationParams.outerWheelRotations - _talon2.getPosition());

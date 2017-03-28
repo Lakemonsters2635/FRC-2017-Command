@@ -1,53 +1,71 @@
 package org.usfirst.frc.team2635.robot.commands;
+import edu.wpi.first.wpilibj.command.TimedCommand;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.TreeSet;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.TreeSet;
 
 import org.usfirst.frc.team2635.robot.Robot;
+import org.usfirst.frc.team2635.robot.RobotMap;
+import org.usfirst.frc.team2635.robot.model.SensorParameters;
 
-import org.usfirst.frc.team2635.robot.model.VisionParameters;
 
-import edu.wpi.first.wpilibj.Timer;
-import edu.wpi.first.wpilibj.command.Command;
 
 /**
  *
  */
-public class GetVisionInfo extends Command {
+
+public class GetVisionInfo extends TimedCommand {
+
+
 	ArrayList<Double>  angleSamples;
 	ArrayList<Double>  distanceSamples;
-	public VisionParameters visionParameters; 
+	public SensorParameters visionParameters; 
 	public String targetName;
-	public double duration;
-	Timer timer;
-	//Double averageAquiredAngle;
-	Double averageAquiredDistance;
 	
-	int sampleCount;
+
 	
-	boolean hasExecuted;
-	
-    public GetVisionInfo(VisionParameters visionParams, String targetName, double duration) {
+    public GetVisionInfo(SensorParameters visionParams, String targetName, double timeout) {
         // Use requires() here to declare subsystem dependencies
-    	//requires(Robot.vision);
+    	super(timeout);
+    	requires(Robot.light);
+    	requires(Robot.vision);
+
     	this.visionParameters = visionParams;
     	this.targetName = targetName;
-    	this.duration = duration;
-    	timer = new Timer();
+
+    	
     	
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
-    	hasExecuted = false;
-    	timer.reset();
-    	timer.start();
-    	sampleCount = 0;
-    	angleSamples = new ArrayList<Double>();
-    	distanceSamples = new ArrayList<Double>();
-     	Robot.light.lightOn();    	
+    	
+//    	if (!Robot.vision.cameraIsConnected)
+//    	{
+//    		this.cancel();   	
+//    		System.out.println("No Camera Detected. Vision Cancelled at "+ LocalDateTime.now());
+//    	}
+//    	else
+//    	{
+	     	Robot.light.lightOn();    
+	    	angleSamples = new ArrayList<Double>();
+	    	distanceSamples = new ArrayList<Double>();
+	    	if (visionParameters != null)
+	    	{
+	    		visionParameters.AngleToTarget = null;
+	    		visionParameters.DistanceToTarget = null;
+	    		visionParameters.TargetAcquired = false;
+	    	}
+	    	System.out.println("Vision Initialized at "+ LocalDateTime.now());
+    	//}
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -61,15 +79,23 @@ public class GetVisionInfo extends Command {
     		angle = Robot.vision.getAngleToGear();
     		distance = Robot.vision.getDistanceToGear();
     		if (angle!= null) {
-    		     roundedAngle = roundit(angle, 2);
+    		    roundedAngle = angle * 100;
+    			roundedAngle = (double) Math.round(roundedAngle);
+    			roundedAngle = roundedAngle/100;
+    			
+    		     //roundedAngle = roundit(angle, 2);
     		     //System.out.println("roundedAngle: " + roundedAngle);
-   				angleSamples.add(angle);
+   				angleSamples.add(roundedAngle);
     		} else {
     			System.out.println("angle is NULL");
     		}
     		
     		if (distance!= null){
-    			distanceSamples.add(distance);
+    			roundedDistance = distance * 100;
+    			roundedDistance = (double) Math.round(roundedDistance);
+    			roundedDistance = roundedDistance/100;
+    			
+    			distanceSamples.add(roundedDistance);
     		}
     	} else if (targetName == "Boiler") {
     		Robot.vision.aim();
@@ -83,69 +109,81 @@ public class GetVisionInfo extends Command {
     			distanceSamples.add(distance);
     		}
     	}
-    	
-    	
-	   	 //
-	 
-	   	
-	   	//System.out.println("roundedAngle: " + roundedAngle + "\t roundedDistance:" + roundit(distance, 2));
-    	//visionParameters.AngleToTarget averageAquiredAngle 
+
+
     	
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	//System.out.println("currentAngleSample: " + currentAngleSample + "\t currentDistance:" + visionParameters.DistanceToTarget);  	
-    	 boolean timeElapsed = timer.hasPeriodPassed(duration);
-    	 boolean isDone = false;
-    	 if (timeElapsed) {
-    		 isDone = true;
-    		 Double modeAngle = modeit(angleSamples);
-    		 System.out.println("modeAngle: " + modeAngle);
-    		 
-    		 visionParameters.AngleToTarget = modeit(angleSamples);
-    		 visionParameters.DistanceToTarget = modeit(distanceSamples);
-    		 
-    		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
-    	 }
-    	
-    	 return isDone;        
-    }
+
 
     // Called once after isFinished returns true
     protected void end() {
-    	timer.stop();
-    	angleSamples.clear();
-    	distanceSamples.clear();
-    	Robot.light.lightOff();
+    	
+    	
+    	String message = "";
+		 
+		 if (angleSamples.size() > 0)
+		 {
+			 visionParameters.AngleToTarget = modeit(angleSamples, "Angle");
+			 visionParameters.TargetAcquired = true;
+			 message = "Angle:" + visionParameters.AngleToTarget;
+		 }
+		 else
+		 {
+			 visionParameters.AngleToTarget = 0.0;
+			 visionParameters.TargetAcquired = false;
+			 System.out.println("WARNING:Setting visionParameters.AngleToTarget to 0.0");
+		 }
+		 
+		 if (distanceSamples.size() > 0)
+		 {
+			 visionParameters.DistanceToTarget = modeit(distanceSamples, "Distance");
+			 message += "  Distance:" + visionParameters.DistanceToTarget;
+		 }
+		 else
+		 {
+			 visionParameters.DistanceToTarget = 0.0;
+			 visionParameters.TargetAcquired = false;
+			 System.out.println("WARNING:Setting visionParameters.DistanceToTarget to 0.0");
+		 }	 
+	
+		 if (!visionParameters.TargetAcquired) {
+			 message = "Target not found.";
+		 }
+		 Robot.vision.ViewShooter(message);
+		 
+	    	angleSamples.clear();
+	    	distanceSamples.clear();
+
+	    	 System.out.println("Vision Ended at "+ LocalDateTime.now());
+	    	Robot.light.lightOff();
+		 
+		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
+    	
+
     }
+
+
+
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     protected void interrupted() {
     	Robot.light.lightOff();
-    	timer.stop();
-    	timer.reset();
-    	
     	angleSamples.clear();
-    	distanceSamples.clear();
+    	distanceSamples.clear();  
+    	
+    	if (visionParameters != null)
+    	{
+    		visionParameters.AngleToTarget = null;
+    		visionParameters.DistanceToTarget = null;
+    		visionParameters.TargetAcquired = false;
+    	}
+    	System.out.println("Vision Interrupted at "+ LocalDateTime.now());
     }
     
-    double roundit(double num, double N) {
-        double d = Math.log10(num);
-        double power;
-        if (num > 0) {
-            d = Math.ceil(d);
-            power = -(d-N);
-        } else {
-            d = Math.floor(d); 
-            power = -(d-N);
-        }
-
-        return (double)(num * Math.pow(10.0, power) + 0.5) * Math.pow(10.0, -power);
-    }
     
-    Double modeit(ArrayList<Double> samples){
+    Double modeit(ArrayList<Double> samples, String collectionName){
     	
     	 
         // list of all the numbers 
@@ -157,6 +195,14 @@ public class GetVisionInfo extends Command {
         for (int i = 0; i < samples.size(); i++) {
            list.add(samples.get(i));
            tree.add(samples.get(i));
+           
+   			if (RobotMap.DEBUG_DETAIL)
+   			{
+   				System.out.println(collectionName + " samples[" + i + "]:" + samples.get(i) );
+   			}
+           
+           
+           
         }     
    
         // Contains all the modes
@@ -176,7 +222,15 @@ public class GetVisionInfo extends Command {
         }
       
         //Just return first.
-        return modes.get(0);
+        if (modes.size() > 0)
+        {
+        	return modes.get(0);
+        }
+        else
+        {
+        	return 0.0;
+        }
+        
     }
 
 }

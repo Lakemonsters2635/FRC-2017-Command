@@ -1,8 +1,7 @@
 package org.usfirst.frc.team2635.robot.commands;
 
 import org.usfirst.frc.team2635.robot.Robot;
-import org.usfirst.frc.team2635.robot.model.UltrasonicParameters;
-
+import org.usfirst.frc.team2635.robot.model.SensorParameters;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
@@ -10,45 +9,58 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
  *
  */
 public class UltrasonicCommand extends TimedCommand {
-	public UltrasonicParameters ultrasonicParameters;
+	public SensorParameters sensorParameters;
 	
-    public UltrasonicCommand(UltrasonicParameters params, double timeout) {
+    public UltrasonicCommand(SensorParameters params, double timeout) {
         // Use requires() here to declare subsystem dependencies
         // eg. requires(chassis);
     	super(timeout);
-    	this.ultrasonicParameters = params;
+    	this.sensorParameters = params;
     }
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	if (sensorParameters != null)
+    	{
+    		sensorParameters.DistanceToTarget = null;
+    		sensorParameters.TargetAcquired = false;
+    	}
     }
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	//ultrasonicParameters.leftInches =  Robot.ultrasonic.getLeftDistanceInches();
-    	ultrasonicParameters.rightInches = Robot.ultrasonic.getRightDistanceInches();
+    	sensorParameters.DistanceToTarget = Robot.ultrasonic.getRightDistanceInches();
+
+    	
+
+		if (sensorParameters.DistanceToTarget == null)
+		{
+			sensorParameters.DistanceToTarget = new Double(0.0);	
+			sensorParameters.TargetAcquired = false;
+		}
+		else if (sensorParameters.DistanceToTarget <= 11)
+		{
+			sensorParameters.DistanceToTarget = 0.0;
+			sensorParameters.TargetAcquired = false;
+		}
+		else
+		{
+			sensorParameters.TargetAcquired = true;
+		}
+			
+  
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	
-    	boolean isTimedOut = this.isTimedOut();
-    	if (isTimedOut)
-    	{
-    		System.out.println("rightInches:" + ultrasonicParameters.rightInches);
-    		if (ultrasonicParameters.rightInches == null) {
-    			ultrasonicParameters.rightInches = new Double(0.0);	
-    		} else if (ultrasonicParameters.rightInches <= 11) {
-    			ultrasonicParameters.rightInches = 0.0;
-    		}
 
-    	}
-    	
-    	return isTimedOut;
-    }
 
-    // Called once after isFinished returns true
+
+
+
+    // Called once after timeout
     protected void end() {
+    	
+		System.out.println("Ultrasonic:DistanceToTarget:" + sensorParameters.DistanceToTarget);
     }
 
     // Called when another command which requires one or more of the same

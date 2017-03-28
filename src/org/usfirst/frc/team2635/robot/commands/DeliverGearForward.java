@@ -8,10 +8,8 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
  * Set the gear deliverer in the forwards position
  */
 public class DeliverGearForward extends TimedCommand {
-
+	
     public DeliverGearForward(double timeout) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	super(timeout);
     	requires(Robot.deliverer);
     }
@@ -19,18 +17,14 @@ public class DeliverGearForward extends TimedCommand {
     // Called just before this Command runs the first time
     protected void initialize() {
     	Robot.deliverer.setForward();
-    }
+   }
+
 
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	return this.isTimedOut();
-    }
-
-    // Called once after isFinished returns true
+    // Called once after timeout
     protected void end() {
     }
 

@@ -10,8 +10,6 @@ import edu.wpi.first.wpilibj.command.TimedCommand;
 public class DeliverGearBackwards extends TimedCommand {
 
     public DeliverGearBackwards(double timeout) {
-        // Use requires() here to declare subsystem dependencies
-        // eg. requires(chassis);
     	super(timeout);
     	requires(Robot.deliverer);
     }
@@ -21,16 +19,12 @@ public class DeliverGearBackwards extends TimedCommand {
     	Robot.deliverer.setBackwards();
     }
 
+
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     }
 
-    // Make this return true when this Command no longer needs to run execute()
-    protected boolean isFinished() {
-    	return this.isTimedOut();
-    }
-
-    // Called once after isFinished returns true
+    // Called once after timeout
     protected void end() {
     }
 

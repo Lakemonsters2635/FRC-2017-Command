@@ -21,6 +21,7 @@ public class RobotMap {
 	public static final int SHOOTER_FIRE_CONTROL_FORWARD = 3;
 	public static final int SHOOTER_FIRE_CONTROL_BACKWARDS = 2;
 
+	//May not be necessary, Shooter may work as Hopper already.
 	public static final int SHOOTER_AGITATE_FORWARD = 0;
 	public static final int SHOOTER_AGITATE_REVERSE = 0;
 	
@@ -95,6 +96,6 @@ public class RobotMap {
     
     public static final int VISION_LIGHT_CHANNEL = 7;
     
-    public static final double GEAR_DELIVERY_TIMEOUT = 1.0;  // units are seconds
+    public static final double GEAR_DELIVERY_TIMEOUT = 0.5;  // units are seconds
 
 }
