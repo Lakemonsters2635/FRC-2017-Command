@@ -18,7 +18,8 @@ public class DriveStraightMotionMagic extends Command {
 	public double driveDistance;
 	public boolean reverse;
 	double rpm;
-	public int cycleCtr;
+
+
 	SensorParameters sensorParams;
 	
 	MotionParameters driveParams; 
@@ -46,8 +47,6 @@ public class DriveStraightMotionMagic extends Command {
     	
     	if (sensorParams != null && sensorParams.DistanceToTarget != null)
     	{
-    		
-    		//targetAngle = visionParams.AngleToTarget;
     		
     		System.out.println("Get Drive Params by SensorParameters:" + sensorParams.DistanceToTarget + sensorParams.DistanceAdjustment);
     		

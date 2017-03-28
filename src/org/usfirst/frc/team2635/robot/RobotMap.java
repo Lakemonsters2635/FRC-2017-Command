@@ -40,20 +40,20 @@ public class RobotMap {
 	public static final int LEFT_DRIVE_Z = 2;
 	public static final int RIGHT_DRIVE_Y = 1;
 	public static final int RIGHT_DRIVE_Z = 2;
-	
-    public static final int BUTTON_REV_UP = 1; // left
-    public static final int BUTTON_FIRE = 1; // right
-    public static final int BUTTON_FEED_IN = 2; // right
-    public static final int BUTTON_FEED_OUT = 3; // right
-    public static final int BUTTON_CLIMB_UP = 2; // left
+
+	public static final int BUTTON_REV_UP = 6; //FHE TODO: TALK TO DRIVE TEAM
+	public static final int BUTTON_FIRE = 11; //FHE TODO: TALK TO DRIVE TEAM
+	public static final int BUTTON_FEED_IN = 2;
+	public static final int BUTTON_FEED_OUT = 3;
+	public static final int BUTTON_CLIMB_UP = 2;
 	public static final int BUTTON_CLIMB_DOWN = 3;
-    public static final int BUTTON_DELIVER = 5; // right
-    public static final int BUTTON_AIM_CAMERA = 9; // right
-    public static final int BUTTON_NAVX_ROTATE = 8; // left
+	public static final int BUTTON_DELIVER = 5;
+	public static final int BUTTON_AIM_CAMERA = 9;
 	public static final int BUTTON_NAVX_ROTATE = 8;
 	public static final int BUTTON_AIM = 7;
-    public static final int BUTTON_NAVX_GET_ANGLE = 10; // right
-    public static final int BUTTON_NAVX_RESET = 11; // right
+	public static final int BUTTON_NAVX_GET_ANGLE = 10;
+	public static final int BUTTON_GEAR_AUTODOC = 1;
+	public static final int BUTTON_DRIVE_STRAIGHT = 1;
     // teleop drive modes
     // TODO verify that these values are useful and convenient for the drivers
     public static final int BUTTON_MOTION_MAGIC = 3; // left
@@ -69,8 +69,6 @@ public class RobotMap {
 	public static final double AIM_I = 0.0;
 	public static final double AIM_D = 0.0;
 	
-	public static final int TELEOP_AGITATOR_LOOP_COUNT = 2;
-	
 	public static final double MOTION_MAGIC_F = 1.5345;
     public static final double MOTION_MAGIC_P = 10;
     public static final double MOTION_MAGIC_I = 0.0004;
@@ -83,11 +81,17 @@ public class RobotMap {
     public static final double DRIVE_STRAIGHT_MOTION_MAGIC_P = 10;
     public static final double DRIVE_STRAIGHT_MOTION_MAGIC_I = 0.0004;
     public static final double DRIVE_STRAIGHT_MOTION_MAGIC_D = 0;
-    // If you are using multiple modules, make sure to define both the port
-    // number and the module. For example you with a rangefinder:
-    // public static int rangefinderPort = 1;
-    // public static int rangefinderModule = 1;
-
+    
+    
+    public static final double DRIVE_STRAIGHT_TELEOP_MOTION_MAGIC_F = 1.5;
+	public static final double DRIVE_STRAIGHT_TELEOP_MOTION_MAGIC_P = 1;
+    public static final double DRIVE_STRAIGHT_TELEOP_MOTION_MAGIC_I =  0.0; 
+    public static final double DRIVE_STRAIGHT_TELEOP_MOTION_MAGIC_D = 0;
+	// If you are using multiple modules, make sure to define both the port
+	// number and the module. For example you with a rangefinder:
+	// public static int rangefinderPort = 1;
+	// public static int rangefinderModule = 1;
+    
     public static final int LEFT_ULTRASONIC_CHANNEL = 1;
     public static final int RIGHT_ULTRASONIC_CHANNEL = 2;
 

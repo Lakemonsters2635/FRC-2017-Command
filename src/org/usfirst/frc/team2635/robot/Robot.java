@@ -73,7 +73,7 @@ public class Robot extends IterativeRobot {
 		ultrasonic = new UltrasonicSensors();
 		vision = new VisionSubsystem();
 		light = new LightSubsystem(RobotMap.VISION_LIGHT_CHANNEL);
-		teleopCommands = new TeleopCommand();
+		//teleopCommands = new TeleopCommand();
 		
 		initializeChooser();
 
@@ -94,9 +94,18 @@ public class Robot extends IterativeRobot {
 		
 		oi.aimCameraButton.whenPressed(MotionProfileLibrary.visionTestSequence());
 		
-		oi.motionMagicButton.whenPressed(new TankDriveSwitchMode(Drive.TankDriveMode.MOTION_MAGIC));
-		oi.voltageDriveButton.whenPressed(new TankDriveSwitchMode(Drive.TankDriveMode.VOLTAGE));
-		oi.scootchDriveButton.whenPressed(new TankDriveSwitchMode(Drive.TankDriveMode.SCOOTCH));
+
+		oi.gearAutoDockButton.whileHeld(MotionProfileLibrary.TeleopGearAutoDock());
+		oi.driveStraightButton.whileHeld(new DriveStraightTeleop());
+		
+			
+			
+			
+		//oi.rotateMotionMagicButton.whenPressed(new DriveRotateMotionMagic(200,90 , 36, true, true));
+		//oi.motionMagicButton.whenPressed(motionCommandGroup);
+		//double targetAngle = 90;
+		//oi.navxRotateButton.whenPressed(new DriveRotateNavx(targetAngle) );
+
 	}
 
 	public void initializeChooser()
@@ -209,6 +218,7 @@ public class Robot extends IterativeRobot {
 		if (drive.teleopIsRunning())
 		{
 			drive.disableTeleop();
+			
 		}
 		
 

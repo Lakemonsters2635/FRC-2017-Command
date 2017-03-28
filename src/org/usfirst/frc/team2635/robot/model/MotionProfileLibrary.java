@@ -11,9 +11,13 @@ import org.usfirst.frc.team2635.robot.commands.DriveCameraAnglePID;
 import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.DriveStraightMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.GetVisionInfo;
+import org.usfirst.frc.team2635.robot.commands.ManageTeleop;
 import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
 import org.usfirst.frc.team2635.robot.commands.UltrasonicCommand;
 import org.usfirst.frc.team2635.robot.model.SensorParameters;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import edu.wpi.first.wpilibj.command.WaitCommand;
@@ -221,33 +225,40 @@ public class MotionProfileLibrary
 		//double distance = 37.699111843077518861551720599354; //Two Rotations
 		//double distance1 = 40;
 		
-		double distance1 =  67.86;
-		double velocity = 300;
-		double rpm = 300;
+		double totalDistanceToTarget =  67.86;
+		double distance1 = 40;
+		double rpm = 400;
 
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
+		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(rpm, distance1, false);
 		
-		//DriveStraightMotionMagic cmd1 = new DriveStraightMotionMagic(100, 78.5, false);
-		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, distance1, false);
+		String targetName = "Gear";
+		SensorParameters visionParams = new SensorParameters(null,null);
+		visionParams.SensorFailedDriveDistance = totalDistanceToTarget - distance1;
+		visionParams.DistanceAdjustment = -11;
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,1.5);
+		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(rpm,  visionParams);	
+		
+		DriveStraightMotionMagic driveBasedOnVision = new DriveStraightMotionMagic(200, visionParams);
+
 
 		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
 		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
 
-		//String targetName = "Gear";
-		//VisionParameters visionParams = new VisionParameters(null,null);
-		//GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,3);
+
 		
+
 		//UltrasonicParameters ultrasonicParams = new UltrasonicParameters(null, null);
 		//UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams);
 		
 
 		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
-		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(velocity, distance1, true);
-		//resultGroup.addSequential(visionCmd1);
-		//resultGroup.addSequential(rotateToGearPegCmd);
+		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(rpm, distance1, true);
 		resultGroup.addSequential(drive1);
-
+		resultGroup.addSequential(visionCmd1);
+		resultGroup.addSequential(rotateBasedOnVision);
+		resultGroup.addSequential(driveBasedOnVision);
 		
 		resultGroup.addSequential(gearForward);
 		resultGroup.addSequential(gearBackward);
@@ -268,22 +279,15 @@ public class MotionProfileLibrary
 		
 		double drive1Distance = 75.385;
 		double distanceAfter60degreeRotation = 31.177;
-		
-
-		SensorParameters ultrasonicParams = new SensorParameters(null, null);
-
-		ultrasonicParams.SensorFailedDriveDistance = 0.0;
-		ultrasonicParams.DistanceAdjustment = 0;
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		
 		
 
-		double straightVelocity = 300;
-		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(straightVelocity, drive1Distance, false);
-		
 		double rpm = 300;
+		DriveStraightMotionMagic startingDrive = new DriveStraightMotionMagic(rpm, drive1Distance, false);
+		
 		double targetAngle = 60;
-		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle);
+		DriveRotateMotionMagic rotateOnFixedAngle = new DriveRotateMotionMagic(rpm, targetAngle);
 	
 		//drive after rotate.
 		//Actual distance should be 31.177, but we want to stop for sonar reading.
@@ -291,50 +295,77 @@ public class MotionProfileLibrary
 		//
 		SensorParameters visionParams = new SensorParameters(null,null);
 		visionParams.DistanceAdjustment = -9;
-		visionParams.SensorFailedDriveDistance = 31.177;
-		DriveStraightMotionMagic driveAfterRotate = new DriveStraightMotionMagic(straightVelocity,visionParams);
-		UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 0.25);
+		visionParams.SensorFailedDriveDistance = distanceAfter60degreeRotation;
+		DriveStraightMotionMagic driveAfterRotate = new DriveStraightMotionMagic(rpm,visionParams);
+		
+		String targetName = "Gear";
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,1.5); //FHE: Is two seconds for vision right?
+		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(rpm,  visionParams);		
 		
 		
-		straightVelocity = 250; //slow down for final approach
-		DriveStraightMotionMagic driveOnSonar = new DriveStraightMotionMagic(straightVelocity, ultrasonicParams);
+		
+		//SensorParameters ultrasonicParams = new SensorParameters(null, null);
+		//ultrasonicParams.SensorFailedDriveDistance = 0.0;
+		//ultrasonicParams.DistanceAdjustment = 0;
+		//UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 0.25);
+		//double sonarDriveVelocity = 250; //slow down for final approach
+		//DriveStraightMotionMagic driveOnSonar = new DriveStraightMotionMagic(sonarDriveVelocity, ultrasonicParams);
 
 		
 		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
-		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
-		
-		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);
-		
-		String targetName = "Gear";
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,1); //FHE: Is two seconds for vision right?
-		
-		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(rpm,  visionParams);		
-		
 		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
 		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		
+		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(rpm, 31.177, true);
+
+
 			
 
-		
-		resultGroup.addSequential(drive1);
-		resultGroup.addSequential(rotateCmd);
+		//----------------------------------------
+		//Start of GearPlacement
+		//----------------------------------------
+		resultGroup.addSequential(startingDrive);
+		resultGroup.addSequential(rotateOnFixedAngle);
 		resultGroup.addSequential(visionCmd1);
 		resultGroup.addSequential(rotateBasedOnVision);
 		resultGroup.addSequential(driveAfterRotate);
-		resultGroup.addSequential(ultrasonicCmd1);
+		//resultGroup.addSequential(ultrasonicCmd1);
 		//resultGroup.addSequential(driveOnSonar);
 		resultGroup.addSequential(gearForward);
 		resultGroup.addSequential(gearBackward);
 		resultGroup.addSequential(gearForward2);
-		resultGroup.addSequential(gearBackward2);
+		resultGroup.addSequential(gearBackward2);     
 		resultGroup.addSequential(shortDriveBackwards);
+		//----------------------------------------
+		//End Of Gear placement
+		//----------------------------------------
+		
+		//----------------------------------------
+		//Start of Drive into Neutral Zone
+		
+		DriveRotateMotionMagic rotateOnFixedAngle2 = new DriveRotateMotionMagic(rpm, -60);
+		DriveStraightMotionMagic driveIntoNeutralZone = new DriveStraightMotionMagic(rpm, 110, false);
 
+		resultGroup.addSequential(rotateOnFixedAngle2);
+		resultGroup.addSequential(driveIntoNeutralZone);
 		
-		//resultGroup.addSequential(cmd2);
+		Alliance alliance = DriverStation.getInstance().getAlliance();
+		System.out.println("ALLIANCE:" + alliance.toString());
 		
-		//FHE:TODO. This Camera Command Looks for the boiler. We need a Vision solution for Gear Placement.
-		//		DriveCameraAnglePID findPegCmd = new DriveCameraAnglePID();
-		//		resultGroup.addSequential(findPegCmd);		
-		
+		//Position the Robot for Teleop, so driver is closer to getting a gear.
+		if (alliance.toString() == "Blue" )
+		{
+			
+			DriveRotateMotionMagic rotateOnFixedAngle3 = new DriveRotateMotionMagic(rpm, 40);
+			resultGroup.addSequential(rotateOnFixedAngle3);
+		}
+		else
+		{
+			//FHE TODO. FIND OUT HOW FAR TO DRIVE
+			DriveStraightMotionMagic driveIntoNeutralZoneForRed = new DriveStraightMotionMagic(rpm, 40, false);
+			resultGroup.addSequential(driveIntoNeutralZoneForRed);
+		}
 		return resultGroup;
 		
 	}
@@ -415,68 +446,93 @@ public class MotionProfileLibrary
 		
 		double drive1Distance = 75.385;
 		double distanceAfter60degreeRotation = 31.177;
-		
-		SensorParameters visionParams = new SensorParameters(null,null);
-		SensorParameters ultrasonicParams = new SensorParameters(null, null);
-		
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		
 		
 
-		double straightVelocity = 300;
-		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(straightVelocity, drive1Distance, false);
-		
 		double rpm = 300;
+		DriveStraightMotionMagic startingDrive = new DriveStraightMotionMagic(rpm, drive1Distance, false);
+		
 		double targetAngle = -60;
-		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(rpm, targetAngle);
+		DriveRotateMotionMagic rotateOnFixedAngle = new DriveRotateMotionMagic(rpm, targetAngle);
 	
 		//drive after rotate.
 		//Actual distance should be 31.177, but we want to stop for sonar reading.
 		//Stop 20 inches short and use sonar
-		visionParams.DistanceAdjustment = -20;
-		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(straightVelocity,visionParams);
-		UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 0.25);
-		
-		
-		straightVelocity = 100; //slow down for final approach
-		DriveStraightMotionMagic driveOnSonar = new DriveStraightMotionMagic(straightVelocity, ultrasonicParams);
-
-		
-		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
-		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
-		
-		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(straightVelocity, 31.177, true);
+		//
+		SensorParameters visionParams = new SensorParameters(null,null);
+		visionParams.DistanceAdjustment = -9;
+		visionParams.SensorFailedDriveDistance = distanceAfter60degreeRotation;
+		DriveStraightMotionMagic driveAfterRotate = new DriveStraightMotionMagic(rpm,visionParams);
 		
 		String targetName = "Gear";
 		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,1); //FHE: Is two seconds for vision right?
-		
 		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(rpm,  visionParams);		
 		
-		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
-		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
-			
+		
+		
+		//SensorParameters ultrasonicParams = new SensorParameters(null, null);
+		//ultrasonicParams.SensorFailedDriveDistance = 0.0;
+		//ultrasonicParams.DistanceAdjustment = 0;
+		//UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 0.25);
+		//double sonarDriveVelocity = 250; //slow down for final approach
+		//DriveStraightMotionMagic driveOnSonar = new DriveStraightMotionMagic(sonarDriveVelocity, ultrasonicParams);
 
 		
-		resultGroup.addSequential(drive1);
-		resultGroup.addSequential(rotateCmd);
+		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		
+		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(rpm, 31.177, true);
+
+
+			
+
+		//----------------------------------------
+		//Start of GearPlacement
+		//----------------------------------------
+		resultGroup.addSequential(startingDrive);
+		resultGroup.addSequential(rotateOnFixedAngle);
 		resultGroup.addSequential(visionCmd1);
 		resultGroup.addSequential(rotateBasedOnVision);
-		resultGroup.addSequential(drive2);
-		resultGroup.addSequential(ultrasonicCmd1);
-		resultGroup.addSequential(driveOnSonar);
+		resultGroup.addSequential(driveAfterRotate);
+		//resultGroup.addSequential(ultrasonicCmd1);
+		//resultGroup.addSequential(driveOnSonar);
 		resultGroup.addSequential(gearForward);
 		resultGroup.addSequential(gearBackward);
 		resultGroup.addSequential(gearForward2);
-		resultGroup.addSequential(gearBackward2);
+		resultGroup.addSequential(gearBackward2);     
 		resultGroup.addSequential(shortDriveBackwards);
+		//----------------------------------------
+		//End Of Gear placement
+		//----------------------------------------
+		
+		//----------------------------------------
+		//Start of Drive into Neutral Zone
+		
+		DriveRotateMotionMagic rotateOnFixedAngle2 = new DriveRotateMotionMagic(rpm, 60);
+		DriveStraightMotionMagic driveIntoNeutralZone = new DriveStraightMotionMagic(rpm, 110, false);
 
+		resultGroup.addSequential(rotateOnFixedAngle2);
+		resultGroup.addSequential(driveIntoNeutralZone);
 		
-		//resultGroup.addSequential(cmd2);
+		Alliance alliance = DriverStation.getInstance().getAlliance();
+		System.out.println("ALLIANCE:" + alliance.toString());
 		
-		//FHE:TODO. This Camera Command Looks for the boiler. We need a Vision solution for Gear Placement.
-		//		DriveCameraAnglePID findPegCmd = new DriveCameraAnglePID();
-		//		resultGroup.addSequential(findPegCmd);		
-		
+		//Position the Robot for Teleop, so driver is closer to getting a gear.
+		if (alliance.toString() == "Red" )
+		{
+			
+			DriveRotateMotionMagic rotateOnFixedAngle3 = new DriveRotateMotionMagic(rpm, -40);
+			resultGroup.addSequential(rotateOnFixedAngle3);
+		}
+		else
+		{
+			//FHE TODO. FIND OUT HOW FAR TO DRIVE
+			DriveStraightMotionMagic driveIntoNeutralZoneForRed = new DriveStraightMotionMagic(rpm, 40, false);
+			resultGroup.addSequential(driveIntoNeutralZoneForRed);
+		}
 		return resultGroup;
 		
 	}
@@ -498,6 +554,38 @@ public class MotionProfileLibrary
 		
 		return resultGroup;
 	}
+	
+	
+	public static MotionCommandGroup TeleopGearAutoDock()
+	{
+
+		MotionCommandGroup resultGroup = new MotionCommandGroup();
+		SensorParameters sensorParams = new SensorParameters(null,null);
+		sensorParams.SensorFailedDriveDistance = 0.0;
+		sensorParams.DistanceAdjustment = -8;
+		
+		boolean setTeleopEnabled = false;
+		ManageTeleop disableTeleopCommand = new ManageTeleop(setTeleopEnabled);
+
+		double velocity = 300;
+		String targetName = "Gear";
+		GetVisionInfo visionCmd1= new GetVisionInfo(sensorParams, targetName,1.5); //FHE: Is two seconds for vision right?
+		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(velocity,  sensorParams);	
+		DriveStraightMotionMagic driveBasedOnVision = new DriveStraightMotionMagic(velocity,  sensorParams);
+		
+		setTeleopEnabled = true;
+		ManageTeleop enableTeleopCommand = new ManageTeleop(setTeleopEnabled);
+		
+		resultGroup.addSequential(disableTeleopCommand);
+		resultGroup.addSequential(visionCmd1);
+		resultGroup.addSequential(rotateBasedOnVision);
+		resultGroup.addSequential(driveBasedOnVision);
+		resultGroup.addSequential(enableTeleopCommand);
+		return resultGroup;
+		
+	}
+	
+	
 	
 	public static MotionCommandGroup visionTestSequence()
 	{
