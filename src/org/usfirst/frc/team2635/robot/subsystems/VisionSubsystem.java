@@ -84,6 +84,11 @@ public class VisionSubsystem extends Subsystem {
     	return distance;
     }
     
+    public void saveShooter()
+    {
+    	gearVision.saveShooter();
+    }
+    
 	@Override
 	protected void initDefaultCommand() {
 		// TODO Auto-generated method stub

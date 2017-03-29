@@ -1,5 +1,8 @@
 package org.usfirst.frc.team2635.robot.model;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -203,9 +206,24 @@ public class GearVision extends Vision {
 		cvSource.putFrame(source);
 	}
 	public void saveShooter(){
+
+
 		//Save Image
-		currentdatehour = new SimpleDateFormat("MM/dd/yyy HH:mm:ss:ms").format(new java.util.Date());
-		//Imgcodecs.imwrite("C:\\Users\\Robbie Robot\\Vision Log\\"+currentdatehour+".jpg", source);
+		try
+		{
+			currentdatehour = new SimpleDateFormat("MM_dd_yyy_HH_mm_ss_ms").format(new java.util.Date());
+			Imgcodecs.imwrite("/home/admin/visionLog/image_"+currentdatehour+".jpg", source);
+		}
+        catch (Exception e)
+		{
+        	e.printStackTrace();
+        } 
+		finally 
+		{
+       
+		}
+
+		
 	}
 	
 	public Double getDistanceBackup(){
