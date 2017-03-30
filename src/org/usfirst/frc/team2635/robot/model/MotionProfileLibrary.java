@@ -106,16 +106,6 @@ public class MotionProfileLibrary
 
 		return rotationParams;
 
-//		System.out.println("rightVelocity:" + rightVelocity);
-//		System.out.println("leftVelocity:" + leftVelocity);
-//		
-//		System.out.println("rightAcceleration:" + rightAcceleration);
-//		System.out.println("leftAcceleration:" + leftAcceleration);
-//		 
-//		System.out.println("leftWheelRotations:" + leftWheelRotations);
-//		System.out.println("rightWheelRotations:" + rightWheelRotations);
-		
-
 	}
 	
 	
@@ -161,17 +151,6 @@ public class MotionProfileLibrary
 			rotationParams.leftWheelRotations = leftWheelRotations;
 			
 			return rotationParams;
-			
-			//System.out.println("rightVelocity:" + rightVelocity);
-			//System.out.println("leftVelocity:" + leftVelocity);
-			//
-			//System.out.println("rightAcceleration:" + rightAcceleration);
-			//System.out.println("leftAcceleration:" + leftAcceleration);
-			//
-			//System.out.println("leftWheelRotations:" + leftWheelRotations);
-			//System.out.println("rightWheelRotations:" + rightWheelRotations);
-			
-			
 			}
 
 	
@@ -211,16 +190,6 @@ public class MotionProfileLibrary
 	
 	public static MotionCommandGroup getCenterGearPlacementSequence()
 	{
-		//1. Drive n Inches forward
-		//2. Vision. Get Angle (NOT DONE YET)
-		//   Rotate Angle (NOT DONE YET)
-		//3. Vision. Get Distance (NOT DONE YET)
-		//3. Drive N Inches (NOT DONE YET)
-		//4. Activate Pneumatics 
-		//Wait N seconds for Pneumatics
-		//Reverse Pneumatics
-		//Wait N seconds for reveres Pneumatics
-		
 		//DriveForward
 		//double distance = 37.699111843077518861551720599354; //Two Rotations
 		//double distance1 = 40;
@@ -278,6 +247,7 @@ public class MotionProfileLibrary
 	{
 		
 		double drive1Distance = 75.385;
+		//double drive1Distance = 84.385;
 		double distanceAfter60degreeRotation = 31.177;
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		
@@ -373,16 +343,6 @@ public class MotionProfileLibrary
 	public static MotionCommandGroup getSimpleLeftGearPlacementSequence()
 	{
 		
-		//1. Drive n Inches forward
-		//2. Vision. Get Angle (NOT DONE YET)
-		//   Rotate Angle (NOT DONE YET)
-		//3. Vision. Get Distance (NOT DONE YET)
-		//3. Drive N Inches (NOT DONE YET)
-		//4. Activate Pneumatics 
-		//Wait N seconds for Pneumatics
-		//Reverse Pneumatics
-		//Wait N seconds for reveres Pneumatics
-		
 		//DriveForward
 		//public ConfigurationInfo = new ConfigurationInfo();
 		double drive1Distance = 75.385;
@@ -426,6 +386,54 @@ public class MotionProfileLibrary
 		
 	}
 	
+	
+	
+	
+	public static MotionCommandGroup getSimpleRightGearPlacementSequence()
+	{
+		
+		//DriveForward
+		//public ConfigurationInfo = new ConfigurationInfo();
+		double drive1Distance = 75.385;
+		double driveDistanceAfter60degreeRotation = 31.177;
+		
+		SensorParameters visionParams = new SensorParameters(null,null);
+		MotionCommandGroup resultGroup = new MotionCommandGroup();
+		
+		
+		double velocity = 250;
+		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, drive1Distance, false);
+		
+		
+	
+		double targetAngle = -60;
+
+		DriveRotateMotionMagic rotateCmd = new DriveRotateMotionMagic(velocity, targetAngle);
+		
+		//drive after rotate.
+		//Actual distance is 31.177, but we want to stop for sonar reading.
+		
+		DriveStraightMotionMagic drive2 = new DriveStraightMotionMagic(velocity,driveDistanceAfter60degreeRotation, false);
+		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		
+		DriveStraightMotionMagic shortDriveBackwards = new DriveStraightMotionMagic(velocity, driveDistanceAfter60degreeRotation, true);		
+		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+			
+
+		
+		resultGroup.addSequential(drive1);
+		resultGroup.addSequential(rotateCmd);
+		resultGroup.addSequential(drive2);
+		resultGroup.addSequential(gearForward);
+		resultGroup.addSequential(gearBackward);
+		resultGroup.addSequential(gearForward2);
+		resultGroup.addSequential(gearBackward2);	
+		
+		return resultGroup;
+		
+	}
 	
 	public static MotionCommandGroup doNothing()
 	{

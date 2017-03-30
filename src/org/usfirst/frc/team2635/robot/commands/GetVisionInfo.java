@@ -1,4 +1,5 @@
 package org.usfirst.frc.team2635.robot.commands;
+import edu.wpi.first.wpilibj.command.CommandGroup;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -48,13 +49,9 @@ public class GetVisionInfo extends TimedCommand {
     // Called just before this Command runs the first time
     protected void initialize() {
     	
-//    	if (!Robot.vision.cameraIsConnected)
-//    	{
-//    		this.cancel();   	
-//    		System.out.println("No Camera Detected. Vision Cancelled at "+ LocalDateTime.now());
-//    	}
-//    	else
-//    	{
+    	System.out.println("isInterruptible "+ this.isInterruptible());
+    	
+
 	     	Robot.light.lightOn();    
 	    	angleSamples = new ArrayList<Double>();
 	    	distanceSamples = new ArrayList<Double>();
@@ -65,7 +62,7 @@ public class GetVisionInfo extends TimedCommand {
 	    		visionParameters.TargetAcquired = false;
 	    	}
 	    	System.out.println("Vision Initialized at "+ LocalDateTime.now());
-    	//}
+
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -111,6 +108,21 @@ public class GetVisionInfo extends TimedCommand {
     	}
 
 
+    	 String message = "";
+    	 if (roundedAngle != null)
+    	 {
+    		 message += "Angle:" + roundedAngle;
+    	 }
+    	 if (roundedDistance != null)
+    	 {
+    		 message += "    Distance:" + roundedDistance;
+    	 }
+    	 if (message == "")
+    	 {
+    		 message = "Target not found";
+    	 }
+    	 
+		 Robot.vision.ViewShooter(message);
     	
     }
 
@@ -151,6 +163,21 @@ public class GetVisionInfo extends TimedCommand {
 			 message = "Target not found.";
 		 }
 		 Robot.vision.ViewShooter(message);
+		 
+		 if (!visionParameters.TargetAcquired)
+		 {
+			 CommandGroup parentGroup = this.getGroup();
+			 if (parentGroup != null)
+			 {
+				 System.out.println("*****************************************************");
+				 System.out.println("**** TARGET NOT ACQUIRED: ABORTING AUTONOMOUS.*******");
+				 System.out.println("*****************************************************");
+				 Robot.vision.saveShooter();
+				 parentGroup.cancel();
+			 }
+			 
+		 }
+		 
 		 
 	    	angleSamples.clear();
 	    	distanceSamples.clear();

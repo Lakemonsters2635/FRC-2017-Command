@@ -1,7 +1,11 @@
 package org.usfirst.frc.team2635.robot.model;
 
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
@@ -9,8 +13,9 @@ import org.opencv.core.Scalar;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 public class GearVision extends Vision {
 	Rect confRectRight;
@@ -123,7 +128,7 @@ public class GearVision extends Vision {
 					
 					SmartDashboard.putDouble("comp3", comp3);
 					//SmartDashboard.putDouble("comp4", comp4);
-					if (rect1.height >20 && rect2.height > 20 &&rect1.width>5&&rect2.width>5&& .7 < comp1 && 1.3 > comp1 && .7 < comp2&&1.3>comp2&&.7<comp3/*&&1.3>comp3*/&&rect1.y>310&&rect2.y>310){
+					if (rect1.height >15 && rect2.height > 15 &&rect1.width>5&&rect2.width>5&& .7 < comp1 && 1.3 > comp1 && .7 < comp2&&1.3>comp2&&.7<comp3&&1.3>comp3/*&&rect1.y>290&&rect2.y>290*/){
 						Double done = 1 - (1 * Math.abs(3 - (comp1+comp2+comp3)));
 						if(rect1.y+10>rect2.y&&rect1.y-10<rect2.y){
 						for(int i=0;i<999;i++){
@@ -201,9 +206,24 @@ public class GearVision extends Vision {
 		cvSource.putFrame(source);
 	}
 	public void saveShooter(){
+
+
 		//Save Image
-		currentdatehour = new SimpleDateFormat("MM/dd/yyy HH:mm:ss:ms").format(new java.util.Date());
-		//Imgcodecs.imwrite("C:\\Users\\Robbie Robot\\Vision Log\\"+currentdatehour+".jpg", source);
+		try
+		{
+			currentdatehour = new SimpleDateFormat("MM_dd_yyy_HH_mm_ss_ms").format(new java.util.Date());
+			Imgcodecs.imwrite("/home/admin/visionLog/image_"+currentdatehour+".jpg", source);
+		}
+        catch (Exception e)
+		{
+        	e.printStackTrace();
+        } 
+		finally 
+		{
+       
+		}
+
+		
 	}
 	
 	public Double getDistanceBackup(){
