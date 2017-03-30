@@ -246,7 +246,7 @@ public class MotionProfileLibrary
 	public static MotionCommandGroup getLeftGearPlacementSequence()
 	{
 		
-		double drive1Distance = 75.385;
+		double drive1Distance = 85.564;
 		//double drive1Distance = 84.385;
 		double distanceAfter60degreeRotation = 31.177;
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
@@ -264,7 +264,7 @@ public class MotionProfileLibrary
 		//Stop 20 inches short and use sonar
 		//
 		SensorParameters visionParams = new SensorParameters(null,null);
-		visionParams.DistanceAdjustment = -9;
+		visionParams.DistanceAdjustment = -10;
 		visionParams.SensorFailedDriveDistance = distanceAfter60degreeRotation;
 		DriveStraightMotionMagic driveAfterRotate = new DriveStraightMotionMagic(rpm,visionParams);
 		
@@ -345,7 +345,7 @@ public class MotionProfileLibrary
 		
 		//DriveForward
 		//public ConfigurationInfo = new ConfigurationInfo();
-		double drive1Distance = 75.385;
+		double drive1Distance = 85.564;
 		double driveDistanceAfter60degreeRotation = 31.177;
 		
 		SensorParameters visionParams = new SensorParameters(null,null);
@@ -381,6 +381,8 @@ public class MotionProfileLibrary
 		resultGroup.addSequential(gearBackward);
 		resultGroup.addSequential(gearForward2);
 		resultGroup.addSequential(gearBackward2);	
+		resultGroup.addSequential(shortDriveBackwards);
+		
 		
 		return resultGroup;
 		
@@ -394,7 +396,7 @@ public class MotionProfileLibrary
 		
 		//DriveForward
 		//public ConfigurationInfo = new ConfigurationInfo();
-		double drive1Distance = 75.385;
+		double drive1Distance =  85.564;
 		double driveDistanceAfter60degreeRotation = 31.177;
 		
 		SensorParameters visionParams = new SensorParameters(null,null);
@@ -430,7 +432,7 @@ public class MotionProfileLibrary
 		resultGroup.addSequential(gearBackward);
 		resultGroup.addSequential(gearForward2);
 		resultGroup.addSequential(gearBackward2);	
-		
+		resultGroup.addSequential(shortDriveBackwards);
 		return resultGroup;
 		
 	}
@@ -452,7 +454,7 @@ public class MotionProfileLibrary
 	public static MotionCommandGroup getRightGearPlacementSequence()
 	{
 		
-		double drive1Distance = 75.385;
+		double drive1Distance =  85.564;
 		double distanceAfter60degreeRotation = 31.177;
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		
@@ -469,7 +471,7 @@ public class MotionProfileLibrary
 		//Stop 20 inches short and use sonar
 		//
 		SensorParameters visionParams = new SensorParameters(null,null);
-		visionParams.DistanceAdjustment = -9;
+		visionParams.DistanceAdjustment = -10;
 		visionParams.SensorFailedDriveDistance = distanceAfter60degreeRotation;
 		DriveStraightMotionMagic driveAfterRotate = new DriveStraightMotionMagic(rpm,visionParams);
 		
