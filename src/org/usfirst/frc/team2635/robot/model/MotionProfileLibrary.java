@@ -241,6 +241,45 @@ public class MotionProfileLibrary
 	}
     	
 
+	public static MotionCommandGroup getSimpleCenterGearPlacementSequence()
+	{
+		//DriveForward
+		//double distance = 37.699111843077518861551720599354; //Two Rotations
+		//double distance1 = 40;
+		
+		double totalDistanceToTarget =  67.86;
+		
+		double rpm = 300;
+
+		MotionCommandGroup resultGroup = new MotionCommandGroup();
+		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(rpm, totalDistanceToTarget, false);
+		
+
+		DeliverGearForward gearForward = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearForward gearForward2 = new DeliverGearForward(RobotMap.GEAR_DELIVERY_TIMEOUT);
+
+
+		
+
+		//UltrasonicParameters ultrasonicParams = new UltrasonicParameters(null, null);
+		//UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams);
+		
+
+		DeliverGearBackwards gearBackward = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DeliverGearBackwards gearBackward2 = new DeliverGearBackwards(RobotMap.GEAR_DELIVERY_TIMEOUT);
+		DriveStraightMotionMagic driveBackwards = new DriveStraightMotionMagic(rpm, totalDistanceToTarget, true);
+		resultGroup.addSequential(drive1);
+		resultGroup.addSequential(gearForward);
+		resultGroup.addSequential(gearBackward);
+		resultGroup.addSequential(gearForward2);
+		resultGroup.addSequential(gearBackward2);
+		resultGroup.addSequential(driveBackwards);
+		//
+
+		return resultGroup;
+		
+	}
+
 
 	
 	public static MotionCommandGroup getLeftGearPlacementSequence()
@@ -264,7 +303,7 @@ public class MotionProfileLibrary
 		//Stop 20 inches short and use sonar
 		//
 		SensorParameters visionParams = new SensorParameters(null,null);
-		visionParams.DistanceAdjustment = -10;
+		visionParams.DistanceAdjustment = -13;
 		visionParams.SensorFailedDriveDistance = distanceAfter60degreeRotation;
 		DriveStraightMotionMagic driveAfterRotate = new DriveStraightMotionMagic(rpm,visionParams);
 		
@@ -352,7 +391,7 @@ public class MotionProfileLibrary
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		
 		
-		double velocity = 250;
+		double velocity = 300;
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, drive1Distance, false);
 		
 		
@@ -403,7 +442,7 @@ public class MotionProfileLibrary
 		MotionCommandGroup resultGroup = new MotionCommandGroup();
 		
 		
-		double velocity = 250;
+		double velocity = 300;
 		DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, drive1Distance, false);
 		
 		
@@ -471,12 +510,12 @@ public class MotionProfileLibrary
 		//Stop 20 inches short and use sonar
 		//
 		SensorParameters visionParams = new SensorParameters(null,null);
-		visionParams.DistanceAdjustment = -10;
+		visionParams.DistanceAdjustment = -13 ;
 		visionParams.SensorFailedDriveDistance = distanceAfter60degreeRotation;
 		DriveStraightMotionMagic driveAfterRotate = new DriveStraightMotionMagic(rpm,visionParams);
 		
 		String targetName = "Gear";
-		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,1); //FHE: Is two seconds for vision right?
+		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,1.5); //FHE: Is two seconds for vision right?
 		DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(rpm,  visionParams);		
 		
 		

@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.vision.VisionPipeline;
 
 import org.opencv.core.*;
@@ -59,10 +61,27 @@ public class GripPipeline implements VisionPipeline {
 		}
 		else
 		{
+			Alliance alliance = DriverStation.getInstance().getAlliance();
+			
 			//CompetitionBot
-			hsvThresholdHue = new double[]  {74.0, 114.0};
-			hsvThresholdSaturation = new double[] {54.0, 106.0};
-			hsvThresholdValue = new double[] {245.0, 255.0};
+			
+			if (alliance.toString() == "Blue" ){
+				//Blue Values with flares on left
+				//hsvThresholdHue = new double[]  {102.0, 163.0};
+				//hsvThresholdSaturation = new double[] {0.0, 5.0};
+				//hsvThresholdValue = new double[] {197.0, 255.0};
+				
+				hsvThresholdHue = new double[]  {72.0, 100.0};
+				hsvThresholdSaturation = new double[] {60.0, 90.0};
+				hsvThresholdValue = new double[] {209.0, 255.0};
+
+			} else {
+				//Red Values on left
+				hsvThresholdHue = new double[]  {72.0, 100.0};
+				hsvThresholdSaturation = new double[] {60.0, 90.0};
+				hsvThresholdValue = new double[] {209.0, 255.0};
+			
+			}
 		}
 
 		
