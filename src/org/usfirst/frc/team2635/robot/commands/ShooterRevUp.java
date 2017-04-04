@@ -3,6 +3,7 @@ package org.usfirst.frc.team2635.robot.commands;
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.command.CommandGroup;
 
 /**
@@ -13,9 +14,14 @@ public class ShooterRevUp extends CommandGroup {
     public ShooterRevUp() {
     	//Change this to sequential when a method to figure out if it's finished is implemented
     	requires(Robot.shooter);
-    	addParallel(new ShooterFire());
+    	//addParallel(new ShooterFire());
     	addParallel(new ShooterSpinFlywheel(-1.0));
-    	addParallel(new ShooterAgitate(RobotMap.SHOOTER_AGITATE_TIME));
+    	//addParallel(new ShooterAgitate(RobotMap.SHOOTER_AGITATE_TIME));
+    	
+    	addSequential(new ShooterSetAgitator(Value.kForward));
+    	addSequential(new WaitCommand(RobotMap.SHOOTER_AGITATE_TIME));
+    	addSequential(new ShooterSetAgitator(Value.kReverse));
+    	addSequential(new ShooterFire());
     	
     	//addSequential(new ShooterSpinFlywheel(-1.0));
     	

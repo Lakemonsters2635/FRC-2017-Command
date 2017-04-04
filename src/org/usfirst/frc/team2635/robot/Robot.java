@@ -49,7 +49,7 @@ public class Robot extends IterativeRobot {
 	MotionCommandGroup visionTest;
 	
 	MotionCommandGroup doNothingCmd;
-	MotionCommandGroup rotateTest;
+	MotionCommandGroup centerGearSimple;
 
 	SendableChooser<Command> chooser = new SendableChooser<>();
 	
@@ -118,7 +118,7 @@ public class Robot extends IterativeRobot {
 		rightGearSimple = MotionProfileLibrary.getSimpleRightGearPlacementSequence();
 		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
 		visionTest = MotionProfileLibrary.visionTestSequence();
-		rotateTest = MotionProfileLibrary.rotateTestSequence();
+		centerGearSimple = MotionProfileLibrary.getSimpleCenterGearPlacementSequence();
 		
 //		chooser.initTable(null);
 //		chooser.addDefault("Do Nothing", doNothingCmd);
@@ -146,6 +146,10 @@ public class Robot extends IterativeRobot {
 		
 		case("Center Gear"):
 			motionCommandGroup = centerGear;
+		break;
+		
+		case("Center Gear Simple"):
+			motionCommandGroup = centerGearSimple;
 		break;
 		
 		case("Left Gear"):

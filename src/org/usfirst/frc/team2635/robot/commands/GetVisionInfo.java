@@ -163,6 +163,14 @@ public class GetVisionInfo extends TimedCommand {
 			 message = "Target not found.";
 		 }
 		 Robot.vision.ViewShooter(message);
+
+	     angleSamples.clear();
+	     distanceSamples.clear();
+
+	      System.out.println("Vision Ended at "+ LocalDateTime.now());
+	      Robot.light.lightOff();
+
+		 
 		 
 		 if (!visionParameters.TargetAcquired)
 		 {
@@ -172,18 +180,13 @@ public class GetVisionInfo extends TimedCommand {
 				 System.out.println("*****************************************************");
 				 System.out.println("**** TARGET NOT ACQUIRED: ABORTING AUTONOMOUS.*******");
 				 System.out.println("*****************************************************");
-				 Robot.vision.saveShooter();
+				 //Robot.vision.saveShooter();
 				 parentGroup.cancel();
 			 }
 			 
 		 }
 		 
 		 
-	    	angleSamples.clear();
-	    	distanceSamples.clear();
-
-	    	 System.out.println("Vision Ended at "+ LocalDateTime.now());
-	    	Robot.light.lightOff();
 		 
 		 System.out.println("visionParameters.AngleToTarget: " + visionParameters.AngleToTarget + "\t visionParameters.DistanceToTarget:" + visionParameters.DistanceToTarget);
     	

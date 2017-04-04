@@ -17,8 +17,8 @@ import java.util.function.Function;
  */
 public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
-	public static final double ROTATE_ERROR_TOLERANCE = 0.01;
-	public static final double DRIVE_ERROR_TOLERANCE = 0.01;
+	public static final double ROTATE_ERROR_TOLERANCE = 0.025;
+	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
     public double RotationInitialHeading = 0;
     public double rightWheelRotations;
     public double leftWheelRotations;
