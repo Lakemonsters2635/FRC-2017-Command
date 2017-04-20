@@ -278,6 +278,7 @@ public class GearVision extends Vision {
 		System.out.println("Gear Vision RectangeCenterY: " + RectangleCenterY);
 		
 		Double distanceDouble = new Double(distance);
+		//TODO: get rid of linear reggression, and find issue with calculations 
 		Double correctDistance = new Double(distanceDouble*1.219 + 6.193);
 		return correctDistance;
 	}

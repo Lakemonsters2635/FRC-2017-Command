@@ -19,6 +19,7 @@ import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
 import org.usfirst.frc.team2635.robot.commands.PickupBall;
 import org.usfirst.frc.team2635.robot.commands.ShooterRevUp;
 import org.usfirst.frc.team2635.robot.commands.ShooterReverseFire;
+import org.usfirst.frc.team2635.robot.commands.ShooterSpinFlywheel;
 import org.usfirst.frc.team2635.robot.commands.TeleopCommand;
 import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.subsystems.Climber;
@@ -97,6 +98,7 @@ public class Robot extends IterativeRobot {
 
 		
 		oi.fireButton.whileHeld(new ShooterRevUp());
+		oi.launcherButton.whileHeld(new ShooterSpinFlywheel(-1.0));
 		oi.fireButton.whenReleased(new ShooterReverseFire());
 		//oi.fireButton.whenPressed(new ShooterRevUp());
 		//oi.fireButton.whenReleased(new ShooterReverseFire());

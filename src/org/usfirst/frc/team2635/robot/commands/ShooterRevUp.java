@@ -15,15 +15,19 @@ public class ShooterRevUp extends CommandGroup {
     	//Change this to sequential when a method to figure out if it's finished is implemented
     	requires(Robot.shooter);
     	//addParallel(new ShooterFire());
-    	addParallel(new ShooterSpinFlywheel(-1.0));
+    	
+    	
     	//addParallel(new ShooterAgitate(RobotMap.SHOOTER_AGITATE_TIME));
     	
     	addSequential(new ShooterSetAgitator(Value.kForward));
     	addSequential(new WaitCommand(RobotMap.SHOOTER_AGITATE_TIME));
     	addSequential(new ShooterSetAgitator(Value.kReverse));
-    	addSequential(new ShooterFire());
+    	addSequential(new WaitCommand(RobotMap.SHOOTER_AGITATE_TIME)); 
+    	addSequential(new ShooterFire(Value.kForward));
+    	addSequential(new WaitCommand(RobotMap.SHOOTER_AGITATE_TIME)); 
+    	addSequential(new ShooterFire(Value.kReverse));
     	
-    	//addSequential(new ShooterSpinFlywheel(-1.0));
+        //addSequential(new ShooterSpinFlywheel(-1.0));
     	
         // Add Commands here:
         // e.g. addSequential(new Command1());

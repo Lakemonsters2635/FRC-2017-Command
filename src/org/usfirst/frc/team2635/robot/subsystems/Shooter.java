@@ -41,8 +41,8 @@ public class Shooter extends Subsystem {
     	agitator.set(value);
     }
     
-    public void fireControlForward() {
-    	fireControl.set(Value.kForward);
+    public void setFireControl(Value value) {
+    	fireControl.set(value);
     }
     
     public void fireControlReverse() {
