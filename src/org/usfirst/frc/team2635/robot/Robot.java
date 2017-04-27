@@ -98,7 +98,7 @@ public class Robot extends IterativeRobot {
 
 		
 		oi.fireButton.whileHeld(new ShooterRevUp());
-		oi.launcherButton.whileHeld(new ShooterSpinFlywheel(-1.0));
+		oi.launcherButton.whileHeld(new ShooterSpinFlywheel(-0.8));
 		oi.fireButton.whenReleased(new ShooterReverseFire());
 		//oi.fireButton.whenPressed(new ShooterRevUp());
 		//oi.fireButton.whenReleased(new ShooterReverseFire());

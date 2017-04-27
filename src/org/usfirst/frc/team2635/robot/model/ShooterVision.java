@@ -1,11 +1,13 @@
 package org.usfirst.frc.team2635.robot.model;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 
 import edu.wpi.cscore.UsbCamera;
@@ -33,10 +35,12 @@ public class ShooterVision extends Vision {
 		reck1 = new ArrayList<Rect>();
 		reck2 = new ArrayList<Rect>();
 		reck3 = new ArrayList<Rect>();
+		confRectTop=null;
+		confRectBot=null;
+		confRectFull = null;
 		for (Integer b = 0; b < boundRect.size(); b++) {
 			for (Integer j = 1; j < boundRect.size(); j++) {
-				confRectTop=null;
-				confRectBot=null;
+				
 				//Integer j = b;
 				if (boundRect.get(b) != null && boundRect.get(j) != null&&b!=j&&j>b) {
 					Rect rect1 = boundRect.get(b);
@@ -190,9 +194,39 @@ public class ShooterVision extends Vision {
 		}
 	}
 	
-	public void viewShooter() {
-		//put the processed image with rectangles on smartdashboard
-		cvSource.putFrame(source);
+	public void viewShooter(String message) {
+		//Draw Crosshairs
+				Point line11 = new Point(0,240);
+				Point line12 = new Point(620,240);
+				Point line21 = new Point(320,0);
+				Point line22 = new Point(320,480);
+				Imgproc.line(source, line11, line12, new Scalar(255,255,255));
+				Imgproc.line(source, line21, line22, new Scalar(255,255,255));
+				Scalar scl = new Scalar(255,255,255);
+					Imgproc.putText(source, message, new Point(10,300), 2, 1, scl);
+				//put the processed image with rectangles on smartdashboard
+				cvSource.putFrame(source);
+	}
+	
+	public void saveShooter(){
+
+
+		//Save Image
+		try
+		{
+			currentdatehour = new SimpleDateFormat("MM_dd_yyy_HH_mm_ss_ms").format(new java.util.Date());
+			Imgcodecs.imwrite("/home/admin/visionLog/image_"+currentdatehour+".jpg", source);
+		}
+        catch (Exception e)
+		{
+        	e.printStackTrace();
+        } 
+		finally 
+		{
+       
+		}
+
+		
 	}
 	
 	public Double getDistance() {
