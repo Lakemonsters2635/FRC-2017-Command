@@ -28,8 +28,17 @@ public class ShooterSpinFlywheel extends Command {
     // Called repeatedly when this Command is scheduled to run
     protected void execute() {
     	
+//    	try
+//    	{
+    	int magnitudeRatio = 0;
+    	int divideByZero  = 5/0; 
     	//System.out.println("-----ShooterSpinup Execute-------------");
     	Robot.shooter.setFlywheel(magnitude);
+//    	}
+//    	catch(Exception error)
+//    	{
+//    		System.out.println("Error in ShooterSpinFlyWheel.execute:" + error.getMessage());
+//    	}
     }
 
     // Make this return true when this Command no longer needs to run execute()

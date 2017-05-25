@@ -11,6 +11,7 @@ import org.usfirst.frc.team2635.robot.commands.DriveCameraAnglePID;
 import org.usfirst.frc.team2635.robot.commands.DriveRotateMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.DriveStraightMotionMagic;
 import org.usfirst.frc.team2635.robot.commands.GetVisionInfo;
+import org.usfirst.frc.team2635.robot.commands.GetVisionInfo2;
 import org.usfirst.frc.team2635.robot.commands.ManageTeleop;
 import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
 import org.usfirst.frc.team2635.robot.commands.UltrasonicCommand;
@@ -649,6 +650,33 @@ public class MotionProfileLibrary
 		double velocity = 250;
 		String targetName = "Gear";
 		GetVisionInfo visionCmd1= new GetVisionInfo(visionParams, targetName,4); //FHE: Is two seconds for vision right?
+		//DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(velocity,  visionParams);	
+		//	UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 1);
+		//DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, ultrasonicParams);
+		MotionCommandGroup resultGroup = new MotionCommandGroup();
+
+		//resultGroup.addSequential(rotate1);
+		resultGroup.addSequential(visionCmd1);
+		//resultGroup.addSequential(rotateBasedOnVision);
+		//resultGroup.addSequential(ultrasonicCmd1);
+		//resultGroup.addSequential(drive1);
+		return resultGroup;
+		
+	}
+	
+	public static MotionCommandGroup visionTestSequence2()
+	{
+		
+		//double rotate = SmartDashboard.getNumber("Test Angle");
+		//System.out.println("Test Angle: " + rotate);
+		DriveRotateMotionMagic rotate1 = new DriveRotateMotionMagic(250, 0);
+		
+		
+		SensorParameters visionParams = new SensorParameters(null,null);
+		SensorParameters ultrasonicParams = new SensorParameters(null, null);
+		double velocity = 250;
+		String targetName = "Gear";
+		GetVisionInfo2 visionCmd1= new GetVisionInfo2(visionParams, targetName); //FHE: Is two seconds for vision right?
 		//DriveRotateMotionMagic rotateBasedOnVision = new DriveRotateMotionMagic(velocity,  visionParams);	
 		//	UltrasonicCommand ultrasonicCmd1 = new UltrasonicCommand(ultrasonicParams, 1);
 		//DriveStraightMotionMagic drive1 = new DriveStraightMotionMagic(velocity, ultrasonicParams);

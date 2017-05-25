@@ -39,7 +39,7 @@ public class VisionSubsystem extends Subsystem {
     public void aim() {
     	shooterVision.createBox();
 		shooterVision.confirmBox();
-		shooterVision.viewShooter();
+		shooterVision.viewShooter("");
     }
     
     public void ViewShooter(String message)
@@ -57,7 +57,7 @@ public class VisionSubsystem extends Subsystem {
     
     public Double getAngleToBoiler() {
     	Double angle = shooterVision.getAngle();
-    	shooterVision.viewShooter();
+    	shooterVision.viewShooter("");
     	return angle;
     }
     
