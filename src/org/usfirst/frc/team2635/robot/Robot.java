@@ -66,6 +66,8 @@ public class Robot extends IterativeRobot {
 	MotionCommandGroup rightGearSimple;
 	MotionCommandGroup rightGear;
 	MotionCommandGroup visionTest;
+	MotionCommandGroup visionTest2;
+	
 	
 	MotionCommandGroup doNothingCmd;
 	MotionCommandGroup centerGearSimple;
@@ -115,6 +117,7 @@ public class Robot extends IterativeRobot {
 
 		
 		oi.aimCameraButton.whenPressed(MotionProfileLibrary.visionTestSequence());
+		oi.aimCameraButton2.whenPressed(MotionProfileLibrary.visionTestSequence2());
 		
 
 		oi.gearAutoDockButton.whileHeld(MotionProfileLibrary.TeleopGearAutoDock());
@@ -139,6 +142,7 @@ public class Robot extends IterativeRobot {
 		rightGearSimple = MotionProfileLibrary.getSimpleRightGearPlacementSequence();
 		rightGear = MotionProfileLibrary.getRightGearPlacementSequence();
 		visionTest = MotionProfileLibrary.visionTestSequence();
+		visionTest2 = MotionProfileLibrary.visionTestSequence2();
 		centerGearSimple = MotionProfileLibrary.getSimpleCenterGearPlacementSequence();
 		
 //		chooser.initTable(null);
@@ -153,7 +157,7 @@ public class Robot extends IterativeRobot {
 //		
 //		SmartDashboard.putData("Auto List", chooser);
 		
-		String[] autoValues = {"Do Nothing", "Center Gear", "Left Gear", "Left Gear Simple", "Right Gear", "Right Gear Simple", "Vision Test"};
+		String[] autoValues = {"Do Nothing", "Center Gear", "Left Gear", "Left Gear Simple", "Right Gear", "Right Gear Simple", "Vision Test", "Vision Test 2"};
 		NetworkTable.getTable("SmartDashboard").putStringArray("Auto List", autoValues);
 		
 	}
@@ -191,6 +195,9 @@ public class Robot extends IterativeRobot {
 		
 		case("Vision Test"):
 			motionCommandGroup = visionTest;
+		break;
+		case("Vision Test 2"):
+			motionCommandGroup = visionTest2;
 		break;
 		}
 	}

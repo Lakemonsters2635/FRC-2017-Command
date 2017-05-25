@@ -201,7 +201,7 @@ public class GearVision extends Vision {
 		Imgproc.line(source, line11, line12, new Scalar(255,255,255));
 		Imgproc.line(source, line21, line22, new Scalar(255,255,255));
 		Scalar scl = new Scalar(255,255,255);
-			Imgproc.putText(source, message, new Point(10,300), 2, 1, scl);
+		Imgproc.putText(source, message, new Point(10,300), 2, 1, scl);
 		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
