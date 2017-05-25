@@ -142,7 +142,7 @@ public class Robot extends IterativeRobot {
 		chooser.addObject("Rotation Test", rotateTest);
 
 		
-		SmartDashboard.putData("Autonomous mode", chooser);
+		SmartDashboard.putData("Auto Selector", chooser);
 	}
 	/**
 	 * This function is called once each time the robot enters Disabled mode.
