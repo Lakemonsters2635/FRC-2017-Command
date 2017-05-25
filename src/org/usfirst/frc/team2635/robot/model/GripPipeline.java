@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.HashMap;
 
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.vision.VisionPipeline;
 
 import org.opencv.core.*;
@@ -46,9 +48,44 @@ public class GripPipeline implements VisionPipeline {
 		findContoursOutput = new ArrayList<MatOfPoint>();
 		Mat hsvThresholdInput = source0;
 
-		double[] hsvThresholdHue = {78.0, 102.0};
-		double[] hsvThresholdSaturation = {32.0, 146.0};
-		double[] hsvThresholdValue = {236.0, 255.0};
+		String botMode = "Competition";
+		double[] hsvThresholdHue;
+		double[] hsvThresholdSaturation;
+		double[] hsvThresholdValue;
+		if (botMode == "Practice")
+		{
+			//PracticeBot
+			hsvThresholdHue        = new double[] {78.0, 107.0};
+			hsvThresholdSaturation = new double[] {6.0, 58.0};
+			hsvThresholdValue      = new double[] {244.0, 255.0};
+		}
+		else
+		{
+			Alliance alliance = DriverStation.getInstance().getAlliance();
+			
+			//CompetitionBot
+			
+			if (alliance.toString() == "Blue" ){
+				//Blue Values with flares on left
+				//hsvThresholdHue = new double[]  {102.0, 163.0};
+				//hsvThresholdSaturation = new double[] {0.0, 5.0};
+				//hsvThresholdValue = new double[] {197.0, 255.0};
+				
+				hsvThresholdHue = new double[]  {72.0, 100.0};
+				hsvThresholdSaturation = new double[] {60.0, 90.0};
+				hsvThresholdValue = new double[] {209.0, 255.0};
+
+			} else {
+				//Red Values on left
+				hsvThresholdHue = new double[]  {72.0, 100.0};
+				hsvThresholdSaturation = new double[] {60.0, 90.0};
+				hsvThresholdValue = new double[] {209.0, 255.0};
+			
+			}
+		}
+
+		
+
 
 		hsvThreshold(hsvThresholdInput, hsvThresholdHue, hsvThresholdSaturation, hsvThresholdValue, hsvThresholdOutput);
 

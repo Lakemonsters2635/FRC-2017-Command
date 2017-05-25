@@ -1,5 +1,8 @@
 package org.usfirst.frc.team2635.robot.model;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
@@ -124,9 +127,10 @@ public class GearVision extends Vision {
 					SmartDashboard.putDouble("comp2", comp2);
 					
 					SmartDashboard.putDouble("comp3", comp3);
-					SmartDashboard.putDouble("comp4", comp4);
-					if (rect1.height >20 && rect2.height > 20 && .7 < comp1 && 1.3 > comp1 && .7 < comp2&&1.3>comp2&&.7<comp3&&1.3>comp3&&.7<comp4&&1.3>comp4&&rect1.y>320&&rect2.y>320){
-						Double done = 1 - (1 * Math.abs(4 - (comp1+comp2+comp3+comp4)));
+					//SmartDashboard.putDouble("comp4", comp4);
+					if (rect1.height >15 && rect2.height > 15 &&rect1.width>5&&rect2.width>5&& .7 < comp1 && 1.3 > comp1 && .7 < comp2&&1.3>comp2&&.7<comp3&&1.3>comp3/*&&rect1.y>290&&rect2.y>290*/){
+						Double done = 1 - (1 * Math.abs(3 - (comp1+comp2+comp3)));
+						if(rect1.y+10>rect2.y&&rect1.y-10<rect2.y){
 						for(int i=0;i<999;i++){
 							if(poss[i]==null){
 								poss[i]=done;
@@ -140,6 +144,7 @@ public class GearVision extends Vision {
 								reck3.add(temp);
 								i = 1005;
 							}
+						}
 						}
 					}
 				}
@@ -187,7 +192,7 @@ public class GearVision extends Vision {
 		}
 	}
 	 
-	public void viewShooter(Double angle){
+	public void viewShooter(String message){
    		//Draw Crosshairs
 		Point line11 = new Point(0,240);
 		Point line12 = new Point(620,240);
@@ -196,26 +201,38 @@ public class GearVision extends Vision {
 		Imgproc.line(source, line11, line12, new Scalar(255,255,255));
 		Imgproc.line(source, line21, line22, new Scalar(255,255,255));
 		Scalar scl = new Scalar(255,255,255);
-		String message = "no angle found.";
-		if (angle != null)
-		{
-			message = angle.toString();
-		}
-		Imgproc.putText(source, message, new Point(320,300), 2, 1, scl);
+			Imgproc.putText(source, message, new Point(10,300), 2, 1, scl);
 		//put the processed image with rectangles on smartdashboard
 		cvSource.putFrame(source);
 	}
 	public void saveShooter(){
+
+
 		//Save Image
-		currentdatehour = new SimpleDateFormat("MM/dd/yyy HH:mm:ss:ms").format(new java.util.Date());
-		Imgcodecs.imwrite("C:\\Users\\Robbie Robot\\Vision Log\\"+currentdate+"\\"+currentdatehour+".jpg", source);
+		try
+		{
+			currentdatehour = new SimpleDateFormat("MM_dd_yyy_HH_mm_ss_ms").format(new java.util.Date());
+			Imgcodecs.imwrite("/home/admin/visionLog/image_"+currentdatehour+".jpg", source);
+		}
+        catch (Exception e)
+		{
+        	e.printStackTrace();
+        } 
+		finally 
+		{
+       
+		}
+
+		
 	}
 	
-	public Double getDistance(){
+	public Double getDistanceBackup(){
 		if(confRectRight == null)
 		{
 			return  null;
 		}
+		double targetWidthHeightRatio = 2.0/5.0;
+		
 		double fullYFOV = 41.8;
 		double pixelHeight = 480;
 		double halfYFOV = fullYFOV / 2;
@@ -242,6 +259,9 @@ public class GearVision extends Vision {
 		
 		//get y of middle of rect 
 		double rectangleHeight = Math.abs(left.y-right.y);
+		double rectangleWidth  = Math.abs(left.x - right.x);
+		
+		
 		double halfRectangleHeight = rectangleHeight/2;
 		double RectangleCenterY = right.y + halfRectangleHeight;
 		
@@ -258,8 +278,49 @@ public class GearVision extends Vision {
 		System.out.println("Gear Vision RectangeCenterY: " + RectangleCenterY);
 		
 		Double distanceDouble = new Double(distance);
+		//TODO: get rid of linear reggression, and find issue with calculations 
 		Double correctDistance = new Double(distanceDouble*1.219 + 6.193);
 		return correctDistance;
+	}
+	
+	public Double getDistance(){
+		if(confRectRight == null || confRectLeft == null)
+		{
+			return  null;
+		}
+		double minDistance = 28.17; //If the camera is closer we can't see the reflective tape.
+		double pixelWidthAtMinDistance = 230.0; //The known Pixel-Width of the target at 28.17 inches.
+
+		//Get the width in Pixels;
+		double targetWidthInPixels = getTargetWidthInPixels();
+		double resultDistance = 0;
+		
+		if (targetWidthInPixels > pixelWidthAtMinDistance)
+		{
+			System.out.println("------!!!TOO CLOSE!!!!--------------");
+		}
+		else
+		{
+			double ratio = pixelWidthAtMinDistance/targetWidthInPixels;
+			resultDistance = minDistance * ratio;
+		}
+			
+		return new Double(resultDistance);
+
+	}
+	
+	public double getTargetWidthInPixels()
+	{
+		double minX = Math.min(confRectRight.br().x,  confRectRight.tl().x);
+		minX = Math.min(minX, confRectLeft.br().x);
+		minX = Math.min(minX, confRectLeft.tl().x);
+		
+		double maxX = Math.max(confRectRight.br().x,  confRectRight.tl().x);
+		maxX = Math.max(maxX, confRectLeft.br().x);
+		maxX = Math.max(maxX, confRectLeft.tl().x);
+		double targetWidthInPixels = maxX - minX;
+		
+		return targetWidthInPixels;
 	}
 	
 	public Double getAngle(){

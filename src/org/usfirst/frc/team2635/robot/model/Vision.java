@@ -60,7 +60,7 @@ public class Vision {
 		grip = GripPipeline.findContoursOutput();
 		//set and draw all boxes
 		for( int i = 0; i< grip.size(); i++ ){
-			Imgproc.drawContours(source, grip, i, new Scalar(255, 0,0),1);
+			Imgproc.drawContours(source, grip, i, new Scalar(0,0,255),1);
 			boundRect.add(Imgproc.boundingRect(grip.get(i)));
 			//Uncomment to view all drawn boxes
 			//Rect rect = Imgproc.boundingRect(grip.get(i));

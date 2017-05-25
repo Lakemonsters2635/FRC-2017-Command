@@ -2,8 +2,6 @@ package org.usfirst.frc.team2635.robot.commands;
 
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.model.SensorParameters;
-import org.usfirst.frc.team2635.robot.model.UltrasonicParameters;
-
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.TimedCommand;
 
@@ -25,6 +23,7 @@ public class UltrasonicCommand extends TimedCommand {
     	if (sensorParameters != null)
     	{
     		sensorParameters.DistanceToTarget = null;
+    		sensorParameters.TargetAcquired = false;
     	}
     }
 
@@ -38,12 +37,18 @@ public class UltrasonicCommand extends TimedCommand {
 		if (sensorParameters.DistanceToTarget == null)
 		{
 			sensorParameters.DistanceToTarget = new Double(0.0);	
+			sensorParameters.TargetAcquired = false;
 		}
 		else if (sensorParameters.DistanceToTarget <= 11)
 		{
 			sensorParameters.DistanceToTarget = 0.0;
+			sensorParameters.TargetAcquired = false;
 		}
-    	
+		else
+		{
+			sensorParameters.TargetAcquired = true;
+		}
+			
   
     }
 

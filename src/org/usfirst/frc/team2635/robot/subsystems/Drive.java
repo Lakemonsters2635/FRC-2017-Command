@@ -26,9 +26,9 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  */
 public class Drive extends Subsystem {
 	public static final double ANGLE_ERROR_TOLERANCE = 1;
-	public static final double ROTATE_ERROR_TOLERANCE = 0.02;
+	public static final double ROTATE_ERROR_TOLERANCE = 0.025;
 	public static final double DRIVE_ERROR_TOLERANCE = 0.03;
-
+    public double RotationInitialHeading = 0;
 	public double currentHeadingOffset = 0;
 	// Put methods for controlling this subsystem
 	// here. Call these from Commands.
@@ -383,6 +383,7 @@ public class Drive extends Subsystem {
 
 		rightFront.set(rotationParams.rightWheelRotations);
 		leftFront.set(rotationParams.leftWheelRotations);
+	
 		
 //		System.out.println("Right wheel rotations: " + rotationParams.rightWheelRotations +
 //				"\tLeft wheel rotations: " + rotationParams.leftWheelRotations +
@@ -460,6 +461,11 @@ public class Drive extends Subsystem {
 	}
 	
 
+	public  void SetNavxAngle()
+	{
+		navx.reset();
+		RotationInitialHeading = navx.getAngle();
+	}
 
 
 	/**
@@ -482,6 +488,7 @@ public class Drive extends Subsystem {
 		double rightFrontPosition = rightFront.getPosition();
 		double leftFrontPosition = leftFront.getPosition();
 		
+		
 		//double encRightFrontPosition = rightFront.getEncPosition()*10;
 		//double encLeftFrontPosition = leftFront.getEncPosition()*10;
 		
@@ -489,15 +496,32 @@ public class Drive extends Subsystem {
 		//double leftDelta =  leftFrontPosition - encLeftFrontPosition;
 		//double rightError = rightFront.getError();
 		//double leftError = leftFront.getError();
-		
-		
+
+
 		double rightFrontError = Math.abs(rotationParams.rightWheelRotations - rightFrontPosition);
 		double leftFrontError = Math.abs(rotationParams.leftWheelRotations - leftFrontPosition);
 		
 		
-		//System.out.println("rightError:" + rightError + "\tleftError:" + leftError + "\trightFrontError:" + rightFrontError + "\t leftFrontError:" + leftFrontError + "\t rightFrontPosition:" + rightFrontPosition + "\t leftFrontPosition:" + leftFrontPosition);
-		
-		return (rightFrontError < errorTolerance && leftFrontError < errorTolerance);
+
+		boolean isDone = (rightFrontError < errorTolerance && leftFrontError < errorTolerance);
+		if (isDone)
+		{
+			if (errorTolerance == this.ROTATE_ERROR_TOLERANCE )
+			{
+				double currentAngle = navx.getAngle();
+				double navxAngleDifference = Math.abs(currentAngle - RotationInitialHeading);
+				System.out.println("navxAngleDifference:" + navxAngleDifference + "\trightError:" + rightFrontError + "\tleftError:" + leftFrontError);
+			}
+			else
+			{
+				System.out.println("rightError:" + rightFrontError + "\tleftError:" + leftFrontError);
+			
+			}
+			
+			
+			
+		}
+		return isDone;
 		//return (leftFrontError < MOTION_MAGIC_ERROR_TOLERANCE);
 		//talon1Error = Math.abs(rotationParams.innerWheelRotations - _talon.getPosition());
 		//talon2Error = Math.abs(rotationParams.outerWheelRotations - _talon2.getPosition());

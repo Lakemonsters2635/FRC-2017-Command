@@ -15,6 +15,7 @@ import com.ctre.CANTalon;
 import com.ctre.CANTalon.TalonControlMode;
 
 import edu.wpi.first.wpilibj.command.Command;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Rotate using motion magic
@@ -48,13 +49,22 @@ public class DriveRotateMotionMagic extends Command {
 
     // Called just before this Command runs the first time
     protected void initialize() {
+    	Robot.drive.SetNavxAngle();
     	
+
+//		this.targetAngle = SmartDashboard.getNumber("Test Angle", 0.0);
+//    	System.out.println("Get Rotation by SmartDashboard:" + targetAngle);
+//		rotationParams = MotionProfileLibrary.getRotationParameters(targetAngle,
+//				RobotMap.WHEEL_RADIUS_INCHES, RobotMap.WHEEL_SEPARATION_INCHES, rpm);
+		
     	System.out.println("DriveRotateMotionMagic initialize started at " + LocalDateTime.now());
+		
+		
     	hasExecuted = false;
     	if (visionParams != null && visionParams.AngleToTarget != null)
     	{
     		
-    		//targetAngle = visionParams.AngleToTarget;
+    		targetAngle = visionParams.AngleToTarget;
     		System.out.println("Get Rotation by VisionParams.AngleToTarget:" + visionParams.AngleToTarget);
     	   	rotationParams = MotionProfileLibrary.getRotationParameters(visionParams.AngleToTarget,
     				RobotMap.WHEEL_RADIUS_INCHES, RobotMap.WHEEL_SEPARATION_INCHES, rpm);
@@ -74,7 +84,7 @@ public class DriveRotateMotionMagic extends Command {
     			RobotMap.MOTION_MAGIC_D,
     			RobotMap.MOTION_MAGIC_F);
     	
-    	Robot.drive.rotateMotionMagic(rotationParams);   
+    	//Robot.drive.rotateMotionMagic(rotationParams);   
     	System.out.println("DriveRotateMotionMagic initialize ended at " + LocalDateTime.now());
     	
     }
@@ -83,10 +93,15 @@ public class DriveRotateMotionMagic extends Command {
     protected void execute() {
     	if (hasExecuted)
     	{
-    		System.out.println("DriveRotateMotionMagic execution started at " + LocalDateTime.now());
+    		if (RobotMap.DEBUG_DETAIL)
+    		{
+    			System.out.println("DriveRotateMotionMagic execution started at " + LocalDateTime.now());
+    		}
     		hasExecuted = true;
     	}
-    	//Robot.drive.rotateMotionMagic(rotationParams);   
+    	
+    	Robot.drive.rotateMotionMagic(rotationParams);   
+    	
        
         	
 
@@ -97,7 +112,10 @@ public class DriveRotateMotionMagic extends Command {
     protected boolean isFinished() {
     	boolean done = Robot.drive.motionMagicDone(rotationParams, Robot.drive.ROTATE_ERROR_TOLERANCE);
     	if (done) {
-    		System.out.println("DriveRotateMotionMagic is done at " + LocalDateTime.now());
+    		if (RobotMap.DEBUG_DETAIL)
+    		{
+    			System.out.println("DriveRotateMotionMagic is done at " + LocalDateTime.now());
+    		}
         	if (visionParams != null)
         	{
 	    		visionParams.AngleToTarget = null;
@@ -111,7 +129,10 @@ public class DriveRotateMotionMagic extends Command {
 
     // Called once after isFinished returns true
     protected void end() {
-    	System.out.println("DriveRotateMotionMagic ended at " + LocalDateTime.now());
+		if (RobotMap.DEBUG_DETAIL)
+		{
+			System.out.println("DriveRotateMotionMagic ended at " + LocalDateTime.now());
+		}
     	Robot.drive.initMotionMagic();
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
   
@@ -121,11 +142,12 @@ public class DriveRotateMotionMagic extends Command {
     // subsystems is scheduled to run
     protected void interrupted() {
     	System.out.println("DriveRotateMotionMagic interrupted at " + LocalDateTime.now());
-    	if (visionParams != null)
-    	{
-    		visionParams.AngleToTarget = null;
-    		visionParams.DistanceToTarget = null;
-    	}
+//    	if (visionParams != null)
+//    	{
+//    		visionParams.AngleToTarget = null;
+//    		visionParams.DistanceToTarget = null;
+//    	}
     	Robot.drive.setDriveMode(TalonControlMode.PercentVbus);
+    	//Robot.drive.enableTeleop();
     }
 }

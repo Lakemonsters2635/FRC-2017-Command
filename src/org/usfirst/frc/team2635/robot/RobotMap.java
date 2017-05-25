@@ -21,6 +21,12 @@ public class RobotMap {
 	public static final int SHOOTER_FIRE_CONTROL_FORWARD = 3;
 	public static final int SHOOTER_FIRE_CONTROL_BACKWARDS = 2;
 	
+	//TODO: Change these to valid channel numbers
+	public static final int SHOOTER_AGITATE_FORWARD = 4;
+	public static final int SHOOTER_AGITATE_REVERSE = 5;
+
+	public static final double SHOOTER_AGITATE_TIME = .5;
+	
 	public static final int PICKUP_BALL = 7;
 	
 	public static final int ROPE_CLIMBER_1 = 8;
@@ -41,8 +47,10 @@ public class RobotMap {
 	public static final int RIGHT_DRIVE_Y = 1;
 	public static final int RIGHT_DRIVE_Z = 2;
 	
-	public static final int BUTTON_REV_UP = 1;
-	public static final int BUTTON_FIRE = 1;
+	public static final int BUTTON_REV_UP = 6; //FHE TODO: TALK TO DRIVE TEAM
+	public static final int BUTTON_FIRE = 11; //FHE TODO: TALK TO DRIVE TEAM
+	public static final int BUTTON_LAUNCHER = 10;
+	
 	public static final int BUTTON_FEED_IN = 2;
 	public static final int BUTTON_FEED_OUT = 3;
 	public static final int BUTTON_CLIMB_UP = 2;
@@ -52,11 +60,13 @@ public class RobotMap {
 	public static final int BUTTON_MOTION_MAGIC = 8;
 	public static final int BUTTON_NAVX_ROTATE = 8;
 	public static final int BUTTON_AIM = 7;
-	public static final int BUTTON_NAVX_GET_ANGLE = 10;
-	public static final int BUTTON_NAVX_RESET = 11;
+	//public static final int BUTTON_NAVX_GET_ANGLE = 10;
+	
+	public static final int BUTTON_GEAR_AUTODOC = 1;
+	public static final int BUTTON_DRIVE_STRAIGHT = 1;
 	
 	public static final double WHEEL_RADIUS_INCHES = 3.0  * 1.0; 
-	public static final double WHEEL_SEPARATION_INCHES = 23.5;
+	public static final double WHEEL_SEPARATION_INCHES = 24.5;
 	
 	public static final double BUMPER_TO_SONAR_DISTANCE = 4.0; //Distance from Outside of bumper to front-face of sonar.
 	
@@ -76,6 +86,12 @@ public class RobotMap {
 	public static final double DRIVE_STRAIGHT_MOTION_MAGIC_P = 10;
     public static final double DRIVE_STRAIGHT_MOTION_MAGIC_I =  0.0004; 
     public static final double DRIVE_STRAIGHT_MOTION_MAGIC_D = 0;
+    
+    
+    public static final double DRIVE_STRAIGHT_TELEOP_MOTION_MAGIC_F = 1.5;
+	public static final double DRIVE_STRAIGHT_TELEOP_MOTION_MAGIC_P = 1;
+    public static final double DRIVE_STRAIGHT_TELEOP_MOTION_MAGIC_I =  0.0; 
+    public static final double DRIVE_STRAIGHT_TELEOP_MOTION_MAGIC_D = 0;
 	// If you are using multiple modules, make sure to define both the port
 	// number and the module. For example you with a rangefinder:
 	// public static int rangefinderPort = 1;
@@ -86,6 +102,7 @@ public class RobotMap {
     
     public static final int VISION_LIGHT_CHANNEL = 7;
 
+    public static final boolean DEBUG_DETAIL = true;
     
  
     public static final double GEAR_DELIVERY_TIMEOUT = 0.5;  // units are seconds

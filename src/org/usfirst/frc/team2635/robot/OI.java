@@ -29,6 +29,8 @@ public class OI {
 	
 	public final Button revUpButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_REV_UP);
 	public final Button fireButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_FIRE);
+	public final Button launcherButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_LAUNCHER);
+	
 	public final Button feedInButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_FEED_IN);
 	public final Button feedOutButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_FEED_OUT);
 	public final Button climbUpButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_CLIMB_UP);
@@ -40,8 +42,10 @@ public class OI {
 	
 	
 	
-	public final Button navxGetAngleButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_GET_ANGLE);
-	public final Button navxResetButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_RESET);
+	//public final Button navxGetAngleButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_NAVX_GET_ANGLE);
+	public final Button gearAutoDockButton = new JoystickButton(rightJoystick, RobotMap.BUTTON_GEAR_AUTODOC);
+	public final Button driveStraightButton = new JoystickButton(leftJoystick, RobotMap.BUTTON_DRIVE_STRAIGHT);
+	
 	
 //	
 	//// CREATING BUTTONS
