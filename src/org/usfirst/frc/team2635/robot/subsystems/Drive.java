@@ -100,7 +100,20 @@ public class Drive extends Subsystem {
 //				new NavxUnwrappedAnglePIDSource(navx), new DrivePIDOutput(drive));
 
 	}
-	
+	public void rotationTest() {
+		double rightFrontPosition = rightFront.getPosition();
+		double leftFrontPosition = leftFront.getPosition();
+		double inchesPerRotation = RobotMap.WHEEL_RADIUS_INCHES * 2 * Math.PI;
+		double distanceInches;
+		
+		
+		distanceInches = rightFrontPosition * inchesPerRotation;
+		
+		if(distanceInches >= 120) {
+			System.out.println("Drove 10 feet");
+		}
+		
+	}
 	public void enableTeleop() {
 		if (!teleopCommand.isRunning()) {
 			teleopCommand.start();

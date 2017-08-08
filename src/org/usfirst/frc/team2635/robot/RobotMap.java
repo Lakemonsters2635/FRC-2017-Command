@@ -11,6 +11,8 @@ public class RobotMap {
 	// following variables to use with your drivetrain subsystem.
 	// public static int leftMotor = 1;
 	// public static int rightMotor = 2;
+	public static final String SWEEP_PORT = "/dev/ttyUSB0";
+	
 	public static final int DRIVE_RIGHT_FRONT = 1;
 	public static final int DRIVE_RIGHT_BACK = 2;
 	public static final int DRIVE_LEFT_FRONT = 3;

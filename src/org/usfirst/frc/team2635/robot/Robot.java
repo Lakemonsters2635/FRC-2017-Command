@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team2635.robot.commands.ClimberClimb;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearBackwards;
 import org.usfirst.frc.team2635.robot.commands.DeliverGearForward;
+import org.usfirst.frc.team2635.robot.commands.LidarCommand;
 import org.usfirst.frc.team2635.robot.commands.MotionCommandGroup;
 import org.usfirst.frc.team2635.robot.commands.PickupBall;
 import org.usfirst.frc.team2635.robot.commands.ShooterRevUp;
@@ -21,10 +22,17 @@ import org.usfirst.frc.team2635.robot.model.MotionProfileLibrary;
 import org.usfirst.frc.team2635.robot.subsystems.Climber;
 import org.usfirst.frc.team2635.robot.subsystems.Drive;
 import org.usfirst.frc.team2635.robot.subsystems.GearDeliver;
+import org.usfirst.frc.team2635.robot.subsystems.LidarSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.LightSubsystem;
 import org.usfirst.frc.team2635.robot.subsystems.Pickup;
 import org.usfirst.frc.team2635.robot.subsystems.Shooter;
 import org.usfirst.frc.team2635.robot.subsystems.VisionSubsystem;
+
+//import com.armabot.Sweep;
+import com.armabot.Sweep;
+
+//import com.armabot.*;
+
 import org.usfirst.frc.team2635.robot.subsystems.UltrasonicSensors;
 
 
@@ -48,11 +56,15 @@ public class Robot extends IterativeRobot {
 	public static OI oi;
 	public static UltrasonicSensors ultrasonic;
 	public static LightSubsystem light;
+	public static LidarSubsystem lidar;
+	
+	public Sweep sweep;
 	
 
 	Command autonomousCommand;
 	Command driveCommand;
 	Command logNavxCommand;
+	Command LidarCommand;
 	CommandGroup teleopCommands;
 	MotionCommandGroup motionCommandGroup;
 	
@@ -76,8 +88,8 @@ public class Robot extends IterativeRobot {
 	public void robotInit() {
 		System.out.println("robotInit");
 		
-
 		
+			
 		oi = new OI();
 		drive = new Drive();
 		shooter = new Shooter();
@@ -89,6 +101,7 @@ public class Robot extends IterativeRobot {
 		vision = new VisionSubsystem();
 		light = new LightSubsystem(RobotMap.VISION_LIGHT_CHANNEL);
 		teleopCommands = new TeleopCommand();
+		lidar = new LidarSubsystem();
 		
 		InitializeChooser();
 
@@ -109,6 +122,8 @@ public class Robot extends IterativeRobot {
 		oi.climbUpButton.whileHeld(new ClimberClimb());
 
 		oi.aimCameraButton.whenPressed(MotionProfileLibrary.visionTestSequence());
+		
+		LidarCommand = new LidarCommand();
 		
 		//oi.navxGetAngleButton.whenReleased(new LogNavxValues());
 		//oi.navxResetButton.whenReleased(new NavxReset());
@@ -188,7 +203,7 @@ public class Robot extends IterativeRobot {
 			motionCommandGroup.cancel();
 		}
 
-		InitializeChooser();
+		//InitializeChooser();
 
 
 		if (drive.teleopIsRunning())
@@ -205,11 +220,13 @@ public class Robot extends IterativeRobot {
 		 */
 		System.out.println("-------------------------------Started Autonomous-------------------------");
 		motionCommandGroup = (MotionCommandGroup) chooser.getSelected();
-		motionCommandGroup.start();
+		//motionCommandGroup.start();
 
 		// schedule the autonomous command (example)
 //		if (autonomousCommand != null)
 //			autonomousCommand.start();
+		
+		
 	}
 
 	/**
@@ -246,8 +263,38 @@ public class Robot extends IterativeRobot {
 		
 		
 			System.out.println("teleopInit");
-			
+			try{
+				
+				//System.setProperty("java.library.path", "/usr/lib/libsweep/wpilib/lib");
+				String property = System.getProperty("java.library.path");
+				System.out.println(property);
+				System.load("/usr/local/frc/lib/libsweepDriver.so");
+				
+				//System.loadLibrary("libsweepDriver");
+				System.out.println("TRYING TO MAKE A SWEEP");
+				
+				
+				//TODO Sleep, or implement as FRC TimedCommand
+				
+			 	//sweep = new Sweep(RobotMap.SWEEP_PORT, 115200 );
+			 	
+		    	//sweep.startScanning();
+				
+				//LidarCommand lidar = new LidarCommand(10);
+				//lidar.start();
+				
+				System.out.println("WE MADE IT!!!!!!");
+				System.out.println("WE MADE IT!!!!!!");
 
+				
+				} catch(Exception ex) {
+					System.out.println(ex);
+					System.out.println("Oh Noes");
+				}
+			
+			System.out.println("OUTSIDE OF TRY");
+			
+			LidarCommand.start();
 	}
 
 	/**
