@@ -1,5 +1,7 @@
 package org.usfirst.frc.team2635.robot.commands;
 
+import java.util.ArrayList;
+
 import org.usfirst.frc.team2635.robot.Robot;
 import org.usfirst.frc.team2635.robot.RobotMap;
 import org.usfirst.frc.team2635.robot.subsystems.LidarSubsystem;
@@ -36,7 +38,7 @@ public class LidarCommand extends Command {
 //    	//sweep.setMotorSpeed(10);
 //    	sweep.startScanning();
     	
-		Robot.drive.tankDrive(1, 1);
+		//Robot.drive.tankDrive(1, 1);
 
     }
 
@@ -44,26 +46,48 @@ public class LidarCommand extends Command {
     protected void execute() {
     	Robot.lidar.StartScanning();
     	sample = Robot.lidar.getSample();
+    	ArrayList<Double> leftData = null;
+    	ArrayList<Double> rightData = null;
     	
     	for(int i = 0;i < sample.length;i++ ) {
     		double a = (double) sample[i].angle/1000;
-    		
-    	
-    		if(a >= 160 && a <= 200) {
-    			System.out.println("Angle: " + a + " Distance: "+ sample[i].distance + " Signal Strength: " + sample[i].signalStrength);
-    			if(sample[i].distance < 100) {
-    				System.out.println("Angle: " + a + " Distance: "+ sample[i].distance + " Signal Strength: " + sample[i].signalStrength + "OH NO!");
-    				Robot.drive.tankDrive(0, 0);
-    			} else {
-    				Robot.drive.tankDrive(1, 1);
-    			}
+    		System.out.println(a + "," + sample[i].distance);
+    		if(a>=70 && a<=110 && a!=90) {
+    			double insideAngle = 0;
+    			insideAngle = Math.abs(90-a);
+    			leftData.add(Math.cos(insideAngle) * sample[i].distance);
+    		} else if(a>=250 && a<=290 && a!=270) {
+    			double insideAngle = 0;
+    			insideAngle = Math.abs(270-a);
+    			leftData.add(Math.cos(insideAngle) * sample[i].distance);
     		}
-    		
-    		
+//    		if(a >= 160 && a <= 200) {
+//    			System.out.println("Angle: " + a + " Distance: "+ sample[i].distance + " Signal Strength: " + sample[i].signalStrength);
+//    			if(sample[i].distance < 100) {
+//    				System.out.println("Angle: " + a + " Distance: "+ sample[i].distance + " Signal Strength: " + sample[i].signalStrength + "OH NO!");
+//    				Robot.drive.tankDrive(0, 0);
+//    			} else {
+//    				//Robot.drive.tankDrive(1, 1);
+//    			}
+//    		}		
     	}
+    	int leftAverage = 0;
+    	for(int i = 0; i < leftData.size();i++) {
+    		leftAverage += leftData.get(i);
+    	}
+    	leftAverage /= leftData.size();
     	
-    	
-    	
+    	int rightAverage = 0;
+    	for(int i = 0; i < rightData.size();i++) {
+    		rightAverage += rightData.get(i);
+    	}
+    	rightAverage /= rightData.size();
+    	System.out.println("Left Average: " + leftAverage + " Right Average: " + rightAverage);
+    	if(rightAverage > leftAverage) {
+    		//go right
+    	} else if(leftAverage > rightAverage) {
+    		//go left
+    	}
     }
 
     // Called once after timeout
