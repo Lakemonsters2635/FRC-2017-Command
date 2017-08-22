@@ -18,7 +18,7 @@ public class LidarSubsystem extends Subsystem {
     }
     
 	public LidarSubsystem() {
-		System.load("/usr/local/frc/lib/libsweepDriver.so");
+		//System.load("/usr/local/frc/lib/libsweepDriver.so");
 		sweep = new Sweep(RobotMap.SWEEP_PORT, 115200);
 		
 	}

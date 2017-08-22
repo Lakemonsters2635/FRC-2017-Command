@@ -46,8 +46,10 @@ public class LidarCommand extends Command {
     protected void execute() {
     	Robot.lidar.StartScanning();
     	sample = Robot.lidar.getSample();
-    	ArrayList<Double> leftData = null;
-    	ArrayList<Double> rightData = null;
+    	ArrayList<Double> leftData = new ArrayList<Double>();
+    	ArrayList<Double> rightData = new ArrayList<Double>();
+    	rightData.clear();
+    	leftData.clear();
     	
     	for(int i = 0;i < sample.length;i++ ) {
     		double a = (double) sample[i].angle/1000;
@@ -59,8 +61,9 @@ public class LidarCommand extends Command {
     		} else if(a>=250 && a<=290 && a!=270) {
     			double insideAngle = 0;
     			insideAngle = Math.abs(270-a);
-    			leftData.add(Math.cos(insideAngle) * sample[i].distance);
+    			rightData.add(Math.cos(insideAngle) * sample[i].distance);
     		}
+   
 //    		if(a >= 160 && a <= 200) {
 //    			System.out.println("Angle: " + a + " Distance: "+ sample[i].distance + " Signal Strength: " + sample[i].signalStrength);
 //    			if(sample[i].distance < 100) {

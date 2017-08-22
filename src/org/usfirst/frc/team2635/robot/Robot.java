@@ -280,7 +280,7 @@ public class Robot extends IterativeRobot {
 			 	
 		    	//sweep.startScanning();
 				
-				//LidarCommand lidar = new LidarCommand(10);
+				LidarCommand lidar = new LidarCommand();
 				//lidar.start();
 				
 				System.out.println("WE MADE IT!!!!!!");
