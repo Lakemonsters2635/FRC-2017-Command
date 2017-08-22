@@ -74,13 +74,13 @@ public class LidarCommand extends Command {
 //    			}
 //    		}		
     	}
-    	int leftAverage = 0;
+    	Double leftAverage = 0.0;
     	for(int i = 0; i < leftData.size();i++) {
     		leftAverage += leftData.get(i);
     	}
     	leftAverage /= leftData.size();
     	
-    	int rightAverage = 0;
+    	Double rightAverage = 0.0;
     	for(int i = 0; i < rightData.size();i++) {
     		rightAverage += rightData.get(i);
     	}
