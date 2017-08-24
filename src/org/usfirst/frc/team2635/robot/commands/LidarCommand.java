@@ -20,6 +20,8 @@ public class LidarCommand extends Command {
 	
 	LidarSubsystem lidar;
 	SweepSample[] sample;
+	ArrayList<Double> leftData;
+	ArrayList<Double> rightData;
     public LidarCommand() {
         
         requires(Robot.lidar);
@@ -37,7 +39,8 @@ public class LidarCommand extends Command {
 //    	//sweep.reset();
 //    	//sweep.setMotorSpeed(10);
 //    	sweep.startScanning();
-    	
+    	leftData = new ArrayList<Double>();
+    	rightData = new ArrayList<Double>();
 		//Robot.drive.tankDrive(1, 1);
 
     }
@@ -46,8 +49,7 @@ public class LidarCommand extends Command {
     protected void execute() {
     	Robot.lidar.StartScanning();
     	sample = Robot.lidar.getSample();
-    	ArrayList<Double> leftData = new ArrayList<Double>();
-    	ArrayList<Double> rightData = new ArrayList<Double>();
+    	
     	rightData.clear();
     	leftData.clear();
     	
