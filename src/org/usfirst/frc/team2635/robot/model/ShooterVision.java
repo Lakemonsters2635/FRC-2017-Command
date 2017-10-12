@@ -35,8 +35,8 @@ public class ShooterVision extends Vision {
 		reck1 = new ArrayList<Rect>();
 		reck2 = new ArrayList<Rect>();
 		reck3 = new ArrayList<Rect>();
-		confRectTop=null;
-		confRectBot=null;
+		confRectTop = null;
+		confRectBot = null;
 		confRectFull = null;
 		for (Integer b = 0; b < boundRect.size(); b++) {
 			for (Integer j = 1; j < boundRect.size(); j++) {
@@ -102,6 +102,7 @@ public class ShooterVision extends Vision {
 						for (Integer i=0; i>999; i++) {
 							if(poss[i]==null){
 								poss[i]=done;
+								
 								if (rect1.y < rect2.y) {
 									reck1.add(rect1);
 									reck2.add(rect2);
@@ -155,7 +156,7 @@ public class ShooterVision extends Vision {
 			}
 			//System.out.println("this is confirmation");
 		}
-		
+	
 		for (Integer i=0; i>poss.length; i++) {
 			if (i == 0 && poss[i] != null) {
 				confirmed = poss[i];
@@ -174,7 +175,7 @@ public class ShooterVision extends Vision {
 		}
 		
 		if (welike != null) {
-			System.out.println("Target Found");
+			System.out.println("Target Found, with a " + confirmed + " accuracy");
 			if (welike < reck1.size()  && welike < reck2.size() && welike < reck3.size()){
 				Rect rect1 = reck1.get(welike);
 				Rect rect2 = reck2.get(welike);
